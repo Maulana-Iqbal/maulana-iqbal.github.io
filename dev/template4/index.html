@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Online</title>
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
+    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+</head>
+<body id="body" class="overflow-hidden relative">
+  <div id="cover" class="rounded-2xl w-4/5 h-4/5 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black fixed z-50">
+    <img class="rounded-2xl object-cover w-full h-full opacity-70" src="assets/image/banner.jpg" alt="">
+    <div class="absolute top-1/2 -translate-y-1/2 text-center w-full text-white">
+      <h1 class="text-5xl lg:text-9xl font-dancing">Rand & Mega</h1>
+      <p class="mt-5">Kpd Bpk/Ibu/Saudara/i</p>
+      <p id="inviteName" class="mt-3 font-dancing text-4xl"> - </p>
+      <p class="mt-4 italic text-sm font-light">tanpa Mengurangi Rasa Hormat, Kami Mengundang Anda Untuk Hadir Di Acara Pernikahan Kami.</p>
+      <button id="btn-open" class="bg-pink-400 p-2 mt-3 rounded-xl">Buka Undangan</button>
+    </div>
+  </div>
+  <div id="music" class="hidden">
+    <audio id="audio" loop autoplay src="assets/audio/background-music.mp3"></audio>
+    <div id="playPauseBtn" onclick="playPause()" class="bg-pink-200 w-11 h-11 rounded-full fixed bottom-40 right-1 z-50" data-play="false">
+      <img id="buttonPlay" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" src="assets/decoration/play.svg" alt="">
+      <img id="buttonMuted" class="hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" src="assets/decoration/mute.svg" alt="">
+    </div>
+  </div>
+  <div class="w-full fixed z-40 bottom-5">
+    <nav id="nav" class="hidden navbar mx-auto h-auto w-3/4 bg-[#FCF6F0] justify-center rounded-xl shadow-sm">
+      <ul class="navbar-ul flex gap-3 md:!gap-10 text-l text-[#FF9898] font-bold text-center">
+          <div onclick="homeNav()">
+            <img class="mx-auto h-6 md:h-9" src="assets/decoration/home.svg" loading="lazy" alt="">
+            <p class="text-[0.6rem] md:text-base">Home</p>
+          </div>
+          <div onclick="coupleNav()">
+            <img class="mx-auto h-6 md:h-9" src="assets/decoration/love.svg" loading="lazy" alt="">
+            <p class="text-[0.6rem] md:text-base">Couple</p>
+          </div>
+          <div onclick="receptionNav()">
+            <img class="mx-auto h-6 md:h-9" src="assets/decoration/calendar2.svg" loading="lazy" alt="">
+            <p class="text-[0.6rem] md:text-base">Reception</p>
+          </div>
+          <div onclick="galleryNav()">
+            <img class="mx-auto h-6 md:h-9" src="assets/decoration/image.svg" loading="lazy" alt="">
+            <p class="text-[0.6rem] md:text-base">Gallery</p>
+          </div>
+          <div onclick="giftNav()">
+            <img class="mx-auto h-6 md:h-9" src="assets/decoration/gift.svg" loading="lazy" alt="">
+            <p class="text-[0.6rem] md:text-base">Gift</p>
+          </div>
+        </ul>
+    </nav>
+  </div>
+  <section class=bg-black>
+    <div id="banner" class="h-screen relative opacity-20 blur-sm">
+      <img class=" object-cover w-full h-full" src="assets/image/banner.jpg" alt="wedding photo shoot" loading="lazy">
+      <div class="text-center absolute top-[40%] w-full text-white">
+        <h6 class="text-lg lg:text-3xl font-semibold mb-7">The Wedding Of</h6>
+        <h1 class="text-6xl lg:text-9xl mb-2 font-dancing">Rand & Mega</h1>
+        <p class="text-md lg:text-2xl">Wednesday, 13 September 2023</p>
+        <p class="text-md lg:text-2xl">Jln. Raya Banda, Desa Takmung</p>
+      </div>
+    </div>
+  </section>
+  <main class="bg-repeat top-0" style="background-image: url('assets/decoration/hand_painted_neutrol_toned_watercolour_design_2706\ 1.jpg')">
+    <div class="top-0 w-full">
+      <section id="couple-profile" class="text-center pt-20">
+        <h1 class="swipe translate-y-40 duration-1000 transition-all font-dancing text-3xl md:text-5xl">Couple Profile</h1>
+        <div class="flex flex-col lg:flex-row mt-20 gap-16 xl:gap-24 justify-center">
+          <div>
+            <h1 class="swipe translate-y-40 duration-1000 transition-all text-2xl md:text-3xl">Groom</h1>
+            <img class="popup scale-50 duration-1000 transition-all mt-8 mx-auto" src="assets/image/groom.png" loading="lazy" alt="groom">
+            <p class="swipe translate-y-40 duration-1000 transition-all mt-100 font-bold text-xl md:text-2xl">Rand</p>
+            <a href="http://instagram.com/_u/merta_septiawan/">
+              <img class="popup scale-50 duration-1000 transition-all ml-auto mr-auto mt-4" src="assets/decoration/instagram.svg" alt="instagram" loading="lazy">
+            </a>
+          </div>
+          <h1 class="popup scale-50 duration-1000 transition-all font-dancing my-auto text-9xl">&</h1>
+          <div>
+            <h1 class="swipe translate-y-40 duration-1000 transition-all text-2xl md:text-3xl">Bride</h1>
+            <img class="popup scale-50 duration-1000 transition-all mt-8 mx-auto" src="assets/image/bride.png" loading="lazy" alt="groom">
+            <p class="swipe translate-y-40 duration-1000 transition-all mt-2 font-bold text-xl md:text-2xl">mega</p>
+            <a href="http://instagram.com/_u/merta_septiawan/">
+              <img class="popup scale-50 duration-1000 transition-all ml-auto mr-auto mt-4" src="assets/decoration/instagram.svg" alt="instagram" loading="lazy">
+            </a>
+          </div>
+        </div>
+        <img class="popup scale-50 duration-1000 transition-all ml-auto mr-auto w-4/5 mt-20 lg:mt-40" src="assets/decoration/dekor1 1.png" loading="lazy" alt="">
+      </section>
+      <section id="reception" class="mt-20 lg:mt-40 text-center">
+        <div class="mx-auto w-[95%] h-auto py-4 bg- mt-14 bg-black/10 rounded-2xl shadow-sm shadow-slate-50">
+          <h1 class="swipe translate-y-40 duration-1000 transition-all font-dancing text-3xl md:text-5xl">Event Countdown</h1>
+          <div class="flex justify-center mt-14 lg:mt-20 gap-3 md:!gap-10 lg:gap-24">
+            <div class="w-auto">
+              <div class="h-30 w-30 bg-countdown border-4 border-white rounded-2xl">
+                <h1 id="day" class="popup scale-50 duration-1000 transition-all text-4xl md:text-7xl lg:text-8xl font-dancing m-2">00</h1>
+              </div>
+              <h1 class="popup scale-50 duration-1000 transition-all mt-2 font-dancing text-md md:text-2xl lg:text-4xl text-black">Day</h1>
+            </div>
+            <div class="w-auto">
+              <div class="h-30 w-30 bg-countdown border-4 border-white rounded-2xl">
+                <h1 id="hour" class="popup scale-50 duration-1000 transition-all text-4xl md:text-7xl lg:text-8xl font-dancing m-2">00</h1>
+              </div>
+              <h1 class="popup scale-50 duration-1000 transition-all mt-2 font-dancing text-md md:text-2xl lg:text-4xl text-black">Hour</h1>
+            </div>
+            <div class="w-auto">
+              <div class="h-30 w-30 bg-countdown border-4 border-white rounded-2xl">
+                <h1 id="minute" class="popup scale-50 duration-1000 transition-all text-4xl md:text-7xl lg:text-8xl font-dancing m-2">00</h1>
+              </div>
+              <h1 class="popup scale-50 duration-1000 transition-all mt-2 font-dancing text-md md:text-2xl lg:text-4xl text-black">Minute</h1>
+            </div>
+            <div class="w-auto">
+              <div class="h-30 w-30 bg-countdown border-4 border-white rounded-2xl">
+                <h1 id="seccond" class="popup scale-50 duration-1000 transition-all text-4xl md:text-7xl lg:text-8xl font-dancing m-2">00</h1>
+              </div>
+              <h1 class="popup scale-50 duration-1000 transition-all mt-2 font-dancing text-md md:text-2xl lg:text-4xl text-black">Seccond</h1>
+            </div>
+          </div>
+        </div>
+      </section>
+      <img class="popup scale-50 duration-1000 transition-all ml-auto mr-auto mt-20 lg:mt-40" src="assets/decoration/dekor4 1.png" loading="lazy" alt="decoration">
+      <section>
+        <div class="bg-black/10 w-[95%] mx-auto h-auto text-center mt-20 lg:mt-40 pt-16 pb-6 lg:pb-14 relative rounded-2xl shadow-sm shadow-slate-50">
+          <h1 class="swipe translate-y-40 duration-1000 transition-all font-dancing text-3xl md:text-5xl">Reception</h1>
+          <img class="popup scale-50 duration-1000 transition-all ml-auto mr-auto mt-16 md:w-14 md:h-14" src="assets/decoration/calendar.svg" loading="lazy" alt="calendar">
+          <p class="swipe translate-y-40 duration-1000 transition-all mt-7 text-xl md:text-2xl">Wednesday, 13 September 2023</p>
+          <p class="swipe translate-y-40 duration-1000 transition-all text-xl md:text-2xl">17.00 - 22.00 WITA</p>
+          <img class="popup scale-50 duration-1000 transition-all ml-auto mr-auto mt-14 md:w-14 md:h-14" src="assets/decoration/mark.svg" loading="lazy" alt="location">
+          <p class="swipe translate-y-40 duration-1000 transition-all text-xl mt-4 md:text-2xl">Jln. Raya Banda Desa Takmung, Kecamatan Banjarangkan, Kabupaten Klungkung</p>
+          <iframe 
+            class="popup scale-50 duration-1000 transition-all mt-10 ml-auto mr-auto w-[95%] h-72" 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3945.4780494570323!2d115.38051532150754!3d-8.549943974196182!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x83a5b0a48d318a99!2zOMKwMzInNTkuOCJTIDExNcKwMjMnMDYuMCJF!5e0!3m2!1sen!2sid!4v1671593497976!5m2!1sen!2sid" 
+            width="auto" 
+            height="auto" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+          <img class="popup scale-50 duration-1000 transition-all absolute w-1/3 top-0 right-0" src="assets/decoration/flower6 1.png" loading="lazy" alt="flower1">
+          <img class="popup scale-50 duration-1000 transition-all hidden md:visible absolute bottom-0 left-0" src="assets/decoration/flower5 1.png" loading="lazy" alt="flower2">
+        </div>
+      </section>
+      <section id="gallery" class="mt-20 lg:mt-40">
+        <div class="w-[95%] mx-auto bg-black/10 rounded-2xl text-center pt-16 pb-6 shadow-sm shadow-slate-50">
+          <h1 class="swipe translate-y-40 duration-1000 transition-all font-dancing text-3xl md:text-5xl">Gallery</h1>
+          <div class="mt-16">
+            <div>
+              <div class="swiper w-[95%] h-[300px] md:h-[450px] lg:h-[600px]">
+                <!-- Additional required wrapper -->
+                <div class="swiper-wrapper">
+                  <!-- Slides -->
+                  <div class="swiper-slide">
+                    <img class="w-full h-full object-cover" src="assets/image/gallery1.jpg" loading="lazy" alt="">
+                  </div>
+                  <div class="swiper-slide">
+                    <img class="w-full h-full object-cover" src="assets/image/gallery2.jpg" loading="lazy" alt="">
+                  </div>
+                  <div class="swiper-slide">
+                    <img class="w-full h-full object-cover" src="assets/image/gallery3.jpg" loading="lazy" alt="">
+                  </div>
+                  <div class="swiper-slide">
+                    <img class="w-full h-full object-cover" src="assets/image/gallery4.jpg" loading="lazy" alt="">
+                  </div>
+                  <div class="swiper-slide">
+                    <img class="w-full h-full object-cover" src="assets/image/gallery5.jpg" loading="lazy" alt="">
+                  </div>
+                  <div class="swiper-slide">
+                    <img class="w-full h-full object-cover" src="assets/image/gallery6.jpg" loading="lazy" alt="">
+                  </div>
+                  <div class="swiper-slide">
+                    <img class="w-full h-full object-cover" src="assets/image/gallery7.jpg" loading="lazy" alt="">
+                  </div>
+                  <div class="swiper-slide">
+                    <img class="w-full h-full object-cover" src="assets/image/gallery8.jpg" loading="lazy" alt="">
+                  </div>
+                </div>
+                <!-- If we need pagination -->
+                <div class="swiper-pagination"></div>
+              
+                <!-- If we need navigation buttons -->
+                <div class="swiper-button-prev text-pink-100"></div>
+                <div class="swiper-button-next text-pink-100"></div>
+              </div> 
+              <div class="flex justify-center flex-wrap w-full ml-auto mr-auto mt-4">
+                <div class="popup scale-50 duration-1000 transition-all w-40 h-40 md:w-52 md:h-52 lg:w-64 lg:h-64 ease-in-out m-0.5">
+                  <img class="object-cover w-full h-full" src="assets/image/gallery1.jpg" loading="lazy" alt="">
+                </div>
+                <div class="popup scale-50 duration-1000 transition-all w-40 h-40 md:w-52 md:h-52 lg:w-64 lg:h-64 ease-in-out m-0.5">
+                  <img class="object-cover w-full h-full" src="assets/image/gallery2.jpg" loading="lazy" alt="">
+                </div>
+                <div class="popup scale-50 duration-1000 transition-all w-40 h-40 md:w-52 md:h-52 lg:w-64 lg:h-64 ease-in-out m-0.5">
+                  <img class="object-cover w-full h-full" src="assets/image/gallery3.jpg" loading="lazy" alt="">
+                </div>
+                <div class="popup scale-50 duration-1000 transition-all w-40 h-40 md:w-52 md:h-52 lg:w-64 lg:h-64 ease-in-out m-0.5">
+                  <img class="object-cover w-full h-full" src="assets/image/gallery4.jpg" loading="lazy" alt="">
+                </div>
+                <div class="popup scale-50 duration-1000 transition-all w-40 h-40 md:w-52 md:h-52 lg:w-64 lg:h-64 ease-in-out m-0.5">
+                  <img class="object-cover w-full h-full" src="assets/image/gallery5.jpg" loading="lazy" alt="">
+                </div>
+                <div class="popup scale-50 duration-1000 transition-all w-40 h-40 md:w-52 md:h-52 lg:w-64 lg:h-64 ease-in-out m-0.5">
+                  <img class="object-cover w-full h-full" src="assets/image/gallery6.jpg" loading="lazy" alt="">
+                </div>
+                <div class="popup scale-50 duration-1000 transition-all w-40 h-40 md:w-52 md:h-52 lg:w-64 lg:h-64 ease-in-out m-0.5">
+                  <img class="object-cover w-full h-full" src="assets/image/gallery7.jpg" loading="lazy" alt="">
+                </div>
+                <div class="popup scale-50 duration-1000 transition-all w-40 h-40 md:w-52 md:h-52 lg:w-64 lg:h-64 ease-in-out m-0.5">
+                  <img class="object-cover w-full h-full" src="assets/image/gallery8.jpg" loading="lazy" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="gift" class="mt-20 lg:mt-40">
+        <div class="w-[95%] mx-auto lg:w-[929px] h-auto bg-black/10 rounded-2xl ml-auto mr-auto pt-16 pb-6 text-center shadow-sm shadow-slate-50">
+          <h1 class="swipe translate-y-40 duration-1000 transition-all font-dancing text-3xl md:text-5xl">Gift</h1>
+          <p class="swipe translate-y-40 duration-1000 transition-all font-dancing mt-2 md:text-2xl">Send Gift By Scan This QR Code</p>
+          <img class="popup scale-50 duration-1000 transition-all w-24 md:w-40 ml-auto mr-auto mt-4" src="assets/decoration/DANA Logo vector (_cdr).png" loading="lazy" alt="dana-logo">
+          <img class="popup scale-50 duration-1000 transition-all w-1/2 ml-auto mr-auto mt-5" src="assets/decoration/dana-qrcode.jpeg" loading="lazy" alt="">
+        </div>
+      </section>
+      <section class="mt-20 lg:mt-40">
+        <div class="bg-black relative w-full h-screen md:h-[607px]">
+          <div class="absolute object-cover top-0 w-full h-full">
+            <img class="w-full h-full object-cover opacity-25" src="assets/image/banner.jpg" loading="lazy" alt="">
+            <div class="w-full text-center flex justify-center top-1/3 absolute">
+              <p class="popup scale-50 duration-1000 transition-all w-4/5 text-white text-center font-dancing textlg md:text-4xl">Love does not mean loving someone who is perfect but how to love someone who is not perfect in a perfect way.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+  <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  <script src="assets/js/script.js"></script>
+</body>
+</html>

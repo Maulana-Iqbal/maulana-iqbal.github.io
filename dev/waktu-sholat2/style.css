@@ -1,0 +1,14 @@
+table {
+    border-collapse: collapse;
+    margin: 0 auto;
+  }
+  
+  th, td {
+    padding: 10px;
+    border: 1px solid black;
+  }
+  
+  th {
+    background-color: #ccc;
+  }
+  

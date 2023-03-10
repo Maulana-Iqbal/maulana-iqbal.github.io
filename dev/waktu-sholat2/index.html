@@ -33,11 +33,26 @@
             method: 'GET',
             success: function(data) {
               var jadwalSholat = data.data.timings;
-              var rows = '';
-              for (var waktu in jadwalSholat) {
-                rows += '<tr><td>' + waktu + '</td><td>' + jadwalSholat[waktu] + '</td></tr>';
-              }
-              $('#jadwal-sholat').html(rows);
+
+              // Mengambil waktu isha dengan API method 2 dan school 1
+              $.ajax({
+                url: 'https://api.aladhan.com/v1/timings?latitude=' + latitude + '&longitude=' + longitude + '&method=2&school=1',
+                method: 'GET',
+                success: function(data2) {
+                  var jadwalSholat2 = data2.data.timings;
+                  jadwalSholat['Isha'] = jadwalSholat2['Isha'];
+
+                  // Membuat array untuk menentukan urutan waktu sholat
+                  var waktuSholat = ['Imsak', 'Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Sunset', 'Maghrib', 'Isha', 'Midnight', 'Firstthird', 'Lastthird'];
+
+                  var rows = '';
+                  for (var i = 0; i < waktuSholat.length; i++) {
+                    var waktu = waktuSholat[i];
+                    rows += '<tr><td>' + waktu + '</td><td>' + jadwalSholat[waktu] + '</td></tr>';
+                  }
+                  $('#jadwal-sholat').html(rows);
+                }
+              });
             }
           });
         });

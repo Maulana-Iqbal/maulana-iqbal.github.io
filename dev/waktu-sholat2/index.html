@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Jadwal Sholat</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Jadwal Sholat Hari Ini</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Waktu</th>
+            <th>Jam</th>
+          </tr>
+        </thead>
+        <tbody id="jadwal-sholat">
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      $(document).ready(function() {
+        // Mengambil lokasi pengguna dengan API Geolocation
+        navigator.geolocation.getCurrentPosition(function(position) {
+          var latitude = position.coords.latitude;
+          var longitude = position.coords.longitude;
+
+          // Memanggil API Aladhan untuk mengambil jadwal sholat
+          $.ajax({
+            url: 'https://api.aladhan.com/v1/timings?latitude=' + latitude + '&longitude=' + longitude + '&method=8',
+            method: 'GET',
+            success: function(data) {
+              var jadwalSholat = data.data.timings;
+
+              // Mengambil waktu isha dengan API method 2 dan school 1
+              $.ajax({
+                url: 'https://api.aladhan.com/v1/timings?latitude=' + latitude + '&longitude=' + longitude + '&method=2&school=1',
+                method: 'GET',
+                success: function(data2) {
+                  var jadwalSholat2 = data2.data.timings;
+                  jadwalSholat['Isha'] = jadwalSholat2['Isha'];
+
+                  // Membuat array untuk menentukan urutan waktu sholat
+                  var waktuSholat = ['Imsak', 'Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Sunset', 'Maghrib', 'Isha', 'Midnight'];
+
+                  var rows = '';
+                  for (var i = 0; i < waktuSholat.length; i++) {
+                    var waktu = waktuSholat[i];
+                    rows += '<tr><td>' + waktu + '</td><td>' + jadwalSholat[waktu] + '</td></tr>';
+                  }
+                  $('#jadwal-sholat').html(rows);
+                }
+              });
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

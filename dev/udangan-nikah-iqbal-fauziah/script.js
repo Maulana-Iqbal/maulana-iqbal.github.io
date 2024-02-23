@@ -260,11 +260,25 @@ window.addEventListener('scroll', () => {
 	});
 });
 
-// Mengambil nilai parameter "name" dari URL
+// Mengambil nilai parameter "to" dari URL
 const urlParams = new URLSearchParams(window.location.search);
-const name = urlParams.get('name');
+const name = urlParams.get('to');
 
 // Mengganti teks pada elemen dengan ID "guestNames" dengan nama yang diambil dari URL
 if (name) {
 	document.getElementById('guestNames').textContent = name;
 }
+
+// Menangkap elemen tombol dan audio
+const openButton = document.getElementById('open');
+const audioPlayer = document.querySelector('.audio-player audio');
+
+// Menambahkan event listener untuk klik tombol
+openButton.addEventListener('click', function () {
+	// Memulai pemutaran audio
+	audioPlayer.play();
+
+	// Mengubah posisi audio player untuk memperlihatkan ke pengguna
+	const audioPlayerDiv = document.querySelector('.audio-player');
+	audioPlayerDiv.style.right = '20px'; // Anda dapat menyesuaikan posisi sesuai kebutuhan
+});

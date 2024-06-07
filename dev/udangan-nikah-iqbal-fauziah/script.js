@@ -283,16 +283,16 @@ openButton.addEventListener('click', function () {
 	audioPlayerDiv.style.right = '20px'; // Anda dapat menyesuaikan posisi sesuai kebutuhan
 });
 
-// Mencegah Klik Kanan
-document.addEventListener('contextmenu', function (event) {
-	event.preventDefault();
-});
+// // Mencegah Klik Kanan
+// document.addEventListener('contextmenu', function (event) {
+// 	event.preventDefault();
+// });
 
-// Mendefinisikan fungsi untuk menangani event keyboard
-function handleKeyDown(event) {
-	// Mencegah tindakan default yang dilakukan oleh tombol keyboard
-	event.preventDefault();
-}
+// // Mendefinisikan fungsi untuk menangani event keyboard
+// function handleKeyDown(event) {
+// 	// Mencegah tindakan default yang dilakukan oleh tombol keyboard
+// 	event.preventDefault();
+// }
 
-// Menambahkan event listener ke document untuk menangani event keydown
-document.addEventListener('keydown', handleKeyDown);
+// // Menambahkan event listener ke document untuk menangani event keydown
+// document.addEventListener('keydown', handleKeyDown);

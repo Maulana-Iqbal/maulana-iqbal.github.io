@@ -177,14 +177,19 @@ $(window).scroll(function () {
 });
 
 document.getElementById('open').addEventListener('click', () => {
-	const cover = document.querySelector('#cover');
-	cover.style.marginTop = '-100rem';
-	cover.style.opacity = '0';
-	cover.style.transition = 'all 1s .1s ease-in-out';
-	setTimeout(() => {
-		cover.classList.add('hidden');
-	}, 2000);
+    const cover = document.querySelector('#cover');
+    cover.style.opacity = '0';
+
+    setTimeout(() => {
+        cover.style.display = 'none';
+    }, 1000); // Sesuaikan dengan durasi transisi dalam milidetik
+
+    setTimeout(() => {
+        cover.classList.add('hidden');
+    }, 1200); // Sesuaikan dengan durasi transisi + waktu tunda
 });
+
+
 
 // END JS ANIMATION
 

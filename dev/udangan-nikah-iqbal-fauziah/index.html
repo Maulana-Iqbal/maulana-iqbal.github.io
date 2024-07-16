@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="style.css">
 
 </head>
-<body class="bg-red-50 overflow-x-hidden" style="font-family: 'Open Sans', sans-serif;">
+<body class="bg-red-50 overflow-x-hidden" style="font-family: 'Open Sans', sans-serif; max-width: 768px; margin: auto;">
     
 
     <div id="cover" style="background:url(img/bg/wedding1.jpg) center center no-repeat; background-size: cover;" class="kosong z-30 fixed top-0 bottom-0 left-0 right-0 w-full h-screen py-28 px-2">
@@ -49,7 +49,7 @@
     
     <!-- NAVABAR -->
     
-    <nav class="nav fixed bottom-0 w-full px-[6px] h-[70px] bg-white flex justify-center z-20">
+    <nav class="nav fixed bottom-0 w-full px-[6px] h-[70px] bg-white flex justify-center z-20" style="max-width: 768px; margin: auto;">
         <ul class="flex">
             <li class="rumah m-auto">
                 <a href="#home" class="grid">
@@ -253,7 +253,7 @@
                 <span class="absolute top-[25%] ml-[85%] text-[30px] cursor-pointer" onclick="closeFullImg()">X</span>
             </div>
 
-            <div class="gallery w-[80%] mt-[100px] m-auto mb-[50px] mt-5 grid md:grid-cols-2 lg:grid-cols-3 gap-[13px]">
+            <div class="gallery w-[80%] mt-[100px] m-auto mb-[50px] mt-5 grid md:grid-cols-2 lg:grid-cols-2 gap-[13px]">
                 <img src="img/gallery/img1.jpg" alt="" class="w-[100%] rounded-[5px] cursor-pointer h-[300px] block" onclick="openFullImg(this.src)" id="img1">
                 <img src="img/gallery/img2.jpg" alt="" class="w-[100%] rounded-[5px] cursor-pointer h-[300px] block" onclick="openFullImg(this.src)" id="img2">
                 <img src="img/gallery/img3.jpg" alt="" class="w-[100%] rounded-[5px] cursor-pointer h-[300px] block" onclick="openFullImg(this.src)" id="img3">

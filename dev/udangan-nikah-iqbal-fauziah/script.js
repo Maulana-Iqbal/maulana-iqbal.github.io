@@ -177,19 +177,17 @@ $(window).scroll(function () {
 });
 
 document.getElementById('open').addEventListener('click', () => {
-    const cover = document.querySelector('#cover');
-    cover.style.opacity = '0';
+	const cover = document.querySelector('#cover');
+	cover.style.opacity = '0';
 
-    setTimeout(() => {
-        cover.style.display = 'none';
-    }, 1000); // Sesuaikan dengan durasi transisi dalam milidetik
+	setTimeout(() => {
+		cover.style.display = 'none';
+	}, 1000); // Sesuaikan dengan durasi transisi dalam milidetik
 
-    setTimeout(() => {
-        cover.classList.add('hidden');
-    }, 1200); // Sesuaikan dengan durasi transisi + waktu tunda
+	setTimeout(() => {
+		cover.classList.add('hidden');
+	}, 1200); // Sesuaikan dengan durasi transisi + waktu tunda
 });
-
-
 
 // END JS ANIMATION
 
@@ -301,3 +299,101 @@ openButton.addEventListener('click', function () {
 
 // // Menambahkan event listener ke document untuk menangani event keydown
 // document.addEventListener('keydown', handleKeyDown);
+
+// API URL
+const apiUrl = 'https://sheetdb.io/api/v1/7d4j3lkzz7bef';
+
+// Initialize nextId (start with a default value or fetch it from comments)
+window.nextId = 1;
+
+// Function to add a comment
+function addComment() {
+	const name = document.getElementById('name').value.trim();
+	const comment = document.getElementById('comment').value.trim();
+	const errorMessage = document.getElementById('error-message');
+
+	if (name && comment) {
+		// Check if the exact combination of name and comment already exists
+		fetch(apiUrl)
+			.then((response) => response.json())
+			.then((data) => {
+				const exists = data.some((item) => item.name === name && item.comment === comment);
+				if (exists) {
+					errorMessage.textContent = 'You have already commented with this name and this comment.';
+				} else {
+					// Generate a new ID
+					const newId = 'CM' + window.nextId;
+					window.nextId++; // Increment the ID for next comment
+
+					// Post new comment with generated ID
+					fetch(apiUrl, {
+						method: 'POST',
+						headers: {
+							Accept: 'application/json',
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify({
+							data: [
+								{
+									id: newId,
+									name: name,
+									comment: comment,
+								},
+							],
+						}),
+					})
+						.then((response) => response.json())
+						.then(() => {
+							document.getElementById('name').value = '';
+							document.getElementById('comment').value = '';
+							errorMessage.textContent = '';
+							fetchComments(); // Refresh the comment list
+						})
+						.catch((error) => console.error('Error adding comment:', error));
+				}
+			});
+	} else {
+		errorMessage.textContent = 'Please fill out both fields.';
+	}
+}
+
+// Function to fetch and display comments
+function fetchComments() {
+	fetch(apiUrl)
+		.then((response) => response.json())
+		.then((data) => {
+			const commentList = document.getElementById('comment-list');
+			commentList.innerHTML = ''; // Clear existing comments
+
+			if (data.length > 0) {
+				// Update nextId based on the highest ID
+				const highestId = Math.max(...data.map((item) => parseInt(item.id.replace('CM', ''))));
+				window.nextId = highestId + 1;
+			}
+
+			// Sort comments by ID in descending order
+			data.sort((a, b) => parseInt(b.id.replace('CM', '')) - parseInt(a.id.replace('CM', '')));
+
+			data.forEach((item) => {
+				const commentItem = document.createElement('div');
+				commentItem.className = 'comment-item';
+
+				const commentName = document.createElement('div');
+				commentName.className = 'comment-name';
+				commentName.textContent = item.name;
+
+				const commentText = document.createElement('div');
+				commentText.className = 'comment-text';
+				commentText.textContent = item.comment;
+
+				commentItem.appendChild(commentName);
+				commentItem.appendChild(commentText);
+
+				commentList.appendChild(commentItem);
+			});
+		})
+		.catch((error) => console.error('Error fetching comments:', error));
+}
+
+// Initial fetch to display comments
+fetchComments();

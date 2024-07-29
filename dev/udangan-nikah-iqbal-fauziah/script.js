@@ -306,56 +306,63 @@ const apiUrl = 'https://sheetdb.io/api/v1/7d4j3lkzz7bef';
 // Initialize nextId (start with a default value or fetch it from comments)
 window.nextId = 1;
 
+function generateUniqueId() {
+    const timestamp = new Date().getTime(); // Current timestamp in milliseconds
+    const randomNum = Math.floor(Math.random() * 10000); // Random number between 0 and 9999
+    return `CM${timestamp}${randomNum}`;
+}
+
+
 // Function to add a comment
 function addComment() {
-	const name = document.getElementById('name').value.trim();
-	const comment = document.getElementById('comment').value.trim();
-	const errorMessage = document.getElementById('error-message');
+    const name = document.getElementById('name').value.trim();
+    const comment = document.getElementById('comment').value.trim();
+    const errorMessage = document.getElementById('error-message');
 
-	if (name && comment) {
-		// Check if the exact combination of name and comment already exists
-		fetch(apiUrl)
-			.then((response) => response.json())
-			.then((data) => {
-				const exists = data.some((item) => item.name === name && item.comment === comment);
-				if (exists) {
-					errorMessage.textContent = 'You have already commented with this name and this comment.';
-				} else {
-					// Generate a new ID
-					const newId = 'CM' + window.nextId;
-					window.nextId++; // Increment the ID for next comment
+    if (name && comment) {
+        // Check if the exact combination of name and comment already exists
+        fetch(apiUrl)
+            .then((response) => response.json())
+            .then((data) => {
+                const exists = data.some((item) => item.name === name && item.comment === comment);
+                if (exists) {
+                    errorMessage.textContent = 'You have already commented with this name and this comment.';
+                } else {
+                    // Generate a new unique ID
+                    const newId = generateUniqueId();
 
-					// Post new comment with generated ID
-					fetch(apiUrl, {
-						method: 'POST',
-						headers: {
-							Accept: 'application/json',
-							'Content-Type': 'application/json',
-						},
-						body: JSON.stringify({
-							data: [
-								{
-									id: newId,
-									name: name,
-									comment: comment,
-								},
-							],
-						}),
-					})
-						.then((response) => response.json())
-						.then(() => {
-							document.getElementById('name').value = '';
-							document.getElementById('comment').value = '';
-							errorMessage.textContent = '';
-							fetchComments(); // Refresh the comment list
-						})
-						.catch((error) => console.error('Error adding comment:', error));
-				}
-			});
-	} else {
-		errorMessage.textContent = 'Please fill out both fields.';
-	}
+                    // Post new comment with generated ID
+                    fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            data: [
+                                {
+                                    id: newId,
+                                    name: name,
+                                    comment: comment,
+                                },
+                            ],
+                        }),
+                    })
+                        .then((response) => response.json())
+                        .then(() => {
+                            document.getElementById('name').value = '';
+                            document.getElementById('comment').value = '';
+                            errorMessage.textContent = '';
+                            fetchComments(); // Refresh the comment list
+                        })
+                        .catch((error) => console.error('Error adding comment:', error));
+                }
+            });
+    } else {
+        errorMessage.textContent = 'Please fill out both fields.';
+    }
 }
+
 
 // Function to fetch and display comments
 function fetchComments() {

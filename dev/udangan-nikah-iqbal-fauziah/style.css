@@ -655,7 +655,7 @@ ul li a.active svg {
 /* Commentbox styles */
 /* Comment Form styles */
 .comment-form {
-	margin-bottom: 20px;
+	margin: 20px;
 }
 
 .comment-form input,

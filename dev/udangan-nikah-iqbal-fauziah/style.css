@@ -653,10 +653,6 @@ ul li a.active svg {
 }
 
 /* Commentbox styles */
-.commentbox {
-	margin-top: 20px;
-}
-
 /* Comment Form styles */
 .comment-form {
 	margin-bottom: 20px;
@@ -664,12 +660,13 @@ ul li a.active svg {
 
 .comment-form input,
 .comment-form textarea {
-	width: calc(100% - 20px);
+	width: calc(100% - 20px); /* Width adjustment */
 	padding: 10px;
 	margin-bottom: 10px;
 	border: 1px solid #ddd;
 	border-radius: 8px;
 	font-size: 16px;
+	box-sizing: border-box; /* Ensure padding and border are included in the width */
 }
 
 .comment-form button {
@@ -688,6 +685,7 @@ ul li a.active svg {
 	background-color: #d74848;
 }
 
+/* Error message styles */
 .error-message {
 	color: red;
 	font-size: 14px;
@@ -696,15 +694,22 @@ ul li a.active svg {
 
 /* Comment List styles */
 .comment-list {
-	max-height: 500px; /* Set to desired height */
+	max-height: 500px; /* Adjust this value as needed */
 	overflow-y: auto; /* Enable vertical scrolling */
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
+	padding: 10px; /* Add some padding for better visual appearance */
+	box-sizing: border-box; /* Ensure padding is included in the height */
 }
 
 .comment-list::-webkit-scrollbar {
-	display: none;
+	width: 8px; /* Set width of the scrollbar */
+}
+
+.comment-list::-webkit-scrollbar-thumb {
+	background-color: #ddd; /* Style for the scrollbar thumb */
+	border-radius: 8px; /* Rounded corners for scrollbar thumb */
 }
 
 .comment-item {

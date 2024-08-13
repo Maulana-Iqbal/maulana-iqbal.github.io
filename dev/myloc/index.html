@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geocoding with Device Location</title>
+</head>
+<body>
+    <h1>Geocoding with Device Location</h1>
+    
+    <button id="get-location">Get My Location</button>
+    
+    <h2>Location Information</h2>
+    <p id="location-info"></p>
+
+    <h2>Geocoding Results</h2>
+    <p id="geocode-results"></p>
+
+    <script>
+        document.getElementById('get-location').addEventListener('click', () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(success, error);
+            } else {
+                document.getElementById('location-info').textContent = "Geolocation is not supported by this browser.";
+            }
+        });
+
+        function success(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            
+            document.getElementById('location-info').innerHTML = `
+                <strong>Latitude:</strong> ${latitude} <br>
+                <strong>Longitude:</strong> ${longitude}
+            `;
+            
+            // Perform geocoding
+            geocodeLocation(latitude, longitude);
+        }
+
+        function error() {
+            document.getElementById('location-info').textContent = "Unable to retrieve your location.";
+        }
+
+        async function geocodeLocation(lat, lon) {
+            const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
+
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'User-Agent': 'YourAppName/1.0 (your-email@example.com)'
+                    }
+                });
+                const data = await response.json();
+                
+                if (data) {
+                    document.getElementById('geocode-results').innerHTML = `
+                        <strong>Address:</strong> ${data.display_name}
+                    `;
+                } else {
+                    document.getElementById('geocode-results').innerHTML = 'No results found.';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('geocode-results').innerHTML = 'An error occurred.';
+            }
+        }
+    </script>
+</body>
+</html>

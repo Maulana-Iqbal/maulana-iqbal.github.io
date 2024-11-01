@@ -1,0 +1,117 @@
+body {
+	max-width: 425px; /* Atur lebar maksimum sesuai kebutuhan */
+	margin: 0 auto;
+	background-image: url('../img/main-bg.jpg');
+}
+
+/* salam */
+
+.salam {
+	background-image: url('../img/BG6.png'); /* Ganti dengan URL gambar Anda */
+	height: 100vh;
+	background-size: cover;
+	background-position: center;
+}
+
+.salam-content {
+	height: 100%;
+}
+.salam-body {
+	width: 50%;
+	margin: 0 auto;
+}
+
+/* quote */
+.quote {
+	background-image: url('../img/BG5.png'); /* Ganti dengan URL gambar Anda */
+	height: 100vh;
+	background-size: cover;
+	background-position: center;
+	color: azure;
+}
+
+.quote-content {
+	height: 100%;
+}
+.quote-body {
+	width: 50%;
+	margin: 0 auto;
+}
+
+/* mempelai */
+.mempelai {
+	background-image: url('../img/BG1.png'); /* Ganti dengan URL gambar Anda */
+	height: 100vh;
+	background-size: cover;
+	background-position: center;
+	color: azure;
+}
+
+.mempelai-content {
+	height: 100%;
+}
+.mempelai-body {
+	width: 75%;
+	margin: 0 auto;
+}
+
+/* acara */
+.acara {
+	background-image: url('../img/BG2.png'); /* Ganti dengan URL gambar Anda */
+	height: 100vh;
+	background-size: cover;
+	background-position: center;
+	color: #302d2d;
+}
+
+.acara-content {
+	height: 100%;
+}
+.acara-body {
+	width: 50%;
+	margin: 0 auto;
+}
+
+/* alamat */
+.alamat {
+	background-image: url('../img/BG4.png'); /* Ganti dengan URL gambar Anda */
+	height: 100vh;
+	background-size: cover;
+	background-position: center;
+	color: #302d2d;
+}
+
+.alamat-content {
+	height: 100%;
+}
+.alamat-body {
+	width: 75%;
+	margin: 0 auto;
+	position: relative;
+	top: -80px;
+}
+
+.alamat-btn {
+	margin-top: 20px;
+}
+
+/* galeri */
+
+.galeri {
+	background-image: url('../img/BG3.png'); /* Ganti dengan URL gambar Anda */
+	height: 100vh;
+	background-size: cover;
+	background-position: center;
+}
+
+.galeri-content {
+	height: 100%;
+}
+.galeri-body {
+	width: 80%;
+	margin: 0 auto;
+}
+
+.galeri-body img {
+	height: 100%;
+}

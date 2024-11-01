@@ -113,5 +113,62 @@ body {
 }
 
 .galeri-body img {
-	max-height: 100%;
+	height: 100%;
+}
+
+/* doa */
+
+.doa {
+	background-image: url('../img/BG6.png'); /* Ganti dengan URL gambar Anda */
+	height: 100vh;
+	background-size: cover;
+	background-position: center;
+}
+
+.doa-content {
+	height: 100%;
+}
+.doa-body {
+	width: 50%;
+	margin: 0 auto;
+}
+
+/* rsvp */
+
+.rsvp {
+	background-image: url('../img/BG5.png'); /* Ganti dengan URL gambar Anda */
+	height: 100vh;
+	color: antiquewhite;
+	background-size: cover;
+	background-position: center;
+}
+
+.rsvp-content {
+	height: 100%;
+}
+.rsvp-body {
+	width: 50%;
+	margin: 0 auto;
+}
+/* hadiah */
+
+.hadiah {
+	background-image: url('../img/BG5.png'); /* Ganti dengan URL gambar Anda */
+	height: 100vh;
+	color: antiquewhite;
+	background-size: cover;
+	background-position: center;
+}
+
+.hadiah-content {
+	height: 100%;
+}
+.hadiah-body {
+	width: 100%;
+	margin: 0 auto;
+}
+
+.modal-backdrop.show {
+	opacity: 0 !important; /* Menyembunyikan backdrop */
+	pointer-events: none; /* Menghindari interaksi dengan backdrop */
 }

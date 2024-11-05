@@ -144,9 +144,9 @@ body {
 	background-position: center;
 }
 
-.rsvp-content {
-	height: 100%;
-}
+	/* .rsvp-content {
+		height: 100%;
+	} */
 .rsvp-body {
 	width: 100%;
 	margin: 0 auto;

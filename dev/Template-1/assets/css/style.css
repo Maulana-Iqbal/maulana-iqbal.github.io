@@ -153,7 +153,7 @@ body {
 }
 
 #commentSection {
-	max-height: 50%; /* Batas tinggi */
+	height: 400px; /* Batas tinggi */
 	overflow-y: auto; /* Membuat scroll jika lebih banyak komentar */
 }
 /* hadiah */

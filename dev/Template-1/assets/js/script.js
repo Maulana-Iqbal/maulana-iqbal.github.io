@@ -49,3 +49,5 @@ function copyText(id) {
 	// Menghapus seleksi setelah menyalin
 	window.getSelection().removeAllRanges();
 }
+
+// comment box view

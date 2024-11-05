@@ -148,8 +148,13 @@ body {
 	height: 100%;
 }
 .rsvp-body {
-	width: 50%;
+	width: 100%;
 	margin: 0 auto;
+}
+
+#commentSection {
+	max-height: 50%; /* Batas tinggi */
+	overflow-y: auto; /* Membuat scroll jika lebih banyak komentar */
 }
 /* hadiah */
 

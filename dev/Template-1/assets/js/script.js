@@ -26,3 +26,26 @@ const updateCountdown = () => {
 
 // Update countdown setiap detik
 const interval = setInterval(updateCountdown, 1000);
+
+// Copytext
+function copyText(id) {
+	// Mendapatkan elemen <p> berdasarkan ID yang diteruskan
+	var text = document.getElementById(id);
+
+	// Membuat range dan seleksi teks
+	var range = document.createRange();
+	range.selectNode(text);
+	window.getSelection().removeAllRanges(); // Clear previous selections
+	window.getSelection().addRange(range); // Seleksi teks
+
+	// Menyalin teks ke clipboard
+	try {
+		document.execCommand('copy');
+		// alert('Teks berhasil disalin!');
+	} catch (err) {
+		// alert('Gagal menyalin teks.');
+	}
+
+	// Menghapus seleksi setelah menyalin
+	window.getSelection().removeAllRanges();
+}

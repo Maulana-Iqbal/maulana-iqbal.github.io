@@ -2,6 +2,7 @@ body {
 	max-width: 425px; /* Atur lebar maksimum sesuai kebutuhan */
 	margin: 0 auto;
 	background-image: url('../img/main-bg.jpg');
+	font-family: 'Merienda', cursive;
 }
 
 /* salam */
@@ -166,6 +167,17 @@ body {
 .hadiah-body {
 	width: 100%;
 	margin: 0 auto;
+}
+
+.hadiah-body h3,
+.hadiah-body h6 {
+	width: 80%;
+	margin: 0 auto;
+}
+
+.modal {
+	color: black;
+	overflow: visible;
 }
 
 .modal-backdrop.show {

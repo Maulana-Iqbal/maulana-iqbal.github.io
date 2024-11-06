@@ -103,3 +103,70 @@ document.addEventListener('DOMContentLoaded', () => {
 			console.error('Error fetching the sheet:', error);
 		});
 });
+
+// Comment box add
+
+const apiUrl = 'https://sheetdb.io/api/v1/y0p8jbk2zh5mb'; // API endpoint
+
+// Function to generate a unique ID based on timestamp and random number
+function generateUniqueId() {
+	const timestamp = new Date().getTime(); // Current timestamp in milliseconds
+	const randomNum = Math.floor(Math.random() * 10000); // Random number between 0 and 9999
+	return `="CM"&${timestamp}${randomNum}&row()`;
+}
+
+// Function to add a new comment
+function addComment(event) {
+	event.preventDefault(); // Prevent form from submitting normally
+
+	const Name = document.getElementById('name').value.trim();
+	const Comment = document.getElementById('comment').value.trim();
+	const errorMessage = document.getElementById('error-message');
+
+	// Validate the form data
+	if (Name && Comment) {
+		// Generate a unique ID for the new comment
+		const newId = generateUniqueId();
+
+		// Post new comment with generated ID
+		fetch(apiUrl, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				ID: newId,
+				Name: Name,
+				Comment: Comment,
+			}),
+		})
+			.then((response) => response.json())
+			.then(() => {
+				// Clear input fields
+				document.getElementById('name').value = '';
+				document.getElementById('comment').value = '';
+
+				// Show success message
+				errorMessage.textContent = 'Comment successfully submitted!';
+				errorMessage.classList.remove('error');
+				errorMessage.classList.add('success');
+				errorMessage.style.display = 'block';
+			})
+			.catch((error) => {
+				console.error('Error adding comment:', error);
+				errorMessage.textContent = 'There was an error submitting your comment. Please try again.';
+				errorMessage.classList.remove('success');
+				errorMessage.classList.add('error');
+				errorMessage.style.display = 'block';
+			});
+	} else {
+		errorMessage.textContent = 'Please fill out both fields.';
+		errorMessage.classList.remove('success');
+		errorMessage.classList.add('error');
+		errorMessage.style.display = 'block';
+	}
+}
+
+// Initialize form submission
+document.getElementById('commentForm').addEventListener('submit', addComment);

@@ -51,59 +51,52 @@ function copyText(id) {
 }
 
 // comment box view
-document.addEventListener('DOMContentLoaded', () => {
-	const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtb89IysUei1hQpDIFFPw0ea17vStb6VNjnuVTgMM6-BgxKo_gwcKuxYeKvsK1qUkvcwjfdS5B0NPC/pubhtml?gid=1938648971&single=true';
+const store = new SteinStore('https://api.steinhq.com/v1/storages/672b042fc0883333654b5a17');
 
-	fetch(sheetUrl)
-		.then((response) => response.text())
-		.then((text) => {
-			const parser = new DOMParser();
-			const doc = parser.parseFromString(text, 'text/html');
+// Mengambil semua data dari Sheet1 tanpa limit dan offset
+store
+	.read('Sheet1')
+	.then((data) => {
+		console.log(data); // Menampilkan seluruh data yang diambil
 
-			const table = doc.querySelector('table');
-			if (!table) {
-				console.error('Table not found!');
-				return;
-			}
+		// Menemukan elemen dengan id 'data-container'
+		const container = document.getElementById('commentSection');
 
-			const rows = table.querySelectorAll('tr');
-			const commentSection = document.querySelector('#commentSection');
+		// Perulangan data dan menambahkan card untuk setiap baris data
+		data.forEach((item) => {
+			// Membuat elemen card baru
+			const card = document.createElement('div');
+			card.classList.add('card');
+			card.classList.add('mb-3');
 
-			// Clear any existing content
-			commentSection.innerHTML = '';
+			// Membuat bagian card-body
+			const cardBody = document.createElement('div');
+			cardBody.classList.add('card-body');
 
-			rows.forEach((row, rowIndex) => {
-				if (rowIndex === 0) return; // Skip header row
+			// Menambahkan judul (h5) untuk Name
+			const cardTitle = document.createElement('h5');
+			cardTitle.classList.add('card-title');
+			cardTitle.textContent = item.Name; // Ambil data Name
 
-				const cells = row.querySelectorAll('td');
+			// Menambahkan paragraf (p) untuk Comment
+			const cardText = document.createElement('p');
+			cardText.classList.add('card-text');
+			cardText.textContent = item.Comment; // Ambil data Comment
 
-				// Ambil data dari kolom B (index 1) sebagai Nama
-				if (cells[1] && cells[2]) {
-					const name = cells[1].innerText.trim(); // Nama di Kolom B
-					const comment = cells[2].innerText.trim(); // Komentar di Kolom C
+			// Menambahkan cardTitle dan cardText ke dalam cardBody
+			cardBody.appendChild(cardTitle);
+			cardBody.appendChild(cardText);
 
-					// Membuat div untuk satu komentar (Nama dan Komentar dalam satu div)
-					const commentDiv = document.createElement('div');
-					commentDiv.classList.add('card', 'mb-1'); // Menambahkan kelas Bootstrap untuk gaya
+			// Menambahkan cardBody ke dalam card
+			card.appendChild(cardBody);
 
-					// Mengisi konten dengan nama dan komentar
-					commentDiv.innerHTML = `
-					<div class="card-body">
-						<h5 class="card-title">${name}</h5>
-						<p class="card-text">${comment}</p>
-					</div>
-					`;
-
-					// Menambahkan div komentar ke dalam commentSection
-					commentSection.appendChild(commentDiv);
-				}
-			});
-		})
-		.catch((error) => {
-			console.error('Error fetching the sheet:', error);
+			// Menambahkan card ke dalam container
+			container.appendChild(card);
 		});
-});
-
+	})
+	.catch((error) => {
+		console.error('Error:', error); // Menangani error jika ada
+	});
 // Comment box add
 
 const apiUrl = 'https://sheetdb.io/api/v1/y0p8jbk2zh5mb'; // API endpoint

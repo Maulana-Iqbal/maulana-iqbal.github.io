@@ -26,7 +26,25 @@
 	</head>
 
 	<body>
-		<div id="salam" class="salam">
+		<!-- HTML: Elemen yang sudah ada -->
+		<div id="cover" class="cover">
+			<div class="row p-0 m-0 cover-content text-center">
+				<div class="col-12 p-0 cover-title" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
+					<img src="assets/img/AA-3.png" class="img-fluid" alt="" />
+				</div>
+				<div class="cover-body" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
+					<h4>Cover</h4>
+					<p>Cover Undangan</p>
+					<a class="btn btn-outline-dark alamat-btn" href="#salam" role="button" id="openButton">Open</a>
+				</div>
+
+				<div class="col-12 p-0 cover-footer d-flex align-items-end" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000">
+					<img src="assets/img/AB-3.png" class="img-fluid" alt="" />
+				</div>
+			</div>
+		</div>
+
+		<div id="salam" class="salam" style="display: none">
 			<div class="row p-0 m-0 salam-content text-center">
 				<div class="col-12 p-0 salam-title" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
 					<img src="assets/img/AA-3.png" class="img-fluid" alt="" />
@@ -40,17 +58,15 @@
 				</div>
 			</div>
 		</div>
+
 		<div id="quote" class="quote">
 			<div class="row p-0 m-0 quote-content text-center">
 				<div class="col-12 p-0 quote-title" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
 					<img src="assets/img/AA-3.png" class="img-fluid" alt="" />
 				</div>
 				<div class="quote-body" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
-					<h3>Q.S. Ar Rum: 21</h3>
-					<p>
-						Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.
-						Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir.
-					</p>
+					<h3>Q.S. An-Nisa 4:1</h3>
+					<p>Wahai sekalian manusia, bertakwalah kepada Tuhanmu yang telah menciptakan kamu dari satu jiwa, dan darinya Dia menciptakan pasangannya.</p>
 				</div>
 				<div class="col-12 p-0 quote-footer d-flex align-items-end" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000">
 					<img src="assets/img/AB-3.png" class="img-fluid" alt="" />
@@ -187,7 +203,7 @@
 				</div>
 				<div class="rsvp-body" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
 					<h3>Kirim Ucapan</h3>
-					<div id="commentSection"></div>
+					<!-- <div id="commentSection"></div> -->
 
 					<button type="button" class="btn btn-outline-light m-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Kirim Ucapan</button>
 
@@ -296,6 +312,8 @@
 				</div>
 			</div>
 		</div>
+		<!-- Jquery -->
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 		<!-- Optional JavaScript -->
 		<script src="assets/js/script.js"></script>

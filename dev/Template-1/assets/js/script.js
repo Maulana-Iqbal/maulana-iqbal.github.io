@@ -69,52 +69,52 @@ function copyText(id) {
 }
 
 // comment box view (dimatikan sementara)
-// const store = new SteinStore('https://api.steinhq.com/v1/storages/672b042fc0883333654b5a17');
+const store = new SteinStore('https://api.steinhq.com/v1/storages/672b042fc0883333654b5a17');
 
-// // Mengambil semua data dari Sheet1 tanpa limit dan offset
-// store
-// 	.read('Sheet1')
-// 	.then((data) => {
-// 		console.log(data); // Menampilkan seluruh data yang diambil
+// Mengambil semua data dari Sheet1 tanpa limit dan offset
+store
+	.read('Sheet1')
+	.then((data) => {
+		console.log(data); // Menampilkan seluruh data yang diambil
 
-// 		// Menemukan elemen dengan id 'data-container'
-// 		const container = document.getElementById('commentSection');
+		// Menemukan elemen dengan id 'data-container'
+		const container = document.getElementById('commentSection');
 
-// 		// Perulangan data dan menambahkan card untuk setiap baris data
-// 		data.forEach((item) => {
-// 			// Membuat elemen card baru
-// 			const card = document.createElement('div');
-// 			card.classList.add('card');
-// 			card.classList.add('mb-3');
+		// Perulangan data dan menambahkan card untuk setiap baris data
+		data.forEach((item) => {
+			// Membuat elemen card baru
+			const card = document.createElement('div');
+			card.classList.add('card');
+			card.classList.add('mb-3');
 
-// 			// Membuat bagian card-body
-// 			const cardBody = document.createElement('div');
-// 			cardBody.classList.add('card-body');
+			// Membuat bagian card-body
+			const cardBody = document.createElement('div');
+			cardBody.classList.add('card-body');
 
-// 			// Menambahkan judul (h5) untuk Name
-// 			const cardTitle = document.createElement('h5');
-// 			cardTitle.classList.add('card-title');
-// 			cardTitle.textContent = item.Name; // Ambil data Name
+			// Menambahkan judul (h5) untuk Name
+			const cardTitle = document.createElement('h5');
+			cardTitle.classList.add('card-title');
+			cardTitle.textContent = item.Name; // Ambil data Name
 
-// 			// Menambahkan paragraf (p) untuk Comment
-// 			const cardText = document.createElement('p');
-// 			cardText.classList.add('card-text');
-// 			cardText.textContent = item.Comment; // Ambil data Comment
+			// Menambahkan paragraf (p) untuk Comment
+			const cardText = document.createElement('p');
+			cardText.classList.add('card-text');
+			cardText.textContent = item.Comment; // Ambil data Comment
 
-// 			// Menambahkan cardTitle dan cardText ke dalam cardBody
-// 			cardBody.appendChild(cardTitle);
-// 			cardBody.appendChild(cardText);
+			// Menambahkan cardTitle dan cardText ke dalam cardBody
+			cardBody.appendChild(cardTitle);
+			cardBody.appendChild(cardText);
 
-// 			// Menambahkan cardBody ke dalam card
-// 			card.appendChild(cardBody);
+			// Menambahkan cardBody ke dalam card
+			card.appendChild(cardBody);
 
-// 			// Menambahkan card ke dalam container
-// 			container.appendChild(card);
-// 		});
-// 	})
-// 	.catch((error) => {
-// 		console.error('Error:', error); // Menangani error jika ada
-// 	});
+			// Menambahkan card ke dalam container
+			container.appendChild(card);
+		});
+	})
+	.catch((error) => {
+		console.error('Error:', error); // Menangani error jika ada
+	});
 
 // Comment box add
 
@@ -239,27 +239,49 @@ document.getElementById('commentForm').addEventListener('submit', addComment);
 // Scroll
 let currentSection = 0;
 const sections = document.querySelectorAll('.cover, .salam, .quote, .mempelai, .acara, .alamat, .galeri, .doa, .rsvp, .hadiah');
+const totalSections = sections.length;
+let isScrolling = false; // Menghindari double scroll
 
 // Fungsi untuk menggulir ke bagian tertentu
 function scrollToSection(index) {
 	// Pastikan index berada dalam rentang yang valid
-	if (index >= 0 && index < sections.length) {
-		sections[index].scrollIntoView({ behavior: 'smooth' });
+	if (index >= 0 && index < totalSections && !isScrolling) {
+		isScrolling = true; // Menandakan sedang menggulir
+
+		// Scroll ke elemen yang sesuai
+		sections[index].scrollIntoView({
+			behavior: 'smooth',
+			block: 'start',
+		});
+
+		// Setel currentSection
 		currentSection = index;
+
+		// Setel isScrolling kembali ke false setelah scroll selesai (timeout 1 detik)
+		setTimeout(() => {
+			isScrolling = false;
+		}, 1000); // Atur waktu delay untuk scroll selesai
 	}
 }
 
 // Event listener untuk scroll dengan mouse
-document.addEventListener('wheel', (event) => {
-	// Hanya merespon scroll vertikal
-	if (event.deltaY > 0) {
-		// Scroll ke bawah (next section)
-		scrollToSection(currentSection + 1);
-	} else if (event.deltaY < 0) {
-		// Scroll ke atas (previous section)
-		scrollToSection(currentSection - 1);
-	}
-});
+document.addEventListener(
+	'wheel',
+	(event) => {
+		// Hanya merespon scroll vertikal dan menghindari aksi scroll default
+		event.preventDefault();
+
+		// Cek apakah scroll ke bawah atau ke atas
+		if (event.deltaY > 0) {
+			// Scroll ke bawah (next section)
+			scrollToSection(currentSection + 1);
+		} else if (event.deltaY < 0) {
+			// Scroll ke atas (previous section)
+			scrollToSection(currentSection - 1);
+		}
+	},
+	{ passive: false }
+);
 
 // Menambahkan logika untuk perangkat sentuh (touch devices)
 let yDown = null;
@@ -315,3 +337,18 @@ document.addEventListener(
 	},
 	{ passive: false }
 );
+
+// Membuat halaman responsif penuh untuk setiap section
+window.addEventListener('resize', () => {
+	sections.forEach((section) => {
+		// Pastikan setiap section mengambil tinggi penuh layar
+		section.style.height = `${window.innerHeight}px`;
+	});
+});
+
+// Setel tinggi untuk setiap section ketika halaman pertama kali dimuat
+window.addEventListener('load', () => {
+	sections.forEach((section) => {
+		section.style.height = `${window.innerHeight}px`;
+	});
+});

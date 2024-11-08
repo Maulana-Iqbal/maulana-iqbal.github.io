@@ -239,116 +239,43 @@ document.getElementById('commentForm').addEventListener('submit', addComment);
 // Scroll
 let currentSection = 0;
 const sections = document.querySelectorAll('.cover, .salam, .quote, .mempelai, .acara, .alamat, .galeri, .doa, .rsvp, .hadiah');
-const totalSections = sections.length;
-let isScrolling = false; // Menghindari double scroll
 
-// Fungsi untuk menggulir ke bagian tertentu
 function scrollToSection(index) {
-	// Pastikan index berada dalam rentang yang valid
-	if (index >= 0 && index < totalSections && !isScrolling) {
-		isScrolling = true; // Menandakan sedang menggulir
-
-		// Scroll ke elemen yang sesuai
-		sections[index].scrollIntoView({
-			behavior: 'smooth',
-			block: 'start',
-		});
-
-		// Setel currentSection
+	if (index >= 0 && index < sections.length) {
+		sections[index].scrollIntoView({ behavior: 'smooth' });
 		currentSection = index;
-
-		// Setel isScrolling kembali ke false setelah scroll selesai (timeout 1 detik)
-		setTimeout(() => {
-			isScrolling = false;
-		}, 1000); // Atur waktu delay untuk scroll selesai
 	}
 }
 
-// Event listener untuk scroll dengan mouse
-document.addEventListener(
-	'wheel',
-	(event) => {
-		// Hanya merespon scroll vertikal dan menghindari aksi scroll default
-		event.preventDefault();
+document.addEventListener('wheel', (event) => {
+	if (event.deltaY > 0) {
+		scrollToSection(currentSection + 1);
+	} else {
+		scrollToSection(currentSection - 1);
+	}
+});
 
-		// Cek apakah scroll ke bawah atau ke atas
-		if (event.deltaY > 0) {
-			// Scroll ke bawah (next section)
-			scrollToSection(currentSection + 1);
-		} else if (event.deltaY < 0) {
-			// Scroll ke atas (previous section)
-			scrollToSection(currentSection - 1);
-		}
-	},
-	{ passive: false }
-);
+// Mendukung scroll pada perangkat sentuh
+document.addEventListener('touchstart', handleTouchStart, false);
+document.addEventListener('touchmove', handleTouchMove, false);
 
-// Menambahkan logika untuk perangkat sentuh (touch devices)
 let yDown = null;
 
-// Fungsi untuk menangani sentuhan pertama
 function handleTouchStart(evt) {
 	const firstTouch = evt.touches[0];
 	yDown = firstTouch.clientY;
 }
 
-// Fungsi untuk menangani pergerakan sentuhan
 function handleTouchMove(evt) {
 	if (!yDown) return;
 
 	let yUp = evt.touches[0].clientY;
 	let yDiff = yDown - yUp;
 
-	if (Math.abs(yDiff) > 50) {
-		// Menambahkan ambang batas agar geseran cukup besar
-		if (yDiff > 0) {
-			// Scroll ke bawah (next section)
-			scrollToSection(currentSection + 1);
-		} else {
-			// Scroll ke atas (previous section)
-			scrollToSection(currentSection - 1);
-		}
-		yDown = null; // Reset nilai setelah scroll
+	if (yDiff > 0) {
+		scrollToSection(currentSection + 1); // scroll down
+	} else {
+		scrollToSection(currentSection - 1); // scroll up
 	}
+	yDown = null; // Reset nilai
 }
-
-// Menghindari scroll default pada elemen yang digulirkan
-function preventDefaultScroll(evt) {
-	evt.preventDefault();
-}
-
-// Menambahkan event listeners untuk touchstart dan touchmove
-document.addEventListener('touchstart', handleTouchStart, false);
-document.addEventListener('touchmove', handleTouchMove, { passive: false });
-
-// Pastikan halaman tidak ter-scroll native pada elemen tertentu
-sections.forEach((section) => {
-	section.addEventListener('wheel', preventDefaultScroll, { passive: false });
-});
-
-// Menambahkan event listener untuk scroll pada mouse dan touch secara bersamaan
-document.addEventListener(
-	'touchmove',
-	(event) => {
-		if (yDown) {
-			// Menghentikan scroll native ketika sudah menggunakan logika scroll kita
-			event.preventDefault();
-		}
-	},
-	{ passive: false }
-);
-
-// Membuat halaman responsif penuh untuk setiap section
-window.addEventListener('resize', () => {
-	sections.forEach((section) => {
-		// Pastikan setiap section mengambil tinggi penuh layar
-		section.style.height = `${window.innerHeight}px`;
-	});
-});
-
-// Setel tinggi untuk setiap section ketika halaman pertama kali dimuat
-window.addEventListener('load', () => {
-	sections.forEach((section) => {
-		section.style.height = `${window.innerHeight}px`;
-	});
-});

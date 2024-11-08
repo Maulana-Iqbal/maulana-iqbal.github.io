@@ -69,52 +69,52 @@ function copyText(id) {
 }
 
 // comment box view (dimatikan sementara)
-const store = new SteinStore('https://api.steinhq.com/v1/storages/672b042fc0883333654b5a17');
+// const store = new SteinStore('https://api.steinhq.com/v1/storages/672b042fc0883333654b5a17');
 
-// Mengambil semua data dari Sheet1 tanpa limit dan offset
-store
-	.read('Sheet1')
-	.then((data) => {
-		console.log(data); // Menampilkan seluruh data yang diambil
+// // Mengambil semua data dari Sheet1 tanpa limit dan offset
+// store
+// 	.read('Sheet1')
+// 	.then((data) => {
+// 		console.log(data); // Menampilkan seluruh data yang diambil
 
-		// Menemukan elemen dengan id 'data-container'
-		const container = document.getElementById('commentSection');
+// 		// Menemukan elemen dengan id 'data-container'
+// 		const container = document.getElementById('commentSection');
 
-		// Perulangan data dan menambahkan card untuk setiap baris data
-		data.forEach((item) => {
-			// Membuat elemen card baru
-			const card = document.createElement('div');
-			card.classList.add('card');
-			card.classList.add('mb-3');
+// 		// Perulangan data dan menambahkan card untuk setiap baris data
+// 		data.forEach((item) => {
+// 			// Membuat elemen card baru
+// 			const card = document.createElement('div');
+// 			card.classList.add('card');
+// 			card.classList.add('mb-3');
 
-			// Membuat bagian card-body
-			const cardBody = document.createElement('div');
-			cardBody.classList.add('card-body');
+// 			// Membuat bagian card-body
+// 			const cardBody = document.createElement('div');
+// 			cardBody.classList.add('card-body');
 
-			// Menambahkan judul (h5) untuk Name
-			const cardTitle = document.createElement('h5');
-			cardTitle.classList.add('card-title');
-			cardTitle.textContent = item.Name; // Ambil data Name
+// 			// Menambahkan judul (h5) untuk Name
+// 			const cardTitle = document.createElement('h5');
+// 			cardTitle.classList.add('card-title');
+// 			cardTitle.textContent = item.Name; // Ambil data Name
 
-			// Menambahkan paragraf (p) untuk Comment
-			const cardText = document.createElement('p');
-			cardText.classList.add('card-text');
-			cardText.textContent = item.Comment; // Ambil data Comment
+// 			// Menambahkan paragraf (p) untuk Comment
+// 			const cardText = document.createElement('p');
+// 			cardText.classList.add('card-text');
+// 			cardText.textContent = item.Comment; // Ambil data Comment
 
-			// Menambahkan cardTitle dan cardText ke dalam cardBody
-			cardBody.appendChild(cardTitle);
-			cardBody.appendChild(cardText);
+// 			// Menambahkan cardTitle dan cardText ke dalam cardBody
+// 			cardBody.appendChild(cardTitle);
+// 			cardBody.appendChild(cardText);
 
-			// Menambahkan cardBody ke dalam card
-			card.appendChild(cardBody);
+// 			// Menambahkan cardBody ke dalam card
+// 			card.appendChild(cardBody);
 
-			// Menambahkan card ke dalam container
-			container.appendChild(card);
-		});
-	})
-	.catch((error) => {
-		console.error('Error:', error); // Menangani error jika ada
-	});
+// 			// Menambahkan card ke dalam container
+// 			container.appendChild(card);
+// 		});
+// 	})
+// 	.catch((error) => {
+// 		console.error('Error:', error); // Menangani error jika ada
+// 	});
 
 // Comment box add
 
@@ -240,42 +240,78 @@ document.getElementById('commentForm').addEventListener('submit', addComment);
 let currentSection = 0;
 const sections = document.querySelectorAll('.cover, .salam, .quote, .mempelai, .acara, .alamat, .galeri, .doa, .rsvp, .hadiah');
 
+// Fungsi untuk menggulir ke bagian tertentu
 function scrollToSection(index) {
+	// Pastikan index berada dalam rentang yang valid
 	if (index >= 0 && index < sections.length) {
 		sections[index].scrollIntoView({ behavior: 'smooth' });
 		currentSection = index;
 	}
 }
 
+// Event listener untuk scroll dengan mouse
 document.addEventListener('wheel', (event) => {
+	// Hanya merespon scroll vertikal
 	if (event.deltaY > 0) {
+		// Scroll ke bawah (next section)
 		scrollToSection(currentSection + 1);
-	} else {
+	} else if (event.deltaY < 0) {
+		// Scroll ke atas (previous section)
 		scrollToSection(currentSection - 1);
 	}
 });
 
-// Mendukung scroll pada perangkat sentuh
-document.addEventListener('touchstart', handleTouchStart, false);
-document.addEventListener('touchmove', handleTouchMove, false);
-
+// Menambahkan logika untuk perangkat sentuh (touch devices)
 let yDown = null;
 
+// Fungsi untuk menangani sentuhan pertama
 function handleTouchStart(evt) {
 	const firstTouch = evt.touches[0];
 	yDown = firstTouch.clientY;
 }
 
+// Fungsi untuk menangani pergerakan sentuhan
 function handleTouchMove(evt) {
 	if (!yDown) return;
 
 	let yUp = evt.touches[0].clientY;
 	let yDiff = yDown - yUp;
 
-	if (yDiff > 0) {
-		scrollToSection(currentSection + 1); // scroll down
-	} else {
-		scrollToSection(currentSection - 1); // scroll up
+	if (Math.abs(yDiff) > 50) {
+		// Menambahkan ambang batas agar geseran cukup besar
+		if (yDiff > 0) {
+			// Scroll ke bawah (next section)
+			scrollToSection(currentSection + 1);
+		} else {
+			// Scroll ke atas (previous section)
+			scrollToSection(currentSection - 1);
+		}
+		yDown = null; // Reset nilai setelah scroll
 	}
-	yDown = null; // Reset nilai
 }
+
+// Menghindari scroll default pada elemen yang digulirkan
+function preventDefaultScroll(evt) {
+	evt.preventDefault();
+}
+
+// Menambahkan event listeners untuk touchstart dan touchmove
+document.addEventListener('touchstart', handleTouchStart, false);
+document.addEventListener('touchmove', handleTouchMove, { passive: false });
+
+// Pastikan halaman tidak ter-scroll native pada elemen tertentu
+sections.forEach((section) => {
+	section.addEventListener('wheel', preventDefaultScroll, { passive: false });
+});
+
+// Menambahkan event listener untuk scroll pada mouse dan touch secara bersamaan
+document.addEventListener(
+	'touchmove',
+	(event) => {
+		if (yDown) {
+			// Menghentikan scroll native ketika sudah menggunakan logika scroll kita
+			event.preventDefault();
+		}
+	},
+	{ passive: false }
+);

@@ -1,13 +1,17 @@
 // Cover
 $(document).ready(function () {
+	// Pastikan hanya #cover yang muncul pertama kali
+	$('#cover').fadeIn(500); // Menampilkan cover saat halaman pertama kali dimuat
+	$('#salam, #quote, #mempelai, #acara, #alamat, #galeri, #doa, #rsvp, #hadiah').hide(); // Menyembunyikan elemen lain saat pertama kali
+
 	// Ketika tombol "Open" diklik
 	$('#openButton').click(function (e) {
 		e.preventDefault(); // Mencegah default action (navigasi ke #salam)
 
-		// Sembunyikan elemen dengan ID #cover
-		$('#cover').fadeOut(500, function () {
-			// Setelah elemen #cover hilang, tampilkan elemen #salam
-			$('#salam').fadeIn(500);
+		// Sembunyikan elemen #cover
+		$('#cover').hide(500, function () {
+			// Setelah elemen #cover disembunyikan, tampilkan elemen lainnya
+			$('#salam, #quote, #mempelai, #acara, #alamat, #galeri, #doa, #rsvp, #hadiah').show(500); // Menampilkan elemen lainnya dengan animasi
 		});
 	});
 });
@@ -111,6 +115,7 @@ store
 	.catch((error) => {
 		console.error('Error:', error); // Menangani error jika ada
 	});
+
 // Comment box add
 
 const apiUrl = 'https://sheetdb.io/api/v1/y0p8jbk2zh5mb'; // API endpoint
@@ -129,6 +134,7 @@ function addComment(event) {
 	const Name = document.getElementById('name').value.trim();
 	const Comment = document.getElementById('comment').value.trim();
 	const errorMessage = document.getElementById('error-message');
+	const commentForm = document.getElementById('kirimUcapan');
 
 	// Validate the form data
 	if (Name && Comment) {
@@ -160,10 +166,13 @@ function addComment(event) {
 				errorMessage.classList.add('success');
 				errorMessage.style.display = 'block';
 
-				// Merefresh halaman setelah sukses
-				setTimeout(() => {
-					location.reload(); // Memuat ulang halaman setelah 2 detik
-				}, 1000); // Waktu tunggu sebelum refresh (2 detik)
+				// // Merefresh halaman setelah sukses
+				// setTimeout(() => {
+				// 	location.reload(); // Memuat ulang halaman setelah 2 detik
+				// }, 1000); // Waktu tunggu sebelum refresh (2 detik)
+				// Hide the comment form after successful submission
+				commentForm.style.display = 'none';
+				updateCommentSection(); // Function to update the comment section
 			})
 			.catch((error) => {
 				console.error('Error adding comment:', error);
@@ -180,5 +189,93 @@ function addComment(event) {
 	}
 }
 
+// Function to update the comment section by fetching new comments
+function updateCommentSection() {
+	fetch(apiUrl) // Pastikan apiUrl mengarah ke endpoint yang mengembalikan daftar komentar
+		.then((response) => response.json())
+		.then((data) => {
+			const commentSection = document.getElementById('commentSection');
+			commentSection.innerHTML = ''; // Clear existing comments
+
+			// Loop through each item in the data array and create a card for each comment
+			data.forEach((item) => {
+				// Membuat elemen card baru
+				const card = document.createElement('div');
+				card.classList.add('card', 'mb-3'); // Add 'card' and 'mb-3' classes for styling
+
+				// Membuat bagian card-body
+				const cardBody = document.createElement('div');
+				cardBody.classList.add('card-body');
+
+				// Menambahkan judul (h5) untuk Name
+				const cardTitle = document.createElement('h5');
+				cardTitle.classList.add('card-title');
+				cardTitle.textContent = item.Name; // Ambil data Name
+
+				// Menambahkan paragraf (p) untuk Comment
+				const cardText = document.createElement('p');
+				cardText.classList.add('card-text');
+				cardText.textContent = item.Comment; // Ambil data Comment
+
+				// Menambahkan cardTitle dan cardText ke dalam cardBody
+				cardBody.appendChild(cardTitle);
+				cardBody.appendChild(cardText);
+
+				// Menambahkan cardBody ke dalam card
+				card.appendChild(cardBody);
+
+				// Menambahkan card ke dalam commentSection
+				commentSection.appendChild(card);
+			});
+		})
+		.catch((error) => {
+			console.error('Error fetching comments:', error);
+		});
+}
+
 // Initialize form submission
 document.getElementById('commentForm').addEventListener('submit', addComment);
+
+// Scroll
+let currentSection = 0;
+const sections = document.querySelectorAll('.cover, .salam, .quote, .mempelai, .acara, .alamat, .galeri, .doa, .rsvp, .hadiah');
+
+function scrollToSection(index) {
+	if (index >= 0 && index < sections.length) {
+		sections[index].scrollIntoView({ behavior: 'smooth' });
+		currentSection = index;
+	}
+}
+
+document.addEventListener('wheel', (event) => {
+	if (event.deltaY > 0) {
+		scrollToSection(currentSection + 1);
+	} else {
+		scrollToSection(currentSection - 1);
+	}
+});
+
+// Mendukung scroll pada perangkat sentuh
+document.addEventListener('touchstart', handleTouchStart, false);
+document.addEventListener('touchmove', handleTouchMove, false);
+
+let yDown = null;
+
+function handleTouchStart(evt) {
+	const firstTouch = evt.touches[0];
+	yDown = firstTouch.clientY;
+}
+
+function handleTouchMove(evt) {
+	if (!yDown) return;
+
+	let yUp = evt.touches[0].clientY;
+	let yDiff = yDown - yUp;
+
+	if (yDiff > 0) {
+		scrollToSection(currentSection + 1); // scroll down
+	} else {
+		scrollToSection(currentSection - 1); // scroll up
+	}
+	yDown = null; // Reset nilai
+}

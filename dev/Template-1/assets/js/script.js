@@ -235,3 +235,14 @@ function updateCommentSection() {
 
 // Initialize form submission
 document.getElementById('commentForm').addEventListener('submit', addComment);
+
+// Nama Tamu
+
+// Mengambil nilai parameter "to" dari URL
+const urlParams = new URLSearchParams(window.location.search);
+const name = urlParams.get('to');
+
+// Mengganti teks pada elemen dengan ID "guestNames" dengan nama yang diambil dari URL
+if (name) {
+	document.getElementById('guestNames').textContent = name;
+}

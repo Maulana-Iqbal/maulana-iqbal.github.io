@@ -69,52 +69,52 @@ function copyText(id) {
 }
 
 // comment box view (dimatikan sementara)
-const store = new SteinStore('https://api.steinhq.com/v1/storages/672b042fc0883333654b5a17');
+// const store = new SteinStore('https://api.steinhq.com/v1/storages/672b042fc0883333654b5a17');
 
-// Mengambil semua data dari Sheet1 tanpa limit dan offset
-store
-	.read('Sheet1')
-	.then((data) => {
-		console.log(data); // Menampilkan seluruh data yang diambil
+// // Mengambil semua data dari Sheet1 tanpa limit dan offset
+// store
+// 	.read('Sheet1')
+// 	.then((data) => {
+// 		console.log(data); // Menampilkan seluruh data yang diambil
 
-		// Menemukan elemen dengan id 'data-container'
-		const container = document.getElementById('commentSection');
+// 		// Menemukan elemen dengan id 'data-container'
+// 		const container = document.getElementById('commentSection');
 
-		// Perulangan data dan menambahkan card untuk setiap baris data
-		data.forEach((item) => {
-			// Membuat elemen card baru
-			const card = document.createElement('div');
-			card.classList.add('card');
-			card.classList.add('mb-3');
+// 		// Perulangan data dan menambahkan card untuk setiap baris data
+// 		data.forEach((item) => {
+// 			// Membuat elemen card baru
+// 			const card = document.createElement('div');
+// 			card.classList.add('card');
+// 			card.classList.add('mb-3');
 
-			// Membuat bagian card-body
-			const cardBody = document.createElement('div');
-			cardBody.classList.add('card-body');
+// 			// Membuat bagian card-body
+// 			const cardBody = document.createElement('div');
+// 			cardBody.classList.add('card-body');
 
-			// Menambahkan judul (h5) untuk Name
-			const cardTitle = document.createElement('h5');
-			cardTitle.classList.add('card-title');
-			cardTitle.textContent = item.Name; // Ambil data Name
+// 			// Menambahkan judul (h5) untuk Name
+// 			const cardTitle = document.createElement('h5');
+// 			cardTitle.classList.add('card-title');
+// 			cardTitle.textContent = item.Name; // Ambil data Name
 
-			// Menambahkan paragraf (p) untuk Comment
-			const cardText = document.createElement('p');
-			cardText.classList.add('card-text');
-			cardText.textContent = item.Comment; // Ambil data Comment
+// 			// Menambahkan paragraf (p) untuk Comment
+// 			const cardText = document.createElement('p');
+// 			cardText.classList.add('card-text');
+// 			cardText.textContent = item.Comment; // Ambil data Comment
 
-			// Menambahkan cardTitle dan cardText ke dalam cardBody
-			cardBody.appendChild(cardTitle);
-			cardBody.appendChild(cardText);
+// 			// Menambahkan cardTitle dan cardText ke dalam cardBody
+// 			cardBody.appendChild(cardTitle);
+// 			cardBody.appendChild(cardText);
 
-			// Menambahkan cardBody ke dalam card
-			card.appendChild(cardBody);
+// 			// Menambahkan cardBody ke dalam card
+// 			card.appendChild(cardBody);
 
-			// Menambahkan card ke dalam container
-			container.appendChild(card);
-		});
-	})
-	.catch((error) => {
-		console.error('Error:', error); // Menangani error jika ada
-	});
+// 			// Menambahkan card ke dalam container
+// 			container.appendChild(card);
+// 		});
+// 	})
+// 	.catch((error) => {
+// 		console.error('Error:', error); // Menangani error jika ada
+// 	});
 
 // Comment box add
 
@@ -166,12 +166,9 @@ function addComment(event) {
 				errorMessage.classList.add('success');
 				errorMessage.style.display = 'block';
 
-				// // Merefresh halaman setelah sukses
-				// setTimeout(() => {
-				// 	location.reload(); // Memuat ulang halaman setelah 2 detik
-				// }, 1000); // Waktu tunggu sebelum refresh (2 detik)
 				// Hide the comment form after successful submission
 				commentForm.style.display = 'none';
+				
 				updateCommentSection(); // Function to update the comment section
 			})
 			.catch((error) => {

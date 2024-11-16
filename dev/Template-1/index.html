@@ -1,181 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<!-- other js -->
-		<script src="https://unpkg.com/stein-js-client"></script>
-		<!-- Required meta tags -->
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-		<!-- Bootstrap CSS -->
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+<head>
+	<!-- other js -->
+	<script src="https://unpkg.com/stein-js-client"></script>
+	<!-- Required meta tags -->
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet" />
-		<!-- AOS -->
-		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+	<!-- Bootstrap CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
 
-		<!-- Google Font -->
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&display=swap" rel="stylesheet" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"
+		rel="stylesheet" />
+	<!-- AOS -->
+	<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 
-		<!-- tes  -->
+	<!-- Google Font -->
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&display=swap" rel="stylesheet" />
 
-		<!-- ADD CSS -->
-		<link rel="stylesheet" href="assets/css/style.css" />
+	<!-- tes  -->
 
-		<title>Hello, world!</title>
-	</head>
+	<!-- ADD CSS -->
+	<link rel="stylesheet" href="assets/css/style.css" />
 
-	<body>
-		<section id="cover" class="cover">
-			<div class="row p-0 m-0 cover-content text-center">
-				<div class="col-12 p-0 cover-title" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
-					<img src="assets/img/AA-3.png" class="img-fluid" alt="" />
+	<title>Hello, world!</title>
+</head>
+
+<body>
+	<section id="cover" class="cover">
+		<div class="row p-0 m-0 cover-content text-center">
+			<div class="col-12 p-0 cover-title" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
+				<img src="assets/img/AA-3.png" class="img-fluid" alt="" />
+			</div>
+			<div class="cover-body" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
+				<h6>THE WEDDING OF</h6>
+				<h3>Iqbal & Fauziah</h3>
+				<br /><br /><br /><br /><br /><br />
+				<p>KEPADA YTH</p>
+				<h6 id="guestNames">TAMU UNDANGAN</h6>
+				<a class="btn btn-outline-light alamat-btn" onclick="playAudio()" href="#salam" role="button"
+					id="openButton"><i class="bi bi-envelope-open-heart"></i> OPEN INVITATION</a>
+				<audio id="myAudio" autoplay loop>
+					<!-- <source src="assets/audio/audio.mp3" type="audio/mpeg" /> -->
+					Your browser does not support the audio element.
+				</audio>
+
+				<!-- <button onclick="playAudio()" type="button">Play Audio</button> -->
+			</div>
+
+			<div class="col-12 p-0 cover-footer d-flex align-items-end" data-aos="fade-up" data-aos-easing="linear"
+				data-aos-duration="1000">
+				<img src="assets/img/AB-3.png" class="img-fluid" alt="" />
+			</div>
+		</div>
+	</section>
+
+	<section id="salam" class="salam" style="display: none">
+		<div class="row p-0 m-0 salam-content text-center">
+			<div class="col-12 p-0 salam-title" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
+				<!-- <img src="assets/img/AA-3.png" class="img-fluid" alt="" /> -->
+			</div>
+			<div class="salam-body" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
+				<h4>Assalamu'alaikum Wr.Wb.</h4>
+				<p>Tanpa mengurangi rasa hormat, kami bermaksud mengundang apak/ Ibu/ Saudara/ I pada acara resepsi
+					pernikahan kami.</p>
+			</div>
+			<div class="col-12 p-0 salam-footer d-flex align-items-end" data-aos="fade-up" data-aos-easing="linear"
+				data-aos-duration="1000">
+				<!-- <img src="assets/img/AB-3.png" class="img-fluid" alt="" /> -->
+			</div>
+		</div>
+	</section>
+
+	<section id="quote" class="quote">
+		<div class="row p-0 m-0 quote-content text-center">
+			<div class="col-12 p-0 quote-title" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
+				<!-- <img src="assets/img/AA-3.png" class="img-fluid" alt="" /> -->
+			</div>
+			<div class="quote-body" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
+				<h3>Q.S. An-Nisa 4:1</h3>
+				<p>Wahai sekalian manusia, bertakwalah kepada Tuhanmu yang telah menciptakan kamu dari satu jiwa, dan
+					darinya Dia menciptakan pasangannya.</p>
+			</div>
+			<div class="col-12 p-0 quote-footer d-flex align-items-end" data-aos="fade-up" data-aos-easing="linear"
+				data-aos-duration="1000">
+				<!-- <img src="assets/img/AB-3.png" class="img-fluid" alt="" /> -->
+			</div>
+		</div>
+	</section>
+
+	<section id="mempelai" class="mempelai">
+		<div class="row p-0 m-0 mempelai-content text-center">
+			<div class="col-12 p-0 mempelai-title" data-aos="fade-down" data-aos-easing="linear"
+				data-aos-duration="1000">
+				<!-- <img src="assets/img/AA-3.png" class="img-fluid" alt="" /> -->
+			</div>
+			<div class="mempelai-body gap-5" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
+				<div class="mempelai-1" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
+					<img src="assets/img/pria.jpg" class="card-img-top" style="border-radius: 50%; width: 40%"
+						alt="..." />
+					<h5 class="card-title">Iqbal Maulana</h5>
+					<p class="card-text">Putra kedua dari Bapak Usman dan Ibu Nurlaeli Khoderiah</p>
 				</div>
-				<div class="cover-body" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
-					<h6>THE WEDDING OF</h6>
-					<h3>Iqbal & Fauziah</h3>
-					<br /><br /><br /><br /><br /><br />
-					<p>KEPADA YTH</p>
-					<h6 id="guestNames">TAMU UNDANGAN</h6>
-					<a class="btn btn-outline-light alamat-btn" onclick="playAudio()" href="#salam" role="button" id="openButton"><i class="bi bi-envelope-open-heart"></i> OPEN INVITATION</a>
-					<audio id="myAudio" autoplay loop>
-						<source src="assets/audio/audio.mp3" type="audio/mpeg" />
-						Your browser does not support the audio element.
-					</audio>
-
-					<!-- <button onclick="playAudio()" type="button">Play Audio</button> -->
-				</div>
-
-				<div class="col-12 p-0 cover-footer d-flex align-items-end" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000">
-					<img src="assets/img/AB-3.png" class="img-fluid" alt="" />
+				<br />
+				<div class="mempelai-2" style="z-index: 2" data-aos="fade-up" data-aos-easing="linear"
+					data-aos-duration="1000">
+					<img src="assets/img/wanita.jpg" class="card-img-top" style="border-radius: 50%; width: 40%"
+						alt="..." />
+					<h5 class="card-title">Nur Fauziah</h5>
+					<p class="card-text">Putri kedua dari Bapak Rusnadi(alm) dan Ibu Nur Asiah</p>
 				</div>
 			</div>
-		</section>
-
-		<section id="salam" class="salam" style="display: none">
-			<div class="row p-0 m-0 salam-content text-center">
-				<div class="col-12 p-0 salam-title" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
-					<!-- <img src="assets/img/AA-3.png" class="img-fluid" alt="" /> -->
-				</div>
-				<div class="salam-body" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
-					<h4>Assalamu'alaikum Wr.Wb.</h4>
-					<p>Tanpa mengurangi rasa hormat, kami bermaksud mengundang apak/ Ibu/ Saudara/ I pada acara resepsi pernikahan kami.</p>
-				</div>
-				<div class="col-12 p-0 salam-footer d-flex align-items-end" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000">
-					<!-- <img src="assets/img/AB-3.png" class="img-fluid" alt="" /> -->
-				</div>
+			<div class="col-12 p-0 mempelai-footer d-flex align-items-end" data-aos="fade-up" data-aos-easing="linear"
+				data-aos-duration="1000">
+				<!-- <img src="assets/img/AB-3.png" class="img-fluid" alt="" /> -->
 			</div>
-		</section>
+		</div>
+	</section>
 
-		<section id="quote" class="quote">
-			<div class="row p-0 m-0 quote-content text-center">
-				<div class="col-12 p-0 quote-title" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
-					<img src="assets/img/AA-3.png" class="img-fluid" alt="" />
-				</div>
-				<div class="quote-body" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
-					<h3>Q.S. An-Nisa 4:1</h3>
-					<p>Wahai sekalian manusia, bertakwalah kepada Tuhanmu yang telah menciptakan kamu dari satu jiwa, dan darinya Dia menciptakan pasangannya.</p>
-				</div>
-				<div class="col-12 p-0 quote-footer d-flex align-items-end" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000">
-					<img src="assets/img/AB-3.png" class="img-fluid" alt="" />
-				</div>
+	<section id="acara" class="acara">
+		<div class="row p-0 m-0 acara-content text-center">
+			<div class="col-12 p-0 acara-title" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
+				<!-- <img src="assets/img/AA-3.png" class="img-fluid" alt="" /> -->
 			</div>
-		</section>
-
-		<section id="mempelai" class="mempelai">
-			<div class="row p-0 m-0 mempelai-content text-center">
-				<div class="col-12 p-0 mempelai-title" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
-					<img src="assets/img/AA-3.png" class="img-fluid" alt="" />
-				</div>
-				<div class="mempelai-body gap-5" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
-					<div class="mempelai-1" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
-						<img src="assets/img/pria.jpg" class="card-img-top" style="border-radius: 50%; width: 40%" alt="..." />
-						<h5 class="card-title">Iqbal Maulana</h5>
-						<p class="card-text">Putra kedua dari Bapak Usman dan Ibu Nurlaeli Khoderiah</p>
+			<div class="acara-body" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
+				<h3>Akad Nikah</h3>
+				<p>Minggu, 13 Desember 1996</p>
+				<p>Jl. Hasanudin 1 No 1</p>
+				<h3>Resepsi</h3>
+				<p>Minggu, 13 Desember 1996</p>
+				<p>Jl. Hasanudin 1 No 1</p>
+				<div class="row">
+					<div class="acara-body-time col-6" id="days">
+						<h1>36</h1>
+						<p>Days</p>
 					</div>
-					<br />
-					<div class="mempelai-2" style="z-index: 2" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000">
-						<img src="assets/img/wanita.jpg" class="card-img-top" style="border-radius: 50%; width: 40%" alt="..." />
-						<h5 class="card-title">Nur Fauziah</h5>
-						<p class="card-text">Putri kedua dari Bapak Rusnadi(alm) dan Ibu Nur Asiah</p>
+					<div class="acara-body-time col-6" id="hours">
+						<h1>17</h1>
+						<p>Hours</p>
+					</div>
+					<div class="acara-body-time col-6" id="minutes">
+						<h1>60</h1>
+						<p>Minutes</p>
+					</div>
+					<div class="acara-body-time col-6" id="seconds">
+						<h1>51</h1>
+						<p>Seconds</p>
 					</div>
 				</div>
-				<div class="col-12 p-0 mempelai-footer d-flex align-items-end" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000">
-					<img src="assets/img/AB-3.png" class="img-fluid" alt="" />
-				</div>
 			</div>
-		</section>
-
-		<section id="acara" class="acara">
-			<div class="row p-0 m-0 acara-content text-center">
-				<div class="col-12 p-0 acara-title" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
-					<img src="assets/img/AA-3.png" class="img-fluid" alt="" />
-				</div>
-				<div class="acara-body" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
-					<h3>Akad Nikah</h3>
-					<p>Minggu, 13 Desember 1996</p>
-					<p>Jl. Hasanudin 1 No 1</p>
-					<h3>Resepsi</h3>
-					<p>Minggu, 13 Desember 1996</p>
-					<p>Jl. Hasanudin 1 No 1</p>
-					<div class="row">
-						<div class="acara-body-time col-6" id="days">
-							<h1>36</h1>
-							<p>Days</p>
-						</div>
-						<div class="acara-body-time col-6" id="hours">
-							<h1>17</h1>
-							<p>Hours</p>
-						</div>
-						<div class="acara-body-time col-6" id="minutes">
-							<h1>60</h1>
-							<p>Minutes</p>
-						</div>
-						<div class="acara-body-time col-6" id="seconds">
-							<h1>51</h1>
-							<p>Seconds</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-12 p-0 acara-footer d-flex align-items-end" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000">
-					<img src="assets/img/AB-3.png" class="img-fluid" alt="" />
-				</div>
+			<div class="col-12 p-0 acara-footer d-flex align-items-end" data-aos="fade-up" data-aos-easing="linear"
+				data-aos-duration="1000">
+				<!-- <img src="assets/img/AB-3.png" class="img-fluid" alt="" /> -->
 			</div>
-		</section>
+		</div>
+	</section>
 
-		<section id="alamat" class="alamat">
-			<div class="row p-0 m-0 alamat-content text-center">
-				<div class="col-12 p-0 alamat-title" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
-					<img src="assets/img/AA-3.png" class="img-fluid" alt="" />
-				</div>
-				<div class="alamat-body" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
-					<iframe
-						src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d350.5787561690492!2d106.60499634431613!3d-6.218041066153854!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ff67883a4501%3A0xfda115db3e63a9a5!2sBencongan%20kongsi!5e0!3m2!1sid!2sid!4v1730443264531!5m2!1sid!2sid"
-						width="100%"
-						height="100%"
-						style="border: 0"
-						allowfullscreen=""
-						loading="lazy"
-						referrerpolicy="no-referrer-when-downgrade"></iframe>
-					<a class="btn btn-outline-light alamat-btn" href="https://maps.app.goo.gl/mCrHKL1bN8HfUsRd7" role="button"> Open Map</a>
-				</div>
-
-				<div class="col-12 p-0 alamat-footer d-flex align-items-end" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000">
-					<img src="assets/img/AB-3.png" class="img-fluid" alt="" />
-				</div>
+	<section id="alamat" class="alamat">
+		<div class="row p-0 m-0 alamat-content text-center">
+			<div class="col-12 p-0 alamat-title" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
+				<!-- <img src="assets/img/AA-3.png" class="img-fluid" alt="" /> -->
 			</div>
-		</section>
+			<div class="alamat-body" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
+				<iframe
+					src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d350.5787561690492!2d106.60499634431613!3d-6.218041066153854!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ff67883a4501%3A0xfda115db3e63a9a5!2sBencongan%20kongsi!5e0!3m2!1sid!2sid!4v1730443264531!5m2!1sid!2sid"
+					width="100%" height="100%" style="border: 0" allowfullscreen="" loading="lazy"
+					referrerpolicy="no-referrer-when-downgrade"></iframe>
+				<a class="btn btn-outline-light alamat-btn" href="https://maps.app.goo.gl/mCrHKL1bN8HfUsRd7"
+					role="button"> Open Map</a>
+			</div>
 
-		<section id="galeri" class="galeri">
-			<div class="row p-0 m-0 galeri-content text-center">
-				<div class="col-12 p-0 galeri-title" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
-					<img src="assets/img/AA-3.png" class="img-fluid" alt="" />
-				</div>
-				<div class="galeri-body row" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
-					<!-- <div class="col-6">
+			<div class="col-12 p-0 alamat-footer d-flex align-items-end" data-aos="fade-up" data-aos-easing="linear"
+				data-aos-duration="1000">
+				<!-- <img src="assets/img/AB-3.png" class="img-fluid" alt="" /> -->
+			</div>
+		</div>
+	</section>
+
+	<section id="galeri" class="galeri">
+		<div class="row p-0 m-0 galeri-content text-center">
+			<div class="col-12 p-0 galeri-title" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
+				<!-- <img src="assets/img/AA-3.png" class="img-fluid" alt="" /> -->
+			</div>
+			<div class="galeri-body row" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
+				<!-- <div class="col-6">
 						<img src="assets/galeri/gal1.jpg" alt="Galeri1" class="img-thumbnail" />
 					</div>
 					<div class="col-6">
@@ -193,169 +206,182 @@
 					<div class="col-6">
 						<img src="assets/galeri/gal2.jpg" alt="Galeri4" class="img-thumbnail" />
 					</div> -->
-					<div id="carouselExampleSlidesOnly" class="carousel slide carousel-fade" data-bs-ride="carousel">
-						<div class="carousel-inner">
-							<div class="carousel-item active" data-bs-interval="2500">
-								<img src="assets/galeri/gal1.jpg" alt="Galeri1" class="d-block w-100" />
-							</div>
-							<div class="carousel-item" data-bs-interval="2500">
-								<img src="assets/galeri/gal2.jpg" alt="Galeri2" class="d-block w-100" />
-							</div>
-							<div class="carousel-item" data-bs-interval="2500">
-								<img src="assets/galeri/gal3.jpg" alt="Galeri3" class="d-block w-100" />
-							</div>
+				<div id="carouselExampleSlidesOnly" class="carousel slide carousel-fade" data-bs-ride="carousel">
+					<div class="carousel-inner">
+						<div class="carousel-item active" data-bs-interval="2500">
+							<img src="assets/galeri/gal1.jpg" alt="Galeri1" class="d-block w-100" />
 						</div>
-					</div>
-				</div>
-				<div class="col-12 p-0 galeri-footer d-flex align-items-end" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000">
-					<img src="assets/img/AB-3.png" class="img-fluid" alt="" />
-				</div>
-			</div>
-		</section>
-
-		<section id="doa" class="doa">
-			<div class="row p-0 m-0 doa-content text-center">
-				<div class="col-12 p-0 doa-title" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
-					<img src="assets/img/AA-3.png" class="img-fluid" alt="" />
-				</div>
-				<div class="doa-body" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
-					<h3>Doa Untuk Penganti</h3>
-					<p>"Semoga Allah memberkahi di waktu bahagia & memberkahimu di waktu susah, dan mengumpulkan kalian berdua dalam kebaikan"</p>
-				</div>
-				<div class="col-12 p-0 doa-footer d-flex align-items-end" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000">
-					<img src="assets/img/AB-3.png" class="img-fluid" alt="" />
-				</div>
-			</div>
-		</section>
-		<section id="rsvp" class="rsvp">
-			<div class="row p-0 m-0 rsvp-content text-center">
-				<div class="col-12 p-0 rsvp-title" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
-					<img src="assets/img/AA-3.png" class="img-fluid" alt="" />
-				</div>
-				<div class="rsvp-body" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
-					<h3>Kirim Ucapan</h3>
-					<div id="commentSection"></div>
-
-					<button type="button" class="btn btn-outline-light m-2" data-bs-toggle="modal" data-bs-target="#kirimUcapan">Kirim Ucapan</button>
-
-					<!-- Modal -->
-					<div class="modal fade" id="kirimUcapan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-body">
-									<form id="commentForm">
-										<!-- Name Input -->
-										<div class="mb-3">
-											<label for="name" class="form-label">Name</label>
-											<input type="text" class="form-control" id="name" required />
-										</div>
-
-										<!-- Comment Input -->
-										<div class="mb-3">
-											<label for="comment" class="form-label">Comment</label>
-											<textarea class="form-control" id="comment" rows="3" required></textarea>
-										</div>
-
-										<!-- Submit Button -->
-										<button type="submit" class="btn btn-primary">Submit Comment</button>
-									</form>
-
-									<!-- Error or Success Message -->
-									<div class="message" id="error-message"></div>
-								</div>
-							</div>
+						<div class="carousel-item" data-bs-interval="2500">
+							<img src="assets/galeri/gal2.jpg" alt="Galeri2" class="d-block w-100" />
+						</div>
+						<div class="carousel-item" data-bs-interval="2500">
+							<img src="assets/galeri/gal3.jpg" alt="Galeri3" class="d-block w-100" />
 						</div>
 					</div>
 				</div>
 			</div>
-		</section>
-		<section id="hadiah" class="hadiah">
-			<div class="row p-0 m-0 hadiah-content text-center">
-				<div class="col-12 p-0 rsvp-title" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
-					<img src="assets/img/AA-3.png" class="img-fluid" alt="" />
-				</div>
-				<div class="hadiah-body" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
-					<h3>Kirim Hadiah</h3>
-					<h6>
-						Doa Restu Anda merupakan karunia yang sangat berarti bagi kami.
-						<br /><br />
-						Namun jika Anda ingin memberikan hadiah, kami sediakan fitur berikut:
-					</h6>
-					<!-- Button trigger modal -->
-					<button type="button" class="btn btn-outline-light alamat-btn" data-bs-toggle="modal" data-bs-target="#transfer">Transfer</button>
-					<button type="button" class="btn btn-outline-light alamat-btn" data-bs-toggle="modal" data-bs-target="#kado">Kado</button>
+			<div class="col-12 p-0 galeri-footer d-flex align-items-end" data-aos="fade-up" data-aos-easing="linear"
+				data-aos-duration="1000">
+				<!-- <img src="assets/img/AB-3.png" class="img-fluid" alt="" /> -->
+			</div>
+		</div>
+	</section>
 
-					<!-- Modal -->
-					<div class="modal fade" id="transfer" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-body">
-									<h5>BCA - Iqbal Maulana</h5>
-									<p id="text-to-copy-1">
-										8015461523
-										<button class="btn btn-outline-primary" onclick="copyText('text-to-copy-1')">
-											<i class="bi bi-clipboard"></i>
-										</button>
-									</p>
-									<h5>BCA - Nur Fauziah</h5>
-									<p id="text-to-copy-2">
-										7610908602
-										<button class="btn btn-outline-primary" onclick="copyText('text-to-copy-2')">
-											<i class="bi bi-clipboard"></i>
-										</button>
-									</p>
-								</div>
+	<section id="doa" class="doa">
+		<div class="row p-0 m-0 doa-content text-center">
+			<div class="col-12 p-0 doa-title" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
+				<!-- <img src="assets/img/AA-3.png" class="img-fluid" alt="" /> -->
+			</div>
+			<div class="doa-body" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
+				<h3>Doa Untuk Penganti</h3>
+				<p>"Semoga Allah memberkahi di waktu bahagia & memberkahimu di waktu susah, dan mengumpulkan kalian
+					berdua dalam kebaikan"</p>
+			</div>
+			<div class="col-12 p-0 doa-footer d-flex align-items-end" data-aos="fade-up" data-aos-easing="linear"
+				data-aos-duration="1000">
+				<!-- <img src="assets/img/AB-3.png" class="img-fluid" alt="" /> -->
+			</div>
+		</div>
+	</section>
+	<section id="rsvp" class="rsvp">
+		<div class="row p-0 m-0 rsvp-content text-center">
+			<div class="col-12 p-0 rsvp-title" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
+				<!-- <img src="assets/img/AA-3.png" class="img-fluid" alt="" /> -->
+			</div>
+			<div class="rsvp-body" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
+				<h3>Kirim Ucapan</h3>
+				<!-- <div id="commentSection"></div> -->
+
+				<button type="button" class="btn btn-outline-light m-2" data-bs-toggle="modal"
+					data-bs-target="#kirimUcapan">Kirim Ucapan</button>
+
+				<!-- Modal -->
+				<div class="modal fade" id="kirimUcapan" tabindex="-1" aria-labelledby="exampleModalLabel"
+					aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body">
+								<form id="commentForm">
+									<!-- Name Input -->
+									<div class="mb-3">
+										<label for="name" class="form-label">Name</label>
+										<input type="text" class="form-control" id="name" required />
+									</div>
+
+									<!-- Comment Input -->
+									<div class="mb-3">
+										<label for="comment" class="form-label">Comment</label>
+										<textarea class="form-control" id="comment" rows="3" required></textarea>
+									</div>
+
+									<!-- Submit Button -->
+									<button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Submit
+										Comment</button>
+								</form>
+
+								<!-- Error or Success Message -->
+								<div class="message" id="error-message"></div>
 							</div>
 						</div>
 					</div>
-					<div class="modal fade" id="kado" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-body">
-									<h5>Kirim kado ke alamat</h5>
-									<p id="text-to-copy-3">
-										Perumahan Dasana Indah, Blok UF 12/14, RT/RW 004/026,Bojong Nangka, Kelapa Dua
-										<button class="btn btn-outline-primary" onclick="copyText('text-to-copy-3')">
-											<i class="bi bi-clipboard"></i>
-										</button>
-									</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-12 p-0 hadiah-footer d-flex align-items-end" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000">
-					<img src="assets/img/AB-3.png" class="img-fluid" alt="" />
 				</div>
 			</div>
-		</section>
+		</div>
+	</section>
+	<section id="hadiah" class="hadiah">
+		<div class="row p-0 m-0 hadiah-content text-center">
+			<div class="col-12 p-0 rsvp-title" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
+				<!-- <img src="assets/img/AA-3.png" class="img-fluid" alt="" /> -->
+			</div>
+			<div class="hadiah-body" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
+				<h3>Kirim Hadiah</h3>
+				<h6>
+					Doa Restu Anda merupakan karunia yang sangat berarti bagi kami.
+					<br /><br />
+					Namun jika Anda ingin memberikan hadiah, kami sediakan fitur berikut:
+				</h6>
+				<!-- Button trigger modal -->
+				<button type="button" class="btn btn-outline-light alamat-btn" data-bs-toggle="modal"
+					data-bs-target="#transfer">Transfer</button>
+				<button type="button" class="btn btn-outline-light alamat-btn" data-bs-toggle="modal"
+					data-bs-target="#kado">Kado</button>
 
-		<script>
-			var x = document.getElementById('myAudio');
+				<!-- Modal -->
+				<div class="modal fade" id="transfer" tabindex="-1" aria-labelledby="exampleModalLabel"
+					aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body">
+								<h5>BCA - Iqbal Maulana</h5>
+								<p id="text-to-copy-1">
+									8015461523
+									<button class="btn btn-outline-primary" onclick="copyText('text-to-copy-1')">
+										<i class="bi bi-clipboard"></i>
+									</button>
+								</p>
+								<h5>BCA - Nur Fauziah</h5>
+								<p id="text-to-copy-2">
+									7610908602
+									<button class="btn btn-outline-primary" onclick="copyText('text-to-copy-2')">
+										<i class="bi bi-clipboard"></i>
+									</button>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal fade" id="kado" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body">
+								<h5>Kirim kado ke alamat</h5>
+								<p id="text-to-copy-3">
+									Perumahan Dasana Indah, Blok UF 12/14, RT/RW 004/026,Bojong Nangka, Kelapa Dua
+									<button class="btn btn-outline-primary" onclick="copyText('text-to-copy-3')">
+										<i class="bi bi-clipboard"></i>
+									</button>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-12 p-0 hadiah-footer d-flex align-items-end" data-aos="fade-up" data-aos-easing="linear"
+				data-aos-duration="1000">
+				<img src="assets/img/AB-3.png" class="img-fluid" alt="" />
+			</div>
+		</div>
+	</section>
 
-			function playAudio() {
-				if (x.paused) {
-					x.play();
-				} else {
-					x.pause();
-				}
+	<script>
+		var x = document.getElementById('myAudio');
+
+		function playAudio() {
+			if (x.paused) {
+				x.play();
+			} else {
+				x.pause();
 			}
-		</script>
+		}
+	</script>
 
-		<!-- Jquery -->
-		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<!-- Jquery -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-		<!-- Optional JavaScript -->
-		<script src="assets/js/script.js"></script>
+	<!-- Optional JavaScript -->
+	<script src="assets/js/script.js"></script>
 
-		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+		crossorigin="anonymous"></script>
 
-		<!-- AOS -->
-		<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-		<script>
-			AOS.init();
-		</script>
-	</body>
+	<!-- AOS -->
+	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+	<script>
+		AOS.init();
+	</script>
+</body>
+
 </html>

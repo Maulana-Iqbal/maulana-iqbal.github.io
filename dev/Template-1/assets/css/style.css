@@ -16,7 +16,6 @@ section {
 
 /* cover */
 .cover {
-	color: antiquewhite;
 	background-image: url('../img/BG1.png'); /* Ganti dengan URL gambar Anda */
 	height: 100vh;
 	background-size: cover;
@@ -50,11 +49,10 @@ section {
 
 /* quote */
 .quote {
-	background-image: url('../img/BG5.png'); /* Ganti dengan URL gambar Anda */
+	background-image: url('../bg/bg-2.png'); /* Ganti dengan URL gambar Anda */
 	height: 100vh;
 	background-size: cover;
 	background-position: center;
-	color: azure;
 }
 
 .quote-content {
@@ -67,11 +65,10 @@ section {
 
 /* mempelai */
 .mempelai {
-	background-image: url('../img/BG1.png'); /* Ganti dengan URL gambar Anda */
+	background-image: url('../bg/bg-3.png'); /* Ganti dengan URL gambar Anda */
 	height: 100vh;
 	background-size: cover;
 	background-position: center;
-	color: azure;
 }
 
 .mempelai-content {
@@ -84,11 +81,10 @@ section {
 
 /* acara */
 .acara {
-	background-image: url('../img/BG2.png'); /* Ganti dengan URL gambar Anda */
+	background-image: url('../bg/bg-4.png'); /* Ganti dengan URL gambar Anda */
 	height: 100vh;
 	background-size: cover;
 	background-position: center;
-	color: #302d2d;
 }
 
 .acara-content {
@@ -101,11 +97,10 @@ section {
 
 /* alamat */
 .alamat {
-	background-image: url('../img/BG4.png'); /* Ganti dengan URL gambar Anda */
+	background-image: url('../bg/bg-3.png'); /* Ganti dengan URL gambar Anda */
 	height: 100vh;
 	background-size: cover;
 	background-position: center;
-	color: #302d2d;
 }
 
 .alamat-content {
@@ -125,7 +120,7 @@ section {
 /* galeri */
 
 .galeri {
-	background-image: url('../img/BG3.png'); /* Ganti dengan URL gambar Anda */
+	background-image: url('../bg/bg-4.png'); /* Ganti dengan URL gambar Anda */
 	height: 100vh;
 	background-size: cover;
 	background-position: center;
@@ -146,7 +141,7 @@ section {
 /* doa */
 
 .doa {
-	background-image: url('../img/BG6.png'); /* Ganti dengan URL gambar Anda */
+	background-image: url('../bg/bg-2.png'); /* Ganti dengan URL gambar Anda */
 	height: 100vh;
 	background-size: cover;
 	background-position: center;
@@ -163,9 +158,8 @@ section {
 /* rsvp */
 
 .rsvp {
-	background-image: url('../img/BG5.png'); /* Ganti dengan URL gambar Anda */
+	background-image: url('../bg/bg-2.png'); /* Ganti dengan URL gambar Anda */
 	height: 100vh;
-	color: antiquewhite;
 	background-size: cover;
 	background-position: center;
 }
@@ -185,9 +179,8 @@ section {
 /* hadiah */
 
 .hadiah {
-	background-image: url('../img/BG5.png'); /* Ganti dengan URL gambar Anda */
+	background-image: url('../bg/bg-2.png'); /* Ganti dengan URL gambar Anda */
 	height: 100vh;
-	color: antiquewhite;
 	background-size: cover;
 	background-position: center;
 }

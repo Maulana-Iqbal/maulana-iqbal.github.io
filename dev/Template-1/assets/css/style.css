@@ -97,7 +97,7 @@ section {
 
 /* alamat */
 .alamat {
-	background-image: url('../bg/bg-3.png'); /* Ganti dengan URL gambar Anda */
+	background-image: url('../img/BG4.png'); /* Ganti dengan URL gambar Anda */
 	height: 100vh;
 	background-size: cover;
 	background-position: center;
@@ -120,7 +120,7 @@ section {
 /* galeri */
 
 .galeri {
-	background-image: url('../bg/bg-4.png'); /* Ganti dengan URL gambar Anda */
+	background-image: url('../img/BG2.png'); /* Ganti dengan URL gambar Anda */
 	height: 100vh;
 	background-size: cover;
 	background-position: center;
@@ -179,7 +179,7 @@ section {
 /* hadiah */
 
 .hadiah {
-	background-image: url('../bg/bg-2.png'); /* Ganti dengan URL gambar Anda */
+	background-image: url('../img/BG6.png'); /* Ganti dengan URL gambar Anda */
 	height: 100vh;
 	background-size: cover;
 	background-position: center;

@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kalkulator Kopi</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+
+    <style>
+      body {
+        min-height: 100vh;
+        background: #f3f0ea;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .coffee-app {
+        width: 100%;
+        max-width: 390px;
+        background: #fffaf2;
+        border: 4px solid #111;
+        border-radius: 48px;
+        padding: 34px 24px 28px;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+      }
+
+      .app-title {
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 24px;
+      }
+
+      .form-control {
+        border: 3px solid #111;
+        border-radius: 10px;
+        text-align: center;
+        font-weight: 700;
+      }
+
+      .form-control:focus {
+        border-color: #111;
+        box-shadow: none;
+        background: #fff4d9;
+      }
+
+      .ratio-label {
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 6px;
+        text-align: center;
+      }
+
+      .divider {
+        height: 4px;
+        background: #111;
+        margin: 24px -24px;
+      }
+
+      .btn-coffee {
+        background: #d7a86e;
+        border: 3px solid #111;
+        border-radius: 12px;
+        font-weight: 800;
+        padding: 9px 24px;
+      }
+
+      .btn-coffee:hover {
+        background: #c89150;
+        border-color: #111;
+      }
+
+      .btn-reset {
+        background: #fff;
+        border: 3px solid #111;
+        border-radius: 12px;
+        font-weight: 800;
+        padding: 9px 24px;
+      }
+
+      .btn-reset:hover {
+        background: #eee;
+        border-color: #111;
+      }
+
+      .result-title {
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 18px;
+      }
+
+      .result-row {
+        display: grid;
+        grid-template-columns: 1fr 82px;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 14px;
+        font-weight: 700;
+      }
+
+      .result-box {
+        min-height: 38px;
+        border: 3px solid #111;
+        border-radius: 10px;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+      }
+
+      .total-result {
+        border-top: 3px solid #111;
+        padding-top: 14px;
+        margin-top: 18px;
+      }
+
+      .error-text {
+        min-height: 22px;
+        color: #b00020;
+        font-size: 13px;
+        font-weight: 800;
+        text-align: center;
+        margin-top: 12px;
+      }
+
+      @media (max-width: 420px) {
+        body {
+          padding: 16px;
+        }
+
+        .coffee-app {
+          border-radius: 38px;
+        }
+
+        .btn-coffee,
+        .btn-reset {
+          padding-inline: 18px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="coffee-app">
+      <h1 class="h4 app-title">Kalkulator Kopi</h1>
+
+      <div class="row align-items-center justify-content-center mb-4">
+        <div class="col-auto">
+          <label for="totalGram" class="form-label fw-bold mb-0">Total dalam gr</label>
+        </div>
+        <div class="col-4">
+          <input id="totalGram" type="number" min="0" class="form-control" placeholder="500" />
+        </div>
+      </div>
+
+      <div class="row g-2">
+        <div class="col-3">
+          <label for="kopiRatio" class="ratio-label d-block">Kopi</label>
+          <input id="kopiRatio" type="number" min="0" class="form-control" placeholder="1" />
+        </div>
+
+        <div class="col-3">
+          <label for="krimerRatio" class="ratio-label d-block">Krimer</label>
+          <input id="krimerRatio" type="number" min="0" class="form-control" placeholder="1" />
+        </div>
+
+        <div class="col-3">
+          <label for="gulaRatio" class="ratio-label d-block">Gula Aren</label>
+          <input id="gulaRatio" type="number" min="0" class="form-control" placeholder="2" />
+        </div>
+
+        <div class="col-3">
+          <label for="susuRatio" class="ratio-label d-block">Susu</label>
+          <input id="susuRatio" type="number" min="0" class="form-control" placeholder="6" />
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="d-flex justify-content-center gap-3 mb-4">
+        <button type="button" class="btn btn-coffee" onclick="hitungKopi()">Hitung</button>
+        <button type="button" class="btn btn-reset" onclick="resetData()">Reset</button>
+      </div>
+
+      <section>
+        <h2 class="h5 result-title">Hasil</h2>
+
+        <div class="result-row">
+          <span>Kopi</span>
+          <div class="result-box" id="kopiResult">-</div>
+        </div>
+
+        <div class="result-row">
+          <span>Krimer</span>
+          <div class="result-box" id="krimerResult">-</div>
+        </div>
+
+        <div class="result-row">
+          <span>Gula Aren</span>
+          <div class="result-box" id="gulaResult">-</div>
+        </div>
+
+        <div class="result-row">
+          <span>Susu</span>
+          <div class="result-box" id="susuResult">-</div>
+        </div>
+
+        <div class="result-row total-result">
+          <span>Total</span>
+          <div class="result-box" id="totalResult">-</div>
+        </div>
+
+        <div class="error-text" id="errorText"></div>
+      </section>
+    </main>
+
+    <script>
+      const fields = ["totalGram", "kopiRatio", "krimerRatio", "gulaRatio", "susuRatio"];
+
+      function ambilAngka(id) {
+        return Number(document.getElementById(id).value);
+      }
+
+      function formatGram(value) {
+        const rounded = Math.round(value * 10) / 10;
+        return rounded + "g";
+      }
+
+      function resetHasil() {
+        document.getElementById("kopiResult").textContent = "-";
+        document.getElementById("krimerResult").textContent = "-";
+        document.getElementById("gulaResult").textContent = "-";
+        document.getElementById("susuResult").textContent = "-";
+        document.getElementById("totalResult").textContent = "-";
+      }
+
+      function simpanData() {
+        fields.forEach(function (id) {
+          const value = document.getElementById(id).value;
+          localStorage.setItem("kopiCalc_" + id, value);
+        });
+      }
+
+      function loadData() {
+        fields.forEach(function (id) {
+          const savedValue = localStorage.getItem("kopiCalc_" + id);
+
+          if (savedValue !== null) {
+            document.getElementById(id).value = savedValue;
+          }
+        });
+      }
+
+      function hitungKopi() {
+        const totalGram = ambilAngka("totalGram");
+
+        const kopiRatio = ambilAngka("kopiRatio");
+        const krimerRatio = ambilAngka("krimerRatio");
+        const gulaRatio = ambilAngka("gulaRatio");
+        const susuRatio = ambilAngka("susuRatio");
+
+        const errorText = document.getElementById("errorText");
+        errorText.textContent = "";
+
+        simpanData();
+
+        if (totalGram <= 0) {
+          resetHasil();
+          errorText.textContent = "Total gram harus lebih dari 0.";
+          return;
+        }
+
+        if (kopiRatio < 0 || krimerRatio < 0 || gulaRatio < 0 || susuRatio < 0) {
+          resetHasil();
+          errorText.textContent = "Rasio tidak boleh minus.";
+          return;
+        }
+
+        const totalRatio = kopiRatio + krimerRatio + gulaRatio + susuRatio;
+
+        if (totalRatio <= 0) {
+          resetHasil();
+          errorText.textContent = "Minimal satu rasio harus lebih dari 0.";
+          return;
+        }
+
+        const kopiGram = (totalGram * kopiRatio) / totalRatio;
+        const krimerGram = (totalGram * krimerRatio) / totalRatio;
+        const gulaGram = (totalGram * gulaRatio) / totalRatio;
+        const susuGram = (totalGram * susuRatio) / totalRatio;
+
+        document.getElementById("kopiResult").textContent = formatGram(kopiGram);
+        document.getElementById("krimerResult").textContent = formatGram(krimerGram);
+        document.getElementById("gulaResult").textContent = formatGram(gulaGram);
+        document.getElementById("susuResult").textContent = formatGram(susuGram);
+        document.getElementById("totalResult").textContent = formatGram(totalGram);
+      }
+
+      function resetData() {
+        fields.forEach(function (id) {
+          document.getElementById(id).value = "";
+          localStorage.removeItem("kopiCalc_" + id);
+        });
+
+        resetHasil();
+        document.getElementById("errorText").textContent = "";
+      }
+
+      fields.forEach(function (id) {
+        document.getElementById(id).addEventListener("input", function () {
+          simpanData();
+        });
+      });
+
+      window.addEventListener("DOMContentLoaded", function () {
+        loadData();
+
+        const adaDataTersimpan = fields.some(function (id) {
+          return localStorage.getItem("kopiCalc_" + id) !== null;
+        });
+
+        if (adaDataTersimpan) {
+          hitungKopi();
+        }
+      });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  </body>
+</html>

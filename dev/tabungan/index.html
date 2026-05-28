@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tabungan</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+      /* Hilangkan margin bawaan dan set tinggi full */
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+
+      /* 2. Setup Container Vanta biar full screen */
+      #vanta-bg {
+        width: 100%;
+        min-height: 100vh;
+        position: relative; /* Penting biar konten bisa di atasnya */
+      }
+
+      /* 3. Styling konten dashboard biar posisinya di atas canvas animasi */
+      .dashboard-content {
+        position: relative;
+        z-index: 1;
+        color: white;
+      }
+
+      /* Styling tambahan: bikin card Bootstrap agak transparan (Glassmorphism) */
+      .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
+        border-radius: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="vanta-bg">
+      <div class="container dashboard-content pt-5">
+        <div class="row mb-4">
+          <div class="col-12 text-center">
+            <h1 class="fw-bold">Tabungan Kita</h1>
+          </div>
+        </div>
+
+        <div class="row justify-content-center mb-5">
+          <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card glass-card h-100 p-3 shadow-lg">
+              <div class="card-body text-center">
+                <h6 class="card-title text-uppercase text-white-50">Total Emas Dana Darurat</h6>
+                <h4 class="card-text fw-bold text-warning mb-0" id="val-c3">Loading...</h4>
+                <p class="card-text fw-bold mt-1" id="val-a3">Loading...</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card glass-card h-100 p-3 shadow-lg">
+              <div class="card-body text-center">
+                <h6 class="card-title text-uppercase text-white-50">Tabungan Hari Tua EMAS</h6>
+                <h4 class="card-text fw-bold text-success mb-0" id="val-c8">Loading...</h4>
+                <p class="card-text fw-bold mt-1" id="val-a8">Loading...</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card glass-card h-100 p-3 shadow-lg">
+              <div class="card-body text-center">
+                <h6 class="card-title text-uppercase text-white-50">Tabungan Hari Tua BITCOIN</h6>
+                <h4 class="card-text fw-bold text-info mb-0" id="val-c13">Loading...</h4>
+                <p class="card-text fw-bold mt-1" id="val-a13">Loading...</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card glass-card h-100 p-3 shadow-lg">
+              <div class="card-body text-center">
+                <h6 class="card-title text-uppercase text-white-50">Tabungan EMAS</h6>
+                <h4 class="card-text fw-bold text-primary mb-0" id="val-c18">Loading...</h4>
+                <p class="card-text fw-bold mt-1" id="val-a18">Loading...</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card glass-card h-100 p-3 shadow-lg">
+              <div class="card-body text-center">
+                <h6 class="card-title text-uppercase text-white-50">Tabungan BITCOIN</h6>
+                <h4 class="card-text fw-bold text-light mb-0" id="val-c23">Loading...</h4>
+                <p class="card-text fw-bold mt-1" id="val-a23">Loading...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+
+    <script>
+      VANTA.NET({
+        el: "#vanta-bg", // Nembak div id="vanta-bg"
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.0,
+        minWidth: 200.0,
+        scale: 1.0,
+        scaleMobile: 1.0,
+        // Warna bisa lo ganti pakai kode hex (tambahin 0x di depannya)
+        color: 0x3fbcff, // Warna garis
+        backgroundColor: 0x080816, // Warna background belakang
+        points: 12.0,
+        maxDistance: 20.0,
+        spacing: 16.0,
+      });
+
+      const urlSheets = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRk8HUQrb0tNGed3S0Cm6XOces6c5CSJyJtc7hRr8PRCQ1zSowUgkLU8DKSY8WaW4zVnwXyapN5Q7Xc/pub?gid=87019778&single=true&output=csv";
+
+      Papa.parse(urlSheets, {
+        download: true,
+        header: false, // Biar kebaca sebagai array 2D
+        skipEmptyLines: false, // PENTING: Jangan skip baris kosong agar urutan baris sesuai Excel
+        complete: function (results) {
+          const data = results.data;
+
+          // Pastikan data cukup panjang sebelum di-render (mencegah error)
+          if (data.length >= 23) {
+            // Card 1: Row 3 (Index 2)
+            document.getElementById("val-c3").innerText = data[2][2] || "-"; // Kolom C
+            document.getElementById("val-a3").innerText = data[2][0] || "-"; // Kolom A
+
+            // Card 2: Row 8 (Index 7)
+            document.getElementById("val-c8").innerText = data[7][2] || "-";
+            document.getElementById("val-a8").innerText = data[7][0] || "-";
+
+            // Card 3: Row 13 (Index 12)
+            document.getElementById("val-c13").innerText = data[12][2] || "-";
+            document.getElementById("val-a13").innerText = data[12][0] || "-";
+
+            // Card 4: Row 18 (Index 17)
+            document.getElementById("val-c18").innerText = data[17][2] || "-";
+            document.getElementById("val-a18").innerText = data[17][0] || "-";
+
+            // Card 5: Row 23 (Index 22)
+            document.getElementById("val-c23").innerText = data[22][2] || "-";
+            document.getElementById("val-a23").innerText = data[22][0] || "-";
+          } else {
+            console.error("Data dari CSV kurang dari 23 baris!");
+          }
+        },
+        error: function (error) {
+          console.error("Gagal load CSV:", error);
+        },
+      });
+    </script>
+  </body>
+</html>

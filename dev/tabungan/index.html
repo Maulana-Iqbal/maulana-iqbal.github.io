@@ -1,14 +1,14 @@
 <!doctype html>
-<html lang="en">
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tabungan</title>
+    <title>Dashboard Tabungan</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 
     <style>
-      /* Hilangkan margin bawaan dan set tinggi full */
+      /* 1. Reset margin dan padding biar nggak ada jarak putih di pinggir layar */
       body,
       html {
         margin: 0;
@@ -16,30 +16,31 @@
         height: 100%;
       }
 
-      /* 2. Setup Container Vanta biar full screen */
+      /* 2. Setup area background Vanta JS (Animasi Jaring) */
       #vanta-bg {
         width: 100%;
         min-height: 100vh;
-        position: relative; /* Penting biar konten bisa di atasnya */
+        position: relative; /* Penting biar konten bisa ngambang di atas background */
       }
 
-      /* 3. Styling konten dashboard biar posisinya di atas canvas animasi */
+      /* 3. Posisi konten dashboard di atas background (Z-index) */
       .dashboard-content {
         position: relative;
         z-index: 1;
         color: white;
       }
 
-      /* Styling tambahan: bikin card Bootstrap agak transparan (Glassmorphism) */
+      /* 4. Efek Kaca (Glassmorphism) untuk kotak-kotak dashboard */
       .glass-card {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.05); /* Sedikit putih transparan */
+        backdrop-filter: blur(10px); /* Efek blur ala Apple/iOS */
+        border: 1px solid rgba(255, 255, 255, 0.1); /* Garis pinggir tipis */
         color: white;
-        border-radius: 15px;
+        border-radius: 15px; /* Ujung kotak melengkung */
       }
     </style>
   </head>
+
   <body>
     <div id="vanta-bg">
       <div class="container dashboard-content pt-5">
@@ -101,11 +102,20 @@
           </div>
 
           <div class="row justify-content-center mb-5">
-            <div class="col-12 col-lg-10">
+            <div class="col-12 col-lg-7">
               <div class="card glass-card p-4 shadow-lg">
                 <h5 class="fw-bold text-white mb-3">📈 Grafik Pertumbuhan Tabungan</h5>
                 <div style="position: relative; height: 350px; width: 100%">
                   <canvas id="grafikTabungan"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-lg-5 mt-4 mt-lg-0">
+              <div class="card glass-card p-4 shadow-lg text-center">
+                <h5 class="fw-bold text-white mb-4">📊 Alokasi Aset Portofolio</h5>
+                <div style="position: relative; height: 300px">
+                  <canvas id="grafikDonat"></canvas>
                 </div>
               </div>
             </div>
@@ -115,17 +125,23 @@
         </div>
       </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
     <script>
+      // --------------------------------------------------
+      // A. SETTING BACKGROUND ANIMASI (VANTA)
+      // --------------------------------------------------
       VANTA.NET({
-        el: "#vanta-bg", // Nembak div id="vanta-bg"
+        el: "#vanta-bg",
         mouseControls: true,
         touchControls: true,
         gyroControls: false,
@@ -133,117 +149,95 @@
         minWidth: 200.0,
         scale: 1.0,
         scaleMobile: 1.0,
-        // Warna bisa lo ganti pakai kode hex (tambahin 0x di depannya)
-        color: 0x3fbcff, // Warna garis
-        backgroundColor: 0x080816, // Warna background belakang
+        color: 0x3fbcff, // Warna garis jaring (Biru Neon)
+        backgroundColor: 0x080816, // Warna background (Dark Navy)
         points: 12.0,
         maxDistance: 20.0,
         spacing: 16.0,
       });
 
-      // Fungsi buat animasi counting
+      // --------------------------------------------------
+      // B. FUNGSI ANIMASI ANGKA JALAN (COUNTING)
+      // --------------------------------------------------
       function animateCounter(elementId, targetValue, duration) {
         const obj = document.getElementById(elementId);
         if (!obj || !targetValue) return;
 
-        // 1. Ambil cuma angka, titik, dan koma dari teks (misal: "Rp 15.000.000" -> "15.000.000")
+        // Bersihkan teks jadi angka murni buat dihitung
         const onlyNumbers = targetValue.replace(/[^0-9,.]/g, "");
         if (!onlyNumbers) {
-          obj.innerText = targetValue; // Kalau ga ada angka, langsung tampilin aja
+          obj.innerText = targetValue;
           return;
         }
 
-        // 2. Cari awalan (prefix) dan akhiran (suffix) teksnya
         const prefix = targetValue.split(onlyNumbers)[0] || "";
         const suffix = targetValue.split(onlyNumbers)[1] || "";
-
-        // 3. Ubah format angka Indo ke format mesin (hapus titik ribuan, ubah koma desimal jadi titik)
         const cleanNumber = parseFloat(onlyNumbers.replace(/\./g, "").replace(",", "."));
+
         if (isNaN(cleanNumber)) {
           obj.innerText = targetValue;
           return;
         }
 
-        // 4. Proses Animasi
         let startTimestamp = null;
         const step = (timestamp) => {
           if (!startTimestamp) startTimestamp = timestamp;
-          // Hitung progres (0 sampai 1)
           const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-
-          // Hitung angka saat ini berdasarkan progres
           const currentNum = progress * cleanNumber;
 
           let formattedNum;
-          // Cek kalau angkanya desimal (punya koma)
           if (onlyNumbers.includes(",")) {
             const decimals = onlyNumbers.split(",")[1].length;
-            formattedNum = currentNum.toFixed(decimals).replace(".", ","); // Balikin format koma
+            formattedNum = currentNum.toFixed(decimals).replace(".", ",");
           } else {
-            // Angka bulat (otomatis kasih titik ribuan)
             formattedNum = Math.floor(currentNum).toLocaleString("id-ID");
           }
 
-          // Tampilkan ke HTML
           obj.innerText = prefix + formattedNum + suffix;
 
-          // Lanjut animasi kalau belum selesai
           if (progress < 1) {
             window.requestAnimationFrame(step);
           } else {
-            // Pastikan hasil akhir sama persis 100% kayak di Spreadsheet
-            obj.innerText = targetValue;
+            obj.innerText = targetValue; // Hasil final
           }
         };
-
         window.requestAnimationFrame(step);
       }
+
+      // --------------------------------------------------
+      // C. TARIK DATA DARI SHEET 1 (UNTUK KARTU ANGKA TOTAL)
+      // --------------------------------------------------
       const urlSheets = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRk8HUQrb0tNGed3S0Cm6XOces6c5CSJyJtc7hRr8PRCQ1zSowUgkLU8DKSY8WaW4zVnwXyapN5Q7Xc/pub?gid=87019778&single=true&output=csv";
 
       Papa.parse(urlSheets, {
         download: true,
-        header: false, // Biar kebaca sebagai array 2D
-        skipEmptyLines: false, // PENTING: Jangan skip baris kosong agar urutan baris sesuai Excel
+        header: false,
+        skipEmptyLines: false,
         complete: function (results) {
           const data = results.data;
-
-          // Pastikan data cukup panjang sebelum di-render
           if (data.length >= 23) {
-            // Durasi animasi dalam milidetik (2000 = 2 detik)
-            const durasi = 2000;
-
-            // Card 1: Row 3 (Index 2)
+            const durasi = 2000; // 2 detik animasi
             animateCounter("val-c3", data[2][2] || "-", durasi);
             animateCounter("val-a3", data[2][0] || "-", durasi);
-
-            // Card 2: Row 8 (Index 7)
             animateCounter("val-c8", data[7][2] || "-", durasi);
             animateCounter("val-a8", data[7][0] || "-", durasi);
-
-            // Card 3: Row 13 (Index 12)
             animateCounter("val-c13", data[12][2] || "-", durasi);
             animateCounter("val-a13", data[12][0] || "-", durasi);
-
-            // Card 4: Row 18 (Index 17)
             animateCounter("val-c18", data[17][2] || "-", durasi);
             animateCounter("val-a18", data[17][0] || "-", durasi);
-
-            // Card 5: Row 23 (Index 22)
             animateCounter("val-c23", data[22][2] || "-", durasi);
             animateCounter("val-a23", data[22][0] || "-", durasi);
           }
         },
         error: function (error) {
-          console.error("Gagal load CSV:", error);
+          console.error("Gagal load CSV Angka Total:", error);
         },
       });
-    </script>
-    <script>
-      // =======================================================
-      // KODINGAN FIX ULTIMATE: SUPER DATE PARSER (ANTI 2-DIGIT YEAR)
-      // =======================================================
 
-      const urlSheet4 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRk8HUQrb0tNGed3S0Cm6XOces6c5CSJyJtc7hRr8PRCQ1zSowUgkLU8DKSY8WaW4zVnwXyapN5Q7Xc/pub?gid=268369224&single=true&output=csv"; // Jangan lupa URL Sheet4 lo
+      // --------------------------------------------------
+      // D. TARIK DATA DARI SHEET 4 (UNTUK GRAFIK GARIS & DONAT)
+      // --------------------------------------------------
+      const urlSheet4 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRk8HUQrb0tNGed3S0Cm6XOces6c5CSJyJtc7hRr8PRCQ1zSowUgkLU8DKSY8WaW4zVnwXyapN5Q7Xc/pub?gid=268369224&single=true&output=csv";
 
       Papa.parse(urlSheet4, {
         download: true,
@@ -251,11 +245,11 @@
         skipEmptyLines: true,
         complete: function (results) {
           let rawData = results.data;
-          if (isNaN(rawData[0][0])) rawData.shift();
+          if (isNaN(rawData[0][0])) rawData.shift(); // Hapus Header
 
           let parsedRows = [];
 
-          // 1. BACA & BERSIHKAN DATA
+          // 1. BERSIHKAN DATA & KENALI TANGGAL (SUPER DATE PARSER)
           rawData.forEach((row) => {
             if (row.length > 3 && row[1]) {
               let dateStr = row[1].trim();
@@ -265,50 +259,36 @@
               let cleanNominal = rawNominal.split(",")[0].replace(/[^0-9-]/g, "");
               let nominalMasuk = parseInt(cleanNominal) || 0;
 
-              // --- SUPER DATE PARSER ---
               let tglObj;
               let parts = dateStr.split(/[-/]/);
 
               if (parts.length === 3) {
                 let day, month, year;
-
-                // Cek apakah format YYYY di depan (contoh: 2026-01-31)
                 if (parts[0].length === 4) {
                   year = parseInt(parts[0]);
                   month = parseInt(parts[1]);
                   day = parseInt(parts[2]);
-                }
-                // Jika format DD/MM/YYYY atau DD/MM/YY (contoh: 31/01/2026 atau 31/01/26)
-                else {
+                } else {
                   day = parseInt(parts[0]);
                   month = parseInt(parts[1]);
                   year = parseInt(parts[2]);
-
-                  // FIX: Kalau tahunnya cuma 2 digit (misal 25), tambahin 2000 biar jadi 2025
-                  if (year < 100) {
-                    year += 2000;
-                  }
+                  if (year < 100) year += 2000; // Ubah 25 jadi 2025
                 }
                 tglObj = new Date(year, month - 1, day);
               } else {
                 tglObj = new Date(dateStr);
               }
 
-              // Kalau tanggal berhasil dikenali, masukkan ke antrean
               if (!isNaN(tglObj.getTime())) {
-                parsedRows.push({
-                  dateObj: tglObj,
-                  jenis: jenis,
-                  nominal: nominalMasuk,
-                });
+                parsedRows.push({ dateObj: tglObj, jenis: jenis, nominal: nominalMasuk });
               }
             }
           });
 
-          // 2. URUTKAN DATA KRONOLOGIS (WAJIB BIAR GRAFIK LURUS)
+          // 2. URUTKAN DATA SESUAI WAKTU (Dari terlama ke terbaru)
           parsedRows.sort((a, b) => a.dateObj - b.dateObj);
 
-          // 3. HITUNG KUMULATIF PER BULAN
+          // 3. HITUNG SALDO KUMULATIF PER KATEGORI PER BULAN
           let currentBalances = {
             "Emas Pegadaian Dana Darurat": 0,
             "Tabungan Hari Tua EMAS": 0,
@@ -336,7 +316,7 @@
             };
           });
 
-          // 4. SIAPKAN UNTUK CHART.JS
+          // 4. SIAPKAN DATA UNTUK GRAFIK GARIS
           let labelTanggal = [];
           let datasetPoints = {
             "Emas Pegadaian Dana Darurat": [],
@@ -347,7 +327,6 @@
           };
 
           let sortedKeys = Object.keys(dataPerBulan).sort();
-
           sortedKeys.forEach((key) => {
             let infoBulan = dataPerBulan[key];
             labelTanggal.push(infoBulan.labelX);
@@ -357,8 +336,8 @@
             });
           });
 
-          // 5. RENDER GRAFIK
-          const colors = {
+          // Warna konsisten untuk Garis dan Donat
+          const colorsCode = {
             "Emas Pegadaian Dana Darurat": "#ffd700",
             "Tabungan Hari Tua EMAS": "#ff8c00",
             "Tabungan Hari Tua BITCOIN": "#ff4500",
@@ -366,11 +345,14 @@
             "Tabungan BITCOIN": "#00ffcc",
           };
 
+          // ==========================================
+          // RENDER GRAFIK GARIS (LINE CHART)
+          // ==========================================
           let formatedDatasets = Object.keys(datasetPoints).map((kategori) => {
             return {
               label: kategori,
               data: datasetPoints[kategori],
-              borderColor: colors[kategori] || "#ffffff",
+              borderColor: colorsCode[kategori] || "#ffffff",
               backgroundColor: "transparent",
               borderWidth: 2.5,
               tension: 0.3,
@@ -413,9 +395,68 @@
               },
             },
           });
+
+          // ==========================================
+          // RENDER GRAFIK DONAT + PERSENTASE
+          // ==========================================
+          const labelDonat = Object.keys(currentBalances);
+          const nilaiDonat = Object.values(currentBalances);
+
+          // Hitung total uang keseluruhan buat nyari persen
+          const totalAset = nilaiDonat.reduce((a, b) => a + b, 0);
+          const warnaDonat = Object.values(colorsCode);
+
+          const ctxDonat = document.getElementById("grafikDonat").getContext("2d");
+          new Chart(ctxDonat, {
+            type: "doughnut",
+            data: {
+              labels: labelDonat,
+              datasets: [
+                {
+                  data: nilaiDonat,
+                  backgroundColor: warnaDonat,
+                  borderColor: "rgba(8, 8, 22, 0.8)", // Border gelap
+                  borderWidth: 3,
+                  hoverOffset: 10,
+                },
+              ],
+            },
+            plugins: [ChartDataLabels], // Mendaftarkan Plugin DataLabels HANYA di grafik ini
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              cutout: "60%",
+              plugins: {
+                legend: {
+                  position: "bottom",
+                  labels: { color: "white", padding: 20, font: { size: 12 } },
+                },
+                datalabels: {
+                  // Settingan Teks Persentase
+                  color: "#000",
+                  font: { weight: "bold", size: 13 },
+                  formatter: (value, context) => {
+                    if (value === 0) return null; // Kalau Rp 0, sembunyikan teksnya
+                    let percentage = ((value / totalAset) * 100).toFixed(1) + "%";
+                    return percentage;
+                  },
+                },
+                tooltip: {
+                  callbacks: {
+                    label: function (context) {
+                      let label = context.label || "";
+                      let value = context.parsed || 0;
+                      let percentage = ((value / totalAset) * 100).toFixed(1) + "%";
+                      return `${label}: Rp ${value.toLocaleString("id-ID")} (${percentage})`;
+                    },
+                  },
+                },
+              },
+            },
+          });
         },
         error: function (error) {
-          console.error("Gagal memuat grafik kategori:", error);
+          console.error("Gagal memuat CSV Grafik:", error);
         },
       });
     </script>

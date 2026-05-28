@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -29,30 +29,35 @@
         z-index: 1;
       }
 
-      /* Style Glassmorphism */
+      /* Style Glassmorphism untuk Card */
       .glass-card {
         background: rgba(255, 255, 255, 0.05);
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 15px;
       }
+
+      /* Styling Input Form biar nyatu sama Dark Mode */
       .form-control,
       .form-select {
         background-color: rgba(0, 0, 0, 0.5) !important;
         border: 1px solid rgba(255, 255, 255, 0.2) !important;
         color: white !important;
       }
+
       .form-control:focus,
       .form-select:focus {
         border-color: #3fbcff !important;
         box-shadow: 0 0 8px rgba(63, 188, 255, 0.5) !important;
       }
+
       .form-select option {
         background-color: #080816;
         color: white;
       }
     </style>
   </head>
+
   <body>
     <div id="vanta-bg">
       <div class="container pt-5 pb-5 form-content">
@@ -62,7 +67,7 @@
 
             <div class="card glass-card p-4 shadow-lg">
               <h3 class="fw-bold text-white mb-1">Tambah Data Tabungan</h3>
-              <!-- <p class="text-white-50 small mb-4">Data akan tersimpan langsung ke Google Sheets (Sheet4)</p> -->
+              <p class="text-white-50 small mb-4">Pastikan data diisi dengan benar sebelum disimpan.</p>
 
               <form id="formTabungan">
                 <div class="mb-3">
@@ -97,10 +102,10 @@
                   <textarea class="form-control" name="keterangan" rows="2" placeholder="Catatan tambahan..."></textarea>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100 fw-bold shadow" id="btnSimpan">Simpan</button>
+                <button type="submit" class="btn btn-primary w-100 fw-bold shadow" id="btnSimpan">Simpan ke Google Sheets</button>
               </form>
 
-              <div id="alertSukses" class="alert alert-success mt-3 d-none text-center fw-semibold" role="alert">🎉 Data berhasil disimpan.</div>
+              <div id="alertSukses" class="alert alert-success mt-3 d-none text-center fw-semibold" role="alert">🎉 Data berhasil disimpan!</div>
             </div>
           </div>
         </div>
@@ -111,7 +116,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
 
     <script>
-      // 1. Inisialisasi Background Vanta.js biar sama persis kayak dashboard
+      // Inisialisasi Background Vanta.js
       VANTA.NET({
         el: "#vanta-bg",
         mouseControls: true,
@@ -129,8 +134,9 @@
       });
 
       // ========================================================
-      // 2. PASTE URL WEB APP DARI APPS SCRIPT LO DI SINI!
+      // SCRIPT PENGIRIMAN DATA KE GOOGLE SHEETS
       // ========================================================
+
       const scriptURL = "https://script.google.com/macros/s/AKfycbx3uiXsB0K9SsrtK1v6FsRCq2KfsuksvuQByquNyhetKVLA6gIL6nw8FA9lH9HYT1Qf/exec";
 
       const form = document.forms["formTabungan"];
@@ -143,10 +149,35 @@
         btnSimpan.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Menyimpan...';
         btnSimpan.disabled = true;
 
-        fetch(scriptURL, { method: "POST", body: new FormData(form) })
+        const formData = new FormData(form);
+
+        // ================================================
+        // HACK 1: UBAH FORMAT TANGGAL JADI DD/MM/YYYY
+        // ================================================
+        let tanggalMentah = formData.get("tanggal"); // Output asli: YYYY-MM-DD
+        if (tanggalMentah) {
+          let parts = tanggalMentah.split("-"); // Dipecah jadi array [YYYY, MM, DD]
+          if (parts.length === 3) {
+            let tanggalFix = `${parts[2]}/${parts[1]}/${parts[0]}`; // Disusun jadi DD/MM/YYYY
+            formData.set("tanggal", tanggalFix); // Timpa datanya
+          }
+        }
+
+        // ================================================
+        // HACK 2: UBAH TITIK JADI KOMA (UNTUK JUMLAH COIN/GRAM)
+        // ================================================
+        let jumlahMentah = formData.get("jumlah");
+        if (jumlahMentah) {
+          let jumlahFix = jumlahMentah.replace(/\./g, ",");
+          formData.set("jumlah", jumlahFix);
+        }
+
+        // Tembak data ke Google Sheets
+        fetch(scriptURL, { method: "POST", body: formData })
           .then((response) => {
             alertSukses.classList.remove("d-none");
             form.reset();
+
             btnSimpan.innerHTML = "Simpan ke Google Sheets";
             btnSimpan.disabled = false;
 
@@ -157,6 +188,7 @@
           .catch((error) => {
             console.error("Error!", error.message);
             alert("Gagal bro! Cek lagi URL script atau koneksi internet lo.");
+
             btnSimpan.innerHTML = "Simpan ke Google Sheets";
             btnSimpan.disabled = false;
           });

@@ -99,10 +99,23 @@
               </div>
             </div>
           </div>
+
+          <div class="row justify-content-center mb-5">
+            <div class="col-12 col-lg-10">
+              <div class="card glass-card p-4 shadow-lg">
+                <h5 class="fw-bold text-white mb-3">📈 Grafik Pertumbuhan Tabungan</h5>
+                <div style="position: relative; height: 350px; width: 100%">
+                  <canvas id="grafikTabungan"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <a href="tambah.html" class="btn btn-outline-light mb-4">➕ Tambah Data Baru</a>
         </div>
       </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -222,6 +235,187 @@
         },
         error: function (error) {
           console.error("Gagal load CSV:", error);
+        },
+      });
+    </script>
+    <script>
+      // =======================================================
+      // KODINGAN FIX ULTIMATE: SUPER DATE PARSER (ANTI 2-DIGIT YEAR)
+      // =======================================================
+
+      const urlSheet4 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRk8HUQrb0tNGed3S0Cm6XOces6c5CSJyJtc7hRr8PRCQ1zSowUgkLU8DKSY8WaW4zVnwXyapN5Q7Xc/pub?gid=268369224&single=true&output=csv"; // Jangan lupa URL Sheet4 lo
+
+      Papa.parse(urlSheet4, {
+        download: true,
+        header: false,
+        skipEmptyLines: true,
+        complete: function (results) {
+          let rawData = results.data;
+          if (isNaN(rawData[0][0])) rawData.shift();
+
+          let parsedRows = [];
+
+          // 1. BACA & BERSIHKAN DATA
+          rawData.forEach((row) => {
+            if (row.length > 3 && row[1]) {
+              let dateStr = row[1].trim();
+              let jenis = row[2] ? row[2].trim() : "";
+              let rawNominal = row[3] || "0";
+
+              let cleanNominal = rawNominal.split(",")[0].replace(/[^0-9-]/g, "");
+              let nominalMasuk = parseInt(cleanNominal) || 0;
+
+              // --- SUPER DATE PARSER ---
+              let tglObj;
+              let parts = dateStr.split(/[-/]/);
+
+              if (parts.length === 3) {
+                let day, month, year;
+
+                // Cek apakah format YYYY di depan (contoh: 2026-01-31)
+                if (parts[0].length === 4) {
+                  year = parseInt(parts[0]);
+                  month = parseInt(parts[1]);
+                  day = parseInt(parts[2]);
+                }
+                // Jika format DD/MM/YYYY atau DD/MM/YY (contoh: 31/01/2026 atau 31/01/26)
+                else {
+                  day = parseInt(parts[0]);
+                  month = parseInt(parts[1]);
+                  year = parseInt(parts[2]);
+
+                  // FIX: Kalau tahunnya cuma 2 digit (misal 25), tambahin 2000 biar jadi 2025
+                  if (year < 100) {
+                    year += 2000;
+                  }
+                }
+                tglObj = new Date(year, month - 1, day);
+              } else {
+                tglObj = new Date(dateStr);
+              }
+
+              // Kalau tanggal berhasil dikenali, masukkan ke antrean
+              if (!isNaN(tglObj.getTime())) {
+                parsedRows.push({
+                  dateObj: tglObj,
+                  jenis: jenis,
+                  nominal: nominalMasuk,
+                });
+              }
+            }
+          });
+
+          // 2. URUTKAN DATA KRONOLOGIS (WAJIB BIAR GRAFIK LURUS)
+          parsedRows.sort((a, b) => a.dateObj - b.dateObj);
+
+          // 3. HITUNG KUMULATIF PER BULAN
+          let currentBalances = {
+            "Emas Pegadaian Dana Darurat": 0,
+            "Tabungan Hari Tua EMAS": 0,
+            "Tabungan Hari Tua BITCOIN": 0,
+            "Tabungan EMAS": 0,
+            "Tabungan BITCOIN": 0,
+          };
+
+          let dataPerBulan = {};
+          const namaBulan = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"];
+
+          parsedRows.forEach((row) => {
+            if (currentBalances.hasOwnProperty(row.jenis)) {
+              currentBalances[row.jenis] += row.nominal;
+            }
+
+            let yyyy = row.dateObj.getFullYear();
+            let mm = row.dateObj.getMonth();
+            let keyBulan = `${yyyy}-${String(mm + 1).padStart(2, "0")}`;
+            let labelCantik = `${namaBulan[mm]} ${yyyy}`;
+
+            dataPerBulan[keyBulan] = {
+              labelX: labelCantik,
+              balances: { ...currentBalances },
+            };
+          });
+
+          // 4. SIAPKAN UNTUK CHART.JS
+          let labelTanggal = [];
+          let datasetPoints = {
+            "Emas Pegadaian Dana Darurat": [],
+            "Tabungan Hari Tua EMAS": [],
+            "Tabungan Hari Tua BITCOIN": [],
+            "Tabungan EMAS": [],
+            "Tabungan BITCOIN": [],
+          };
+
+          let sortedKeys = Object.keys(dataPerBulan).sort();
+
+          sortedKeys.forEach((key) => {
+            let infoBulan = dataPerBulan[key];
+            labelTanggal.push(infoBulan.labelX);
+
+            Object.keys(datasetPoints).forEach((kategori) => {
+              datasetPoints[kategori].push(infoBulan.balances[kategori]);
+            });
+          });
+
+          // 5. RENDER GRAFIK
+          const colors = {
+            "Emas Pegadaian Dana Darurat": "#ffd700",
+            "Tabungan Hari Tua EMAS": "#ff8c00",
+            "Tabungan Hari Tua BITCOIN": "#ff4500",
+            "Tabungan EMAS": "#b8860b",
+            "Tabungan BITCOIN": "#00ffcc",
+          };
+
+          let formatedDatasets = Object.keys(datasetPoints).map((kategori) => {
+            return {
+              label: kategori,
+              data: datasetPoints[kategori],
+              borderColor: colors[kategori] || "#ffffff",
+              backgroundColor: "transparent",
+              borderWidth: 2.5,
+              tension: 0.3,
+              pointRadius: 3,
+              pointHoverRadius: 6,
+            };
+          });
+
+          const ctx = document.getElementById("grafikTabungan").getContext("2d");
+          new Chart(ctx, {
+            type: "line",
+            data: {
+              labels: labelTanggal,
+              datasets: formatedDatasets,
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { labels: { color: "white", font: { size: 11 } } },
+                tooltip: { mode: "index", intersect: false },
+              },
+              scales: {
+                x: {
+                  ticks: { color: "rgba(255,255,255,0.7)", maxTicksLimit: 12 },
+                  grid: { color: "rgba(255,255,255,0.05)" },
+                },
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    color: "rgba(255,255,255,0.7)",
+                    callback: function (value) {
+                      if (value >= 1000000000) return (value / 1000000000).toFixed(1) + " M";
+                      if (value >= 1000000) return (value / 1000000).toFixed(0) + " Jt";
+                      return value;
+                    },
+                  },
+                  grid: { color: "rgba(255,255,255,0.05)" },
+                },
+              },
+            },
+          });
+        },
+        error: function (error) {
+          console.error("Gagal memuat grafik kategori:", error);
         },
       });
     </script>

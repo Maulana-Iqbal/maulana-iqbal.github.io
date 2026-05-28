@@ -127,6 +127,63 @@
         spacing: 16.0,
       });
 
+      // Fungsi buat animasi counting
+      function animateCounter(elementId, targetValue, duration) {
+        const obj = document.getElementById(elementId);
+        if (!obj || !targetValue) return;
+
+        // 1. Ambil cuma angka, titik, dan koma dari teks (misal: "Rp 15.000.000" -> "15.000.000")
+        const onlyNumbers = targetValue.replace(/[^0-9,.]/g, "");
+        if (!onlyNumbers) {
+          obj.innerText = targetValue; // Kalau ga ada angka, langsung tampilin aja
+          return;
+        }
+
+        // 2. Cari awalan (prefix) dan akhiran (suffix) teksnya
+        const prefix = targetValue.split(onlyNumbers)[0] || "";
+        const suffix = targetValue.split(onlyNumbers)[1] || "";
+
+        // 3. Ubah format angka Indo ke format mesin (hapus titik ribuan, ubah koma desimal jadi titik)
+        const cleanNumber = parseFloat(onlyNumbers.replace(/\./g, "").replace(",", "."));
+        if (isNaN(cleanNumber)) {
+          obj.innerText = targetValue;
+          return;
+        }
+
+        // 4. Proses Animasi
+        let startTimestamp = null;
+        const step = (timestamp) => {
+          if (!startTimestamp) startTimestamp = timestamp;
+          // Hitung progres (0 sampai 1)
+          const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+
+          // Hitung angka saat ini berdasarkan progres
+          const currentNum = progress * cleanNumber;
+
+          let formattedNum;
+          // Cek kalau angkanya desimal (punya koma)
+          if (onlyNumbers.includes(",")) {
+            const decimals = onlyNumbers.split(",")[1].length;
+            formattedNum = currentNum.toFixed(decimals).replace(".", ","); // Balikin format koma
+          } else {
+            // Angka bulat (otomatis kasih titik ribuan)
+            formattedNum = Math.floor(currentNum).toLocaleString("id-ID");
+          }
+
+          // Tampilkan ke HTML
+          obj.innerText = prefix + formattedNum + suffix;
+
+          // Lanjut animasi kalau belum selesai
+          if (progress < 1) {
+            window.requestAnimationFrame(step);
+          } else {
+            // Pastikan hasil akhir sama persis 100% kayak di Spreadsheet
+            obj.innerText = targetValue;
+          }
+        };
+
+        window.requestAnimationFrame(step);
+      }
       const urlSheets = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRk8HUQrb0tNGed3S0Cm6XOces6c5CSJyJtc7hRr8PRCQ1zSowUgkLU8DKSY8WaW4zVnwXyapN5Q7Xc/pub?gid=87019778&single=true&output=csv";
 
       Papa.parse(urlSheets, {
@@ -136,29 +193,30 @@
         complete: function (results) {
           const data = results.data;
 
-          // Pastikan data cukup panjang sebelum di-render (mencegah error)
+          // Pastikan data cukup panjang sebelum di-render
           if (data.length >= 23) {
+            // Durasi animasi dalam milidetik (2000 = 2 detik)
+            const durasi = 2000;
+
             // Card 1: Row 3 (Index 2)
-            document.getElementById("val-c3").innerText = data[2][2] || "-"; // Kolom C
-            document.getElementById("val-a3").innerText = data[2][0] || "-"; // Kolom A
+            animateCounter("val-c3", data[2][2] || "-", durasi);
+            animateCounter("val-a3", data[2][0] || "-", durasi);
 
             // Card 2: Row 8 (Index 7)
-            document.getElementById("val-c8").innerText = data[7][2] || "-";
-            document.getElementById("val-a8").innerText = data[7][0] || "-";
+            animateCounter("val-c8", data[7][2] || "-", durasi);
+            animateCounter("val-a8", data[7][0] || "-", durasi);
 
             // Card 3: Row 13 (Index 12)
-            document.getElementById("val-c13").innerText = data[12][2] || "-";
-            document.getElementById("val-a13").innerText = data[12][0] || "-";
+            animateCounter("val-c13", data[12][2] || "-", durasi);
+            animateCounter("val-a13", data[12][0] || "-", durasi);
 
             // Card 4: Row 18 (Index 17)
-            document.getElementById("val-c18").innerText = data[17][2] || "-";
-            document.getElementById("val-a18").innerText = data[17][0] || "-";
+            animateCounter("val-c18", data[17][2] || "-", durasi);
+            animateCounter("val-a18", data[17][0] || "-", durasi);
 
             // Card 5: Row 23 (Index 22)
-            document.getElementById("val-c23").innerText = data[22][2] || "-";
-            document.getElementById("val-a23").innerText = data[22][0] || "-";
-          } else {
-            console.error("Data dari CSV kurang dari 23 baris!");
+            animateCounter("val-c23", data[22][2] || "-", durasi);
+            animateCounter("val-a23", data[22][0] || "-", durasi);
           }
         },
         error: function (error) {

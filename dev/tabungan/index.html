@@ -9,21 +9,20 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 
   <style>
-    /* =========================================
-       1. CSS DASAR & LAYOUT
-       ========================================= */
+    /* =========================================================
+       1. LAYOUT & BACKGROUND STYLE (FIX BACKGROUND KEPOTONG)
+       ========================================================= */
     body,
     html {
       margin: 0;
       padding: 0;
       background-color: #080816;
-      /* Warna gelap backup kalau Vanta telat loading */
+      /* Warna dasar gelap (backup kalau Vanta telat load) */
     }
 
-    /* Container buat animasi jaring Vanta.js */
+    /* Set background animasi Vanta nempel fixed di layar biar gak putus pas di-scroll */
     #vanta-bg {
       position: fixed;
-      /* Bikin nempel di layar, gak ikut ke-scroll */
       top: 0;
       left: 0;
       width: 100%;
@@ -32,20 +31,20 @@
       /* Taruh di layer paling belakang */
     }
 
-    /* Container utama tempat semua kartu dan grafik berada */
+    /* Konten utama dashboard berjalan (scroll) di atas background */
     .dashboard-content {
       position: relative;
       z-index: 1;
-      /* Pastikan konten ada di atas animasi Vanta */
+      /* Di atas vanta-bg (layer 1) */
       color: white;
       padding-bottom: 50px;
-      /* Kasih ruang di bawah biar gak mepet layar */
+      /* Jarak bawah biar tombol gak mentok ujung layar */
     }
 
-    /* =========================================
-       2. EFEK VISUAL (GLASSMORPHISM & BLUR)
-       ========================================= */
-    /* Desain kartu transparan ala Apple/iOS */
+    /* =========================================================
+       2. GLASSMORPHISM EFFECT & PRIVACY BLUR
+       ========================================================= */
+    /* Kotak transparan modern efek kaca ala Apple/iOS */
     .glass-card {
       background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(10px);
@@ -54,27 +53,25 @@
       border-radius: 15px;
     }
 
-    /* Class sakti buat mode privasi (nge-blur teks) */
+    /* Class untuk mode privasi (efek nge-blur teks saldo) */
     .privacy-blur {
       filter: blur(8px) !important;
       opacity: 0.7;
       pointer-events: none;
-      /* Biar teks yang diblur gak bisa di-copas */
+      /* Biar saldo gak bisa di-block/copas pas blur */
       user-select: none;
       transition: filter 0.3s ease, opacity 0.3s ease;
-      /* Animasi mulus pas ngeblur */
     }
 
-    /* =========================================
-       3. STYLING TOMBOL & TABEL
-       ========================================= */
-    /* Tombol ikon mata di header */
+    /* =========================================================
+       3. BUTTONS & PNL TABLE DESIGN
+       ========================================================= */
+    /* Tombol ikon mata minimalis berbentuk bulat */
     .icon-btn {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.2);
       color: white;
       border-radius: 50%;
-      /* Bikin bulat sempurna */
       width: 42px;
       height: 42px;
       display: flex;
@@ -88,7 +85,7 @@
       outline: none;
     }
 
-    /* Efek pas kursor diarahkan ke tombol mata */
+    /* Efek hover glow biru neon pas kursor nyentuh tombol mata */
     .icon-btn:hover {
       background: rgba(63, 188, 255, 0.15);
       border-color: #3fbcff;
@@ -99,11 +96,11 @@
 
     .icon-btn:active {
       transform: translateY(1px);
-      /* Efek ketekan */
+      /* Efek keteken pas diklik */
       box-shadow: 0 0 5px rgba(63, 188, 255, 0.4);
     }
 
-    /* Styling khusus tabel Profit & Loss */
+    /* Desain kustom tabel biar transparan menyatu dengan tema */
     #pnlTable {
       color: white;
       margin-bottom: 0;
@@ -112,14 +109,12 @@
     #pnlTable th,
     #pnlTable td {
       background: transparent !important;
-      /* Buang warna background bawaan Bootstrap */
       color: white;
       border-color: rgba(255, 255, 255, 0.1);
-      /* Garis pembatas tipis */
       vertical-align: middle;
     }
 
-    /* Warna teks untuk untung (hijau) dan rugi (merah) */
+    /* Efek warna teks neon untuk untung (hijau toska) & rugi (pink merah) */
     .text-success-neon {
       color: #00ffcc !important;
     }
@@ -337,25 +332,24 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
   <script>
-    // Variabel Global buat nyimpen data biar gampang dipanggil lintas fungsi
-    let globalSheetData = null; // Nyimpen data tabel dari Sheet 1
-    let globalLivePrices = { btc: 0, emas: 0, usdt: 0 }; // Nyimpen harga market real-time
+    // Variabel Global penampung data
+    let globalSheetData = null; // Menyimpan raw data baris dari Google Sheet 1
+    let globalLivePrices = { btc: 0, emas: 0, usdt: 0 }; // Menyimpan harga market terkini hasil fetch API
 
-    // Peta aset buat Tabel PNL. 
-    // Urutannya di sini menentukan urutan tampil di layar tabel PNL
-    // rowIdx = baris di Google Sheets lu dikurang 1 (karena array mulai dari 0)
+    // Konfigurasi Urutan dan Pemetaan Aset di Tabel PNL (Sesuai List Request Lu)
+    // rowIdx = Nomer baris asli di Google Sheet 1 dikurangi 1 (karena sistem koding mulai dari angka 0)
     const assetMap = [
-      { name: "Emas Fisik", rowIdx: 26, type: "emas" },
-      { name: "Tabungan Hari Tua EMAS", rowIdx: 7, type: "emas" },
-      { name: "Tabungan Hari Tua BITCOIN", rowIdx: 12, type: "btc" },
-      { name: "Emas Pegadaian Dana Darurat", rowIdx: 2, type: "emas" },
-      { name: "USDT", rowIdx: 34, type: "usdt" },
-      { name: "Tabungan EMAS", rowIdx: 17, type: "emas" },
-      { name: "Tabungan BITCOIN", rowIdx: 22, type: "btc" },
-      { name: "Deposito", rowIdx: 30, type: "idr" }
+      { name: "Emas Fisik", rowIdx: 26, type: "emas" },               // Baris 27 di Google Sheets
+      { name: "Tabungan Hari Tua EMAS", rowIdx: 7, type: "emas" },     // Baris 8 di Google Sheets
+      { name: "Tabungan Hari Tua BITCOIN", rowIdx: 12, type: "btc" },  // Baris 13 di Google Sheets
+      { name: "Emas Pegadaian Dana Darurat", rowIdx: 2, type: "emas" },// Baris 3 di Google Sheets
+      { name: "USDT", rowIdx: 34, type: "usdt" },                      // Baris 35 di Google Sheets
+      { name: "Tabungan EMAS", rowIdx: 17, type: "emas" },             // Baris 18 di Google Sheets
+      { name: "Tabungan BITCOIN", rowIdx: 22, type: "btc" },           // Baris 23 di Google Sheets
+      { name: "Deposito", rowIdx: 30, type: "idr" }                    // Baris 31 di Google Sheets
     ];
 
-    // Inisialisasi background animasi jaring-jaring
+    // Jalankan Efek Animasi Latar Vanta Net
     VANTA.NET({
       el: "#vanta-bg",
       mouseControls: true, touchControls: true, gyroControls: false,
@@ -363,33 +357,28 @@
       color: 0x3fbcff, backgroundColor: 0x080816, points: 12.0, maxDistance: 20.0, spacing: 16.0,
     });
 
-    // Fungsi utilitas buat bersihin string angka (ex: "Rp 10.000,50" -> 10000.50)
+    // Fungsi membersihkan teks rupiah / desimal koma lokal biar bisa dihitung matematika oleh kodingan
     function parseLocalNumber(str) {
       if (!str || str === "-") return 0;
-      let cleanStr = str.replace(/[^0-9,-]/g, "").replace(",", "."); // Buang selain angka, ubah koma jadi titik
+      let cleanStr = str.replace(/[^0-9,-]/g, "").replace(",", ".");
       return parseFloat(cleanStr) || 0;
     }
 
-    // Fungsi buat bikin animasi angka nambah (ngitung dari 0 ke angka target)
+    // Fungsi membuat animasi angka berjalan dari nol pas web dibuka (Counting Animation)
     function animateCounter(elementId, targetValue, duration) {
       const obj = document.getElementById(elementId);
       if (!obj || !targetValue) return;
-
       const onlyNumbers = targetValue.replace(/[^0-9,.]/g, "");
       if (!onlyNumbers) { obj.innerText = targetValue; return; }
-
-      const prefix = targetValue.split(onlyNumbers)[0] || ""; // ex: "Rp "
-      const suffix = targetValue.split(onlyNumbers)[1] || ""; // ex: " Gram"
+      const prefix = targetValue.split(onlyNumbers)[0] || "";
+      const suffix = targetValue.split(onlyNumbers)[1] || "";
       const cleanNumber = parseLocalNumber(targetValue);
-
       if (isNaN(cleanNumber)) { obj.innerText = targetValue; return; }
-
       let startTimestamp = null;
       const step = (timestamp) => {
         if (!startTimestamp) startTimestamp = timestamp;
         const progress = Math.min((timestamp - startTimestamp) / duration, 1);
         const currentNum = progress * cleanNumber;
-
         let formattedNum;
         if (onlyNumbers.includes(",")) {
           const decimals = onlyNumbers.split(",")[1].length;
@@ -397,7 +386,6 @@
         } else {
           formattedNum = Math.floor(currentNum).toLocaleString("id-ID");
         }
-
         obj.innerText = prefix + formattedNum + suffix;
         if (progress < 1) window.requestAnimationFrame(step);
         else obj.innerText = targetValue;
@@ -405,366 +393,246 @@
       window.requestAnimationFrame(step);
     }
 
-    // Fungsi untuk menghitung dan mencetak ulang Tabel PNL
+    // Fungsi utama kalkulasi matematis untung rugi dan menyusun isi baris tabel PNL
     function renderTablePNL() {
-      // Pastikan data Google Sheets & Harga Live API udah kekumpul semua
+      // Validasi: Tabel baru boleh dirakit kalau data G-Sheets & data Live API udah sukses di-load
       if (!globalSheetData || !globalLivePrices.btc || !globalLivePrices.emas) return;
-
       let tbody = document.getElementById("pnlBody");
-      tbody.innerHTML = ""; // Bersihin tulisan "Menghitung keuntungan..."
-
+      tbody.innerHTML = "";
       let grandTotalBeli = 0;
       let grandTotalSaatIni = 0;
 
-      // Looping semua aset di assetMap
+      // Looping data assetMap untuk disusun berderet ke bawah
       assetMap.forEach((asset, index) => {
-        let strHargaBeli = globalSheetData[asset.rowIdx][0]; // Kolom A di Sheets
-        let strJumlah = globalSheetData[asset.rowIdx][2];    // Kolom C di Sheets
-
+        let strHargaBeli = globalSheetData[asset.rowIdx][0]; // Baca data kolom A di Sheets (Modal Beli)
+        let strJumlah = globalSheetData[asset.rowIdx][2];    // Baca data kolom C di Sheets (Gram/Koin)
         let hargaBeli = parseLocalNumber(strHargaBeli);
         let jumlah = parseLocalNumber(strJumlah);
         let hargaSaatIni = 0;
 
-        // Hitung valuasi saat ini berdasarkan jenis asetnya
-        if (asset.type === "emas") {
-          hargaSaatIni = jumlah * globalLivePrices.emas;
-        } else if (asset.type === "btc") {
-          hargaSaatIni = jumlah * globalLivePrices.btc;
-        } else if (asset.type === "usdt") {
-          hargaSaatIni = jumlah * globalLivePrices.usdt;
-        } else if (asset.type === "idr") {
-          hargaSaatIni = hargaBeli; // Deposito nilainya fix
-        }
+        // Perkalian jumlah aset milik lu dikalikan harga live market saat ini
+        if (asset.type === "emas") hargaSaatIni = jumlah * globalLivePrices.emas;
+        else if (asset.type === "btc") hargaSaatIni = jumlah * globalLivePrices.btc;
+        else if (asset.type === "usdt") hargaSaatIni = jumlah * globalLivePrices.usdt;
+        else if (asset.type === "idr") hargaSaatIni = hargaBeli; // Deposito nilainya tetap stabil
 
-        // Hitung % Keuntungan / Kerugian
-        let pnlPersen = 0;
-        if (hargaBeli > 0) {
-          pnlPersen = ((hargaSaatIni - hargaBeli) / hargaBeli) * 100;
-        }
-
+        // Hitung persentase cuan ruginya
+        let pnlPersen = (hargaBeli > 0) ? ((hargaSaatIni - hargaBeli) / hargaBeli) * 100 : 0;
         grandTotalBeli += hargaBeli;
         grandTotalSaatIni += hargaSaatIni;
 
-        // Mainkan warna teks PNL sesuai kondisi
+        // Penentuan indikator arah untung rugi (Warna & Simbol Panah)
         let pnlText = "0.00%";
         let pnlClass = "text-white-50";
-        if (pnlPersen > 0) {
-          pnlText = `▲ +${pnlPersen.toFixed(2)}%`;
-          pnlClass = "text-success-neon fw-bold";
-        } else if (pnlPersen < 0) {
-          pnlText = `▼ ${pnlPersen.toFixed(2)}%`;
-          pnlClass = "text-danger-neon fw-bold";
-        }
+        if (pnlPersen > 0) { pnlText = `▲ +${pnlPersen.toFixed(2)}%`; pnlClass = "text-success-neon fw-bold"; }
+        else if (pnlPersen < 0) { pnlText = `▼ ${pnlPersen.toFixed(2)}%`; pnlClass = "text-danger-neon fw-bold"; }
 
         let fmtBeli = "Rp " + Math.round(hargaBeli).toLocaleString("id-ID");
         let fmtSaatIni = "Rp " + Math.round(hargaSaatIni).toLocaleString("id-ID");
 
-        // Masukin baris HTML ke dalam Tabel
+        // Suntik kode HTML baris baru ke dalam tabel body
         let tr = document.createElement("tr");
-        tr.innerHTML = `
-            <td class="text-center text-white-50">${index + 1}</td>
-            <td class="fw-semibold">${asset.name}</td>
-            <td class="text-end text-white-50">${fmtBeli}</td>
-            <td class="text-end fw-bold">${fmtSaatIni}</td>
-            <td class="text-end ${pnlClass}">${pnlText}</td>
-          `;
+        tr.innerHTML = `<td class="text-center text-white-50">${index + 1}</td><td class="fw-semibold">${asset.name}</td><td class="text-end text-white-50">${fmtBeli}</td><td class="text-end fw-bold">${fmtSaatIni}</td><td class="text-end ${pnlClass}">${pnlText}</td>`;
         tbody.appendChild(tr);
       });
 
-      // Kalkulasi Grand Total % PNL
-      let grandPnlPersen = 0;
-      if (grandTotalBeli > 0) {
-        grandPnlPersen = ((grandTotalSaatIni - grandTotalBeli) / grandTotalBeli) * 100;
-      }
-
-      // Cetak Grand Total ke tfoot
+      // Kalkulasi Grand Total persentase PNL portofolio gabungan
+      let grandPnlPersen = (grandTotalBeli > 0) ? ((grandTotalSaatIni - grandTotalBeli) / grandTotalBeli) * 100 : 0;
       document.getElementById("totalBeli").innerText = "Rp " + Math.round(grandTotalBeli).toLocaleString("id-ID");
       document.getElementById("totalSaatIni").innerText = "Rp " + Math.round(grandTotalSaatIni).toLocaleString("id-ID");
-
       let elTotalPnl = document.getElementById("totalPnl");
-      if (grandPnlPersen > 0) {
-        elTotalPnl.innerText = `▲ +${grandPnlPersen.toFixed(2)}%`;
-        elTotalPnl.className = "text-end fw-bold text-success-neon fs-5";
-      } else if (grandPnlPersen < 0) {
-        elTotalPnl.innerText = `▼ ${grandPnlPersen.toFixed(2)}%`;
-        elTotalPnl.className = "text-end fw-bold text-danger-neon fs-5";
-      } else {
-        elTotalPnl.innerText = "0.00%";
-        elTotalPnl.className = "text-end fw-bold text-white fs-5";
-      }
+      if (grandPnlPersen > 0) { elTotalPnl.innerText = `▲ +${grandPnlPersen.toFixed(2)}%`; elTotalPnl.className = "text-end fw-bold text-success-neon fs-5"; }
+      else if (grandPnlPersen < 0) { elTotalPnl.innerText = `▼ ${grandPnlPersen.toFixed(2)}%`; elTotalPnl.className = "text-end fw-bold text-danger-neon fs-5"; }
+      else { elTotalPnl.innerText = "0.00%"; elTotalPnl.className = "text-end fw-bold text-white fs-5"; }
 
-      // Panggil sistem blur (kalau privacy mode aktif, PNL langsung diblur otomatis)
+      // Jalankan fungsi pengontrol blur mode privasi agar data baru di tabel ikutan sinkron ter-blur
       applyPrivacy();
     }
 
-    // ==============================================
-    // TARIK DATA DARI SHEET 1 (SUMMARY KARTU ATAS)
-    // ==============================================
-    const urlSheetsAsli = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRk8HUQrb0tNGed3S0Cm6XOces6c5CSJyJtc7hRr8PRCQ1zSowUgkLU8DKSY8WaW4zVnwXyapN5Q7Xc/pub?gid=87019778&single=true&output=csv";
-    const urlSheets = urlSheetsAsli + "&t=" + new Date().getTime(); // Tambah timestamp biar gak kena cache
+    // =========================================================================
+    // ANTIDOTE CORS GITHUB PAGES: MENGGUNAKAN TEKNIK FETCH RAW TEXT SEBELUM PARSE
+    // =========================================================================
 
-    Papa.parse(urlSheets, {
-      download: true, header: false, skipEmptyLines: false,
-      complete: function (results) {
-        const data = results.data;
-        if (data.length >= 35) {
-          globalSheetData = data; // Simpan ke global buat PNL Table
+    // 1. Ambil Data Sheet 1 (Ringkasan Total Kartu)
+    const csvUrl1 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRk8HUQrb0tNGed3S0Cm6XOces6c5CSJyJtc7hRr8PRCQ1zSowUgkLU8DKSY8WaW4zVnwXyapN5Q7Xc/pub?gid=87019778&single=true&output=csv";
 
-          const durasi = 2000;
-          // Format pemanggilan animasi: (idElement, angkaTarget, durasiMs)
-          // Index array dikurang 1 dari nomor baris asli di Google Sheets
-          animateCounter("val-c3", data[2][2] || "-", durasi);
-          animateCounter("val-a3", data[2][0] || "-", durasi);
-          animateCounter("val-c8", data[7][2] || "-", durasi);
-          animateCounter("val-a8", data[7][0] || "-", durasi);
-          animateCounter("val-c13", data[12][2] || "-", durasi);
-          animateCounter("val-a13", data[12][0] || "-", durasi);
-          animateCounter("val-c18", data[17][2] || "-", durasi);
-          animateCounter("val-a18", data[17][0] || "-", durasi);
-          animateCounter("val-c23", data[22][2] || "-", durasi);
-          animateCounter("val-a23", data[22][0] || "-", durasi);
-          animateCounter("val-c27", data[26][2] || "-", durasi);
-          animateCounter("val-a27", data[26][0] || "-", durasi);
-          animateCounter("val-c31", data[30][2] || "-", durasi);
-          animateCounter("val-a31", data[30][0] || "-", durasi);
-          animateCounter("val-c35", data[34][2] || "-", durasi);
-          animateCounter("val-a35", data[34][0] || "-", durasi);
+    fetch(csvUrl1)
+      .then(response => response.text())
+      .then(csvText => {
+        Papa.parse(csvText, {
+          header: false,
+          complete: function (results) {
+            const data = results.data;
+            if (data.length >= 35) {
+              globalSheetData = data; // Simpan ke variabel global
+              const durasi = 2000;
+              // Trigger animasi counter kartu angka total atas
+              animateCounter("val-c3", data[2][2] || "-", durasi);
+              animateCounter("val-a3", data[2][0] || "-", durasi);
+              animateCounter("val-c8", data[7][2] || "-", durasi);
+              animateCounter("val-a8", data[7][0] || "-", durasi);
+              animateCounter("val-c13", data[12][2] || "-", durasi);
+              animateCounter("val-a13", data[12][0] || "-", durasi);
+              animateCounter("val-c18", data[17][2] || "-", durasi);
+              animateCounter("val-a18", data[17][0] || "-", durasi);
+              animateCounter("val-c23", data[22][2] || "-", durasi);
+              animateCounter("val-a23", data[22][0] || "-", durasi);
+              animateCounter("val-c27", data[26][2] || "-", durasi);
+              animateCounter("val-a27", data[26][0] || "-", durasi);
+              animateCounter("val-c31", data[30][2] || "-", durasi);
+              animateCounter("val-a31", data[30][0] || "-", durasi);
+              animateCounter("val-c35", data[34][2] || "-", durasi);
+              animateCounter("val-a35", data[34][0] || "-", durasi);
+              renderTablePNL(); // Jalankan pembacaan tabel
+            }
+          }
+        });
+      })
+      .catch(err => console.error("Gagal load Sheet 1 via Fetch:", err));
 
-          renderTablePNL(); // Render tabel kalau datanya udah dapet
-        }
-      },
-      error: function (error) { console.error("Gagal load CSV Angka Total:", error); },
-    });
+    // 2. Ambil Data Sheet 4 (Riwayat Transaksi Lengkap, Grafik, & Tanggal Terakhir)
+    const csvUrl4 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRk8HUQrb0tNGed3S0Cm6XOces6c5CSJyJtc7hRr8PRCQ1zSowUgkLU8DKSY8WaW4zVnwXyapN5Q7Xc/pub?gid=268369224&single=true&output=csv";
 
-    // ==============================================
-    // TARIK DATA DARI SHEET 4 (GRAFIK & TANGGAL TERAKHIR)
-    // ==============================================
-    const urlSheet4Asli = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRk8HUQrb0tNGed3S0Cm6XOces6c5CSJyJtc7hRr8PRCQ1zSowUgkLU8DKSY8WaW4zVnwXyapN5Q7Xc/pub?gid=268369224&single=true&output=csv";
-    const urlSheet4 = urlSheet4Asli + "&t=" + new Date().getTime();
-
-    Papa.parse(urlSheet4, {
-      download: true, header: false, skipEmptyLines: true,
-      complete: function (results) {
-        let rawData = results.data;
-        if (isNaN(rawData[0][0])) rawData.shift(); // Buang baris header teks
-
-        let parsedRows = [];
-
-        // Membersihkan format tanggal dan nominal dari CSV
-        rawData.forEach((row) => {
-          if (row.length > 3 && row[1]) {
-            let dateStr = row[1].trim();
-            let jenis = row[2] ? row[2].trim() : "";
-            let rawNominal = row[3] || "0";
-            let cleanNominal = rawNominal.split(",")[0].replace(/[^0-9-]/g, ""); // Bersihin format rupiah
-            let nominalMasuk = parseInt(cleanNominal) || 0;
-
-            let tglObj;
-            let parts = dateStr.split(/[-/]/);
-            if (parts.length === 3) {
-              let day, month, year;
-              if (parts[0].length === 4) {
-                year = parseInt(parts[0]); month = parseInt(parts[1]); day = parseInt(parts[2]);
-              } else {
-                day = parseInt(parts[0]); month = parseInt(parts[1]); year = parseInt(parts[2]);
-                if (year < 100) year += 2000;
+    fetch(csvUrl4)
+      .then(response => response.text())
+      .then(csvText => {
+        Papa.parse(csvText, {
+          header: false,
+          skipEmptyLines: true,
+          complete: function (results) {
+            let rawData = results.data;
+            if (isNaN(rawData[0][0])) rawData.shift(); // Singkirkan teks baris header judul kolom
+            let parsedRows = [];
+            rawData.forEach((row) => {
+              if (row.length > 3 && row[1]) {
+                let dateStr = row[1].trim();
+                let jenis = row[2] ? row[2].trim() : "";
+                let rawNominal = row[3] || "0";
+                let cleanNominal = rawNominal.split(",")[0].replace(/[^0-9-]/g, "");
+                let nominalMasuk = parseInt(cleanNominal) || 0;
+                let tglObj;
+                let parts = dateStr.split(/[-/]/);
+                if (parts.length === 3) {
+                  let day, month, year;
+                  if (parts[0].length === 4) { year = parseInt(parts[0]); month = parseInt(parts[1]); day = parseInt(parts[2]); }
+                  else { day = parseInt(parts[0]); month = parseInt(parts[1]); year = parseInt(parts[2]); if (year < 100) year += 2000; }
+                  tglObj = new Date(year, month - 1, day);
+                } else { tglObj = new Date(dateStr); }
+                if (!isNaN(tglObj.getTime())) parsedRows.push({ dateObj: tglObj, jenis: jenis, nominal: nominalMasuk });
               }
-              tglObj = new Date(year, month - 1, day);
-            } else {
-              tglObj = new Date(dateStr);
-            }
-            if (!isNaN(tglObj.getTime())) {
-              parsedRows.push({ dateObj: tglObj, jenis: jenis, nominal: nominalMasuk });
-            }
+            });
+            parsedRows.sort((a, b) => a.dateObj - b.dateObj); // Urutkan data dari tanggal terlama
+
+            let currentBalances = { "Emas Pegadaian Dana Darurat": 0, "Tabungan Hari Tua EMAS": 0, "Tabungan Hari Tua BITCOIN": 0, "Tabungan EMAS": 0, "Tabungan BITCOIN": 0, "Emas Fisik": 0, "Deposito": 0, "USDT": 0 };
+            let dataPerBulan = {};
+            const namaBulan = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"];
+            let latestDates = {}; // Objek khusus melacak tanggal terbaru tiap jenis aset
+
+            parsedRows.forEach((row) => {
+              if (currentBalances.hasOwnProperty(row.jenis)) currentBalances[row.jenis] += row.nominal;
+              let yyyy = row.dateObj.getFullYear();
+              let mm = row.dateObj.getMonth();
+              let keyBulan = `${yyyy}-${String(mm + 1).padStart(2, "0")}`;
+              dataPerBulan[keyBulan] = { labelX: `${namaBulan[mm]} ${yyyy}`, balances: { ...currentBalances } };
+
+              // Algoritma pembanding untuk mencari data transaksi paling baru
+              if (!latestDates[row.jenis] || row.dateObj > latestDates[row.jenis]) latestDates[row.jenis] = row.dateObj;
+            });
+
+            // Cetak tanggal transaksi terbaru ke bawah judul teks masing-masing kartu atas
+            const dateMapping = [{ id: "val-date-1", name: "Emas Pegadaian Dana Darurat" }, { id: "val-date-2", name: "Tabungan Hari Tua EMAS" }, { id: "val-date-3", name: "Tabungan Hari Tua BITCOIN" }, { id: "val-date-4", name: "Tabungan EMAS" }, { id: "val-date-5", name: "Tabungan BITCOIN" }, { id: "val-date-6", name: "Emas Fisik" }, { id: "val-date-7", name: "Deposito" }, { id: "val-date-8", name: "USDT" }];
+            dateMapping.forEach(item => {
+              let el = document.getElementById(item.id);
+              if (el) {
+                if (latestDates[item.name]) {
+                  let d = latestDates[item.name];
+                  el.innerText = `🕒 Terakhir: ${String(d.getDate()).padStart(2, '0')} ${namaBulan[d.getMonth()]} ${d.getFullYear()}`;
+                } else el.innerText = `🕒 Belum ada data`;
+              }
+            });
+
+            // Olah susunan data koordinat sumbu X dan Y untuk grafik
+            let labelTanggal = [];
+            let datasetPoints = { "Emas Pegadaian Dana Darurat": [], "Tabungan Hari Tua EMAS": [], "Tabungan Hari Tua BITCOIN": [], "Tabungan EMAS": [], "Tabungan BITCOIN": [], "Emas Fisik": [], "Deposito": [], "USDT": [] };
+            let sortedKeys = Object.keys(dataPerBulan).sort();
+            sortedKeys.forEach((key) => {
+              labelTanggal.push(dataPerBulan[key].labelX);
+              Object.keys(datasetPoints).forEach((k) => datasetPoints[k].push(dataPerBulan[key].balances[k]));
+            });
+
+            // Kodifikasi warna identitas visual masing-masing jenis aset portofolio lu
+            const colorsCode = { "Emas Pegadaian Dana Darurat": "#ffd700", "Tabungan Hari Tua EMAS": "#ff8c00", "Tabungan Hari Tua BITCOIN": "#ff4500", "Tabungan EMAS": "#b8860b", "Tabungan BITCOIN": "#00ffcc", "Emas Fisik": "#ff3366", "Deposito": "#a020f0", "USDT": "#26a17b" };
+            let formatedDatasets = Object.keys(datasetPoints).map((k) => ({ label: k, data: datasetPoints[k], borderColor: colorsCode[k] || "#ffffff", backgroundColor: "transparent", borderWidth: 2.5, tension: 0.3, pointRadius: 3, pointHoverRadius: 6 }));
+
+            // Eksekusi Pembuatan Grafik Garis Pertumbuhan Tabungan
+            new Chart(document.getElementById("grafikTabungan").getContext("2d"), {
+              type: "line", data: { labels: labelTanggal, datasets: formatedDatasets },
+              options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: "white", font: { size: 11 } } } }, scales: { x: { ticks: { color: "rgba(255,255,255,0.7)", maxTicksLimit: 12 }, grid: { color: "rgba(255,255,255,0.05)" } }, y: { beginAtZero: true, ticks: { color: "rgba(255,255,255,0.7)", callback: v => (v >= 1000000) ? (v / 1000000).toFixed(0) + " Jt" : v }, grid: { color: "rgba(255,255,255,0.05)" } } } }
+            });
+
+            // Eksekusi Pembuatan Grafik Donat Pembagian Porsi Alokasi Aset
+            let totalAset = Object.values(currentBalances).reduce((a, b) => a + b, 0);
+            new Chart(document.getElementById("grafikDonat").getContext("2d"), {
+              type: "doughnut", data: { labels: Object.keys(currentBalances), datasets: [{ data: Object.values(currentBalances), backgroundColor: Object.values(colorsCode), borderColor: "rgba(8, 8, 22, 0.8)", borderWidth: 3 }] },
+              plugins: [ChartDataLabels],
+              options: { responsive: true, maintainAspectRatio: false, cutout: "60%", plugins: { legend: { position: "bottom", labels: { color: "white", padding: 20, font: { size: 12 } } }, datalabels: { color: "#000", font: { weight: "bold" }, formatter: v => (v === 0) ? null : ((v / totalAset) * 100).toFixed(1) + "%" } } }
+            });
           }
         });
+      })
+      .catch(err => console.error("Gagal load Sheet 4 via Fetch:", err));
 
-        parsedRows.sort((a, b) => a.dateObj - b.dateObj); // Urutkan dari terlama ke terbaru
-
-        let currentBalances = { "Emas Pegadaian Dana Darurat": 0, "Tabungan Hari Tua EMAS": 0, "Tabungan Hari Tua BITCOIN": 0, "Tabungan EMAS": 0, "Tabungan BITCOIN": 0, "Emas Fisik": 0, "Deposito": 0, "USDT": 0 };
-        let dataPerBulan = {};
-        const namaBulan = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"];
-
-        // Objek buat nyimpen tanggal paling baru ditambahkan
-        let latestDates = {};
-
-        // Loop untuk ngitung saldo kumulatif & nyari tanggal terbaru
-        parsedRows.forEach((row) => {
-          if (currentBalances.hasOwnProperty(row.jenis)) { currentBalances[row.jenis] += row.nominal; }
-          let yyyy = row.dateObj.getFullYear(); let mm = row.dateObj.getMonth();
-          let keyBulan = `${yyyy}-${String(mm + 1).padStart(2, "0")}`;
-          let labelCantik = `${namaBulan[mm]} ${yyyy}`;
-          dataPerBulan[keyBulan] = { labelX: labelCantik, balances: { ...currentBalances } };
-
-          // Kalau tanggal saat ini lebih baru dari data sebelumnya, timpa datanya
-          if (!latestDates[row.jenis] || row.dateObj > latestDates[row.jenis]) {
-            latestDates[row.jenis] = row.dateObj;
-          }
-        });
-
-        // ----------------------------------------------------
-        // TAMPILKAN TANGGAL TERAKHIR KE MASING-MASING CARD
-        // ----------------------------------------------------
-        const dateMapping = [
-          { id: "val-date-1", name: "Emas Pegadaian Dana Darurat" },
-          { id: "val-date-2", name: "Tabungan Hari Tua EMAS" },
-          { id: "val-date-3", name: "Tabungan Hari Tua BITCOIN" },
-          { id: "val-date-4", name: "Tabungan EMAS" },
-          { id: "val-date-5", name: "Tabungan BITCOIN" },
-          { id: "val-date-6", name: "Emas Fisik" },
-          { id: "val-date-7", name: "Deposito" },
-          { id: "val-date-8", name: "USDT" }
-        ];
-
-        dateMapping.forEach(item => {
-          let el = document.getElementById(item.id);
-          if (el) {
-            if (latestDates[item.name]) {
-              let d = latestDates[item.name];
-              let tglStr = String(d.getDate()).padStart(2, '0') + " " + namaBulan[d.getMonth()] + " " + d.getFullYear();
-              el.innerText = `🕒 Terakhir: ${tglStr}`;
-            } else {
-              el.innerText = `🕒 Belum ada data`;
-            }
-          }
-        });
-
-        // ----------------------------------------------------
-        // PERSIAPAN DATA UNTUK CHART.JS
-        // ----------------------------------------------------
-        let labelTanggal = [];
-        let datasetPoints = { "Emas Pegadaian Dana Darurat": [], "Tabungan Hari Tua EMAS": [], "Tabungan Hari Tua BITCOIN": [], "Tabungan EMAS": [], "Tabungan BITCOIN": [], "Emas Fisik": [], "Deposito": [], "USDT": [] };
-
-        let sortedKeys = Object.keys(dataPerBulan).sort();
-        sortedKeys.forEach((key) => {
-          let infoBulan = dataPerBulan[key];
-          labelTanggal.push(infoBulan.labelX); // Label Bulan & Tahun
-          Object.keys(datasetPoints).forEach((kategori) => { datasetPoints[kategori].push(infoBulan.balances[kategori]); });
-        });
-
-        // Warna tiap garis dan potongan donat
-        const colorsCode = { "Emas Pegadaian Dana Darurat": "#ffd700", "Tabungan Hari Tua EMAS": "#ff8c00", "Tabungan Hari Tua BITCOIN": "#ff4500", "Tabungan EMAS": "#b8860b", "Tabungan BITCOIN": "#00ffcc", "Emas Fisik": "#ff3366", "Deposito": "#a020f0", "USDT": "#26a17b" };
-
-        let formatedDatasets = Object.keys(datasetPoints).map((kategori) => {
-          return { label: kategori, data: datasetPoints[kategori], borderColor: colorsCode[kategori] || "#ffffff", backgroundColor: "transparent", borderWidth: 2.5, tension: 0.3, pointRadius: 3, pointHoverRadius: 6 };
-        });
-
-        // 1. Eksekusi Grafik Garis
-        const ctx = document.getElementById("grafikTabungan").getContext("2d");
-        new Chart(ctx, {
-          type: "line", data: { labels: labelTanggal, datasets: formatedDatasets },
-          options: {
-            responsive: true, maintainAspectRatio: false,
-            plugins: { legend: { labels: { color: "white", font: { size: 11 } } }, tooltip: { mode: "index", intersect: false } },
-            scales: {
-              x: { ticks: { color: "rgba(255,255,255,0.7)", maxTicksLimit: 12 }, grid: { color: "rgba(255,255,255,0.05)" } },
-              y: {
-                beginAtZero: true,
-                ticks: {
-                  color: "rgba(255,255,255,0.7)",
-                  callback: function (value) {
-                    if (value >= 1000000000) return (value / 1000000000).toFixed(1) + " M";
-                    if (value >= 1000000) return (value / 1000000).toFixed(0) + " Jt";
-                    return value;
-                  },
-                },
-                grid: { color: "rgba(255,255,255,0.05)" },
-              },
-            },
-          },
-        });
-
-        // 2. Eksekusi Grafik Donat
-        const labelDonat = Object.keys(currentBalances);
-        const nilaiDonat = Object.values(currentBalances);
-        const totalAset = nilaiDonat.reduce((a, b) => a + b, 0);
-        const warnaDonat = Object.values(colorsCode);
-
-        const ctxDonat = document.getElementById("grafikDonat").getContext("2d");
-        new Chart(ctxDonat, {
-          type: "doughnut",
-          data: { labels: labelDonat, datasets: [{ data: nilaiDonat, backgroundColor: warnaDonat, borderColor: "rgba(8, 8, 22, 0.8)", borderWidth: 3, hoverOffset: 10 }] },
-          plugins: [ChartDataLabels],
-          options: {
-            responsive: true, maintainAspectRatio: false, cutout: "60%",
-            plugins: {
-              legend: { position: "bottom", labels: { color: "white", padding: 20, font: { size: 12 } } },
-              datalabels: { color: "#000", font: { weight: "bold", size: 13 }, formatter: (value, context) => { if (value === 0) return null; return ((value / totalAset) * 100).toFixed(1) + "%"; } },
-              tooltip: { callbacks: { label: function (context) { let label = context.label || ""; let value = context.parsed || 0; let percentage = ((value / totalAset) * 100).toFixed(1) + "%"; return `${label}: Rp ${value.toLocaleString("id-ID")} (${percentage})`; } } },
-            },
-          },
-        });
-      },
-      error: function (error) { console.error("Gagal memuat CSV Grafik:", error); },
-    });
-
-    // ==============================================
-    // TARIK HARGA LIVE DARI API (KRIPTO & PEGADAIAN)
-    // ==============================================
+    // =========================================================
+    // 9. AMBIL DATA HARGA MARKET LIVE DARI API INTERNET
+    // =========================================================
     function fetchLivePrices() {
-      // Panggil API bebarengan pakai Promise.all biar efisien
-      let fetchBtcUsdt = fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether&vs_currencies=idr").then(res => res.json());
-      let fetchPegadaian = fetch("https://logam-mulia-api.iamutaki.workers.dev/api/prices/pegadaian").then(res => res.json());
+      // Tembak API bebarengan pakai Promise.all biar ngebut dan efisien
+      let fKripto = fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether&vs_currencies=idr").then(r => r.json());
+      let fEmas = fetch("https://logam-mulia-api.iamutaki.workers.dev/api/prices/pegadaian").then(r => r.json());
 
-      Promise.all([fetchBtcUsdt, fetchPegadaian])
-        .then(([dataKripto, dataPegadaian]) => {
-          // Isi harga Kripto
-          globalLivePrices.btc = dataKripto.bitcoin.idr;
-          globalLivePrices.usdt = dataKripto.tether.idr;
-          document.getElementById("live-btc").innerText = "Rp " + globalLivePrices.btc.toLocaleString("id-ID");
-          document.getElementById("live-usdt").innerText = "Rp " + globalLivePrices.usdt.toLocaleString("id-ID");
+      Promise.all([fKripto, fEmas]).then(([dK, dE]) => {
+        // Tarik harga Bitcoin dan USDT dalam IDR rupiah dari CoinGecko
+        globalLivePrices.btc = dK.bitcoin.idr;
+        globalLivePrices.usdt = dK.tether.idr;
+        document.getElementById("live-btc").innerText = "Rp " + globalLivePrices.btc.toLocaleString("id-ID");
+        document.getElementById("live-usdt").innerText = "Rp " + globalLivePrices.usdt.toLocaleString("id-ID");
 
-          // Ekstrak harga Pegadaian per Gram
-          if (dataPegadaian.success && dataPegadaian.data) {
-            let harga1Gram = 0;
-            // Kalau response berupa array biasa
-            if (Array.isArray(dataPegadaian.data) && dataPegadaian.data.length > 0) {
-              let item = dataPegadaian.data.find(x => x.weight === 1);
-              if (item) harga1Gram = item.buybackPrice;
-              else harga1Gram = dataPegadaian.data[0].buybackPrice / dataPegadaian.data[0].weight; // Hitung manual kalau 1gr ga ketemu
-            }
-            // Kalau response dikelompokkin berdasar merk (Antam, UBS)
-            else if (dataPegadaian.data.antam && Array.isArray(dataPegadaian.data.antam) && dataPegadaian.data.antam.length > 0) {
-              let item = dataPegadaian.data.antam.find(x => x.weight === 1);
-              if (item) harga1Gram = item.buybackPrice;
-              else harga1Gram = dataPegadaian.data.antam[0].buybackPrice / dataPegadaian.data.antam[0].weight;
-            }
+        // Ekstrak kalkulasi konversi pecahan emas 1 gram merk Antam asli di loker Pegadaian
+        if (dE.success) {
+          let h1 = 0;
+          if (Array.isArray(dE.data)) h1 = dE.data.find(x => x.weight === 1)?.sellPrice || dE.data[0].sellPrice / dE.data[0].weight;
+          else h1 = dE.data.antam.find(x => x.weight === 1)?.sellPrice || dE.data.antam[0].sellPrice / dE.data.antam[0].weight;
+          globalLivePrices.emas = Math.round(h1);
+          document.getElementById("live-emas").innerText = "Rp " + globalLivePrices.emas.toLocaleString("id-ID");
+        }
 
-            globalLivePrices.emas = Math.round(harga1Gram);
-            document.getElementById("live-emas").innerText = "Rp " + globalLivePrices.emas.toLocaleString("id-ID");
-          }
-
-          // Render ulang tabel karena harga udah dapet yang terbaru
-          renderTablePNL();
-        })
-        .catch(error => { console.error("Gagal load API:", error); });
+        // Harga live market dapet ➡️ hitung & susun isi baris Tabel PNL
+        renderTablePNL();
+      }).catch(err => console.error("Koneksi API Gagal/Putus:", err));
     }
 
-    // Jalankan pertama kali saat load, lalu auto-update setiap 1 menit (60.000 ms)
-    fetchLivePrices();
-    setInterval(fetchLivePrices, 60000);
+    fetchLivePrices(); // Jalankan fungsi di awal pembukaan halaman
+    setInterval(fetchLivePrices, 60000); // Pasang auto-update refresh berkala tiap 1 menit sekali tanpa re-load halaman
 
-    // ==============================================
-    // SISTEM MODE PRIVASI (SEMBUNYIKAN SALDO)
-    // ==============================================
+    // =========================================================
+    // 10. SYSTEM PRIVACY MODE (KONTROL BLUR SALDO)
+    // =========================================================
     const btnPrivacy = document.getElementById('btnPrivacy');
-    const sensitiveElements = document.querySelectorAll('.sensitive-data'); // Ambil semua elemen yang dikasih class ini
-    let isHidden = localStorage.getItem('privacyMode') === 'true'; // Cek memori browser
+    let isHidden = localStorage.getItem('privacyMode') === 'true'; // Ambil status memori tersimpan dari browser lu
 
     function applyPrivacy() {
-      document.querySelectorAll('.sensitive-data').forEach(el => {
-        if (isHidden) el.classList.add('privacy-blur'); // Tambahin efek blur CSS
-        else el.classList.remove('privacy-blur');
-      });
-      btnPrivacy.innerHTML = isHidden ? '🙈' : '👁️'; // Ganti ikon tombol
+      // Loop untuk menyuntikkan class .privacy-blur ke seluruh komponen bertanda .sensitive-data
+      document.querySelectorAll('.sensitive-data').forEach(el => isHidden ? el.classList.add('privacy-blur') : el.classList.remove('privacy-blur'));
+      btnPrivacy.innerHTML = isHidden ? '🙈' : '👁️'; // Ubah bentuk emoji tombol mata
     }
 
-    applyPrivacy();
+    applyPrivacy(); // Nyalakan sinkronisasi di awal web dibuka
 
+    // Dengarkan trigger klik tombol mata
     btnPrivacy.addEventListener('click', () => {
-      isHidden = !isHidden; // Tukar status (on/off)
-      localStorage.setItem('privacyMode', isHidden); // Simpan ke memori browser
-      applyPrivacy(); // Eksekusi blurnya
+      isHidden = !isHidden; // Bolak-balik status on/off
+      localStorage.setItem('privacyMode', isHidden); // Simpan pilihan terakhir ke memori browser lu
+      applyPrivacy(); // Eksekusi
     });
   </script>
 </body>

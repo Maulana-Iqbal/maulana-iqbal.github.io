@@ -16,10 +16,8 @@
         margin: 0;
         padding: 0;
         background-color: #080816;
-        /* Warna dasar gelap (backup kalau Vanta telat load) */
       }
 
-      /* Set background animasi Vanta nempel fixed di layar biar gak putus pas di-scroll */
       #vanta-bg {
         position: fixed;
         top: 0;
@@ -27,23 +25,18 @@
         width: 100%;
         height: 100%;
         z-index: 0;
-        /* Taruh di layer paling belakang */
       }
 
-      /* Konten utama dashboard berjalan (scroll) di atas background */
       .dashboard-content {
         position: relative;
         z-index: 1;
-        /* Di atas vanta-bg (layer 1) */
         color: white;
         padding-bottom: 50px;
-        /* Jarak bawah biar tombol gak mentok ujung layar */
       }
 
       /* =========================================================
        2. GLASSMORPHISM EFFECT & PRIVACY BLUR
        ========================================================= */
-      /* Kotak transparan modern efek kaca ala Apple/iOS */
       .glass-card {
         background: rgba(255, 255, 255, 0.05);
         backdrop-filter: blur(10px);
@@ -52,12 +45,10 @@
         border-radius: 15px;
       }
 
-      /* Class untuk mode privasi (efek nge-blur teks saldo) */
       .privacy-blur {
         filter: blur(8px) !important;
         opacity: 0.7;
         pointer-events: none;
-        /* Biar saldo gak bisa di-block/copas pas blur */
         user-select: none;
         transition:
           filter 0.3s ease,
@@ -67,7 +58,6 @@
       /* =========================================================
        3. BUTTONS & PNL TABLE DESIGN
        ========================================================= */
-      /* Tombol ikon mata minimalis berbentuk bulat */
       .icon-btn {
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid rgba(255, 255, 255, 0.2);
@@ -86,22 +76,18 @@
         outline: none;
       }
 
-      /* Efek hover glow biru neon pas kursor nyentuh tombol mata */
       .icon-btn:hover {
         background: rgba(63, 188, 255, 0.15);
         border-color: #3fbcff;
         box-shadow: 0 0 15px rgba(63, 188, 255, 0.6);
         transform: translateY(-3px);
-        /* Efek ngangkat sikit */
       }
 
       .icon-btn:active {
         transform: translateY(1px);
-        /* Efek keteken pas diklik */
         box-shadow: 0 0 5px rgba(63, 188, 255, 0.4);
       }
 
-      /* Desain kustom tabel biar transparan menyatu dengan tema */
       #pnlTable {
         color: white;
         margin-bottom: 0;
@@ -115,7 +101,6 @@
         vertical-align: middle;
       }
 
-      /* Efek warna teks neon untuk untung (hijau toska) & rugi (pink merah) */
       .text-success-neon {
         color: #00ffcc !important;
       }
@@ -243,17 +228,25 @@
         </div>
 
         <div class="row justify-content-center mb-5 mt-3">
-          <div class="col-12 col-lg-7">
+          <div class="col-12 col-lg-6">
             <div class="card glass-card p-4 shadow-lg">
-              <h5 class="fw-bold text-white mb-3">📈 Grafik Pertumbuhan Tabungan</h5>
+              <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+                <h5 class="fw-bold text-white mb-2 mb-md-0">📈 Grafik Pertumbuhan Tabungan</h5>
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-sm btn-outline-info btn-timeframe" data-time="3">3B</button>
+                  <button type="button" class="btn btn-sm btn-outline-info btn-timeframe" data-time="6">6B</button>
+                  <button type="button" class="btn btn-sm btn-outline-info btn-timeframe" data-time="12">1T</button>
+                  <button type="button" class="btn btn-sm btn-outline-info btn-timeframe active" data-time="all">Semua</button>
+                </div>
+              </div>
               <div style="position: relative; height: 350px; width: 100%">
                 <canvas id="grafikTabungan" class="sensitive-data"></canvas>
               </div>
             </div>
           </div>
 
-          <div class="col-12 col-lg-5 mt-4 mt-lg-0">
-            <div class="card glass-card p-4 shadow-lg text-center">
+          <div class="col-12 col-lg-6 mt-4 mt-lg-0">
+            <div class="card glass-card p-4 shadow-lg text-center h-100">
               <h5 class="fw-bold text-white mb-4">📊 Alokasi Aset Portofolio</h5>
               <div style="position: relative; height: 300px">
                 <canvas id="grafikDonat" class="sensitive-data"></canvas>
@@ -327,10 +320,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
     <script>
       // Variabel Global penampung data
       let globalSheetData = null;
       let globalLivePrices = { btc: 0, emas: 0, usdt: 0 };
+
+      // Variabel Global untuk Filter Grafik
+      let myLineChart = null;
+      let chartFullLabels = [];
+      let chartFullDatasets = [];
 
       // Konfigurasi Urutan dan Pemetaan Aset di Tabel PNL
       const assetMap = [
@@ -344,7 +343,7 @@
         { name: "Deposito", rowIdx: 30, type: "idr" },
       ];
 
-      // OPTIMASI: Jalankan Efek Animasi Latar Vanta Net (Partikel dikurangi biar HP gak panas)
+      // OPTIMASI: Jalankan Efek Animasi Latar Vanta Net
       VANTA.NET({
         el: "#vanta-bg",
         mouseControls: true,
@@ -405,7 +404,6 @@
 
       // Fungsi utama kalkulasi matematis untung rugi PNL
       function renderTablePNL() {
-        // Tunggu sampai data Sheets keload (Harga live gak harus komplit semua buat ngerender)
         if (!globalSheetData) return;
 
         let tbody = document.getElementById("pnlBody");
@@ -414,7 +412,6 @@
         let grandTotalSaatIni = 0;
 
         assetMap.forEach((asset, index) => {
-          // Mencegah error kalau baris Google Sheet ditarik tapi kosong
           if (!globalSheetData[asset.rowIdx]) return;
 
           let strHargaBeli = globalSheetData[asset.rowIdx][0];
@@ -593,9 +590,15 @@
               const colorsCode = { "Emas Pegadaian Dana Darurat": "#ffd700", "Tabungan Hari Tua EMAS": "#ff8c00", "Tabungan Hari Tua BITCOIN": "#ff4500", "Tabungan EMAS": "#b8860b", "Tabungan BITCOIN": "#00ffcc", "Emas Fisik": "#ff3366", Deposito: "#a020f0", USDT: "#26a17b" };
               let formatedDatasets = Object.keys(datasetPoints).map((k) => ({ label: k, data: datasetPoints[k], borderColor: colorsCode[k] || "#ffffff", backgroundColor: "transparent", borderWidth: 2.5, tension: 0.3, pointRadius: 3, pointHoverRadius: 6 }));
 
-              new Chart(document.getElementById("grafikTabungan").getContext("2d"), {
+              // SIMPAN DATA UTUH UNTUK FILTER GRAFIK
+              chartFullLabels = labelTanggal;
+              chartFullDatasets = formatedDatasets;
+
+              // RENDER GRAFIK GARIS PERTAMA KALI
+              const ctxGrafik = document.getElementById("grafikTabungan").getContext("2d");
+              myLineChart = new Chart(ctxGrafik, {
                 type: "line",
-                data: { labels: labelTanggal, datasets: formatedDatasets },
+                data: { labels: chartFullLabels, datasets: chartFullDatasets },
                 options: {
                   responsive: true,
                   maintainAspectRatio: false,
@@ -607,6 +610,42 @@
                 },
               });
 
+              // FUNGSI FILTER WAKTU GRAFIK GARIS
+              window.filterGrafik = function (timeframe) {
+                if (!myLineChart) return;
+                let filteredLabels = [];
+                let filteredDatasets = [];
+
+                if (timeframe === "all") {
+                  filteredLabels = chartFullLabels;
+                  filteredDatasets = chartFullDatasets;
+                } else {
+                  let batasBulan = parseInt(timeframe);
+                  filteredLabels = chartFullLabels.slice(-batasBulan);
+                  filteredDatasets = chartFullDatasets.map((dataset) => {
+                    return { ...dataset, data: dataset.data.slice(-batasBulan) };
+                  });
+                }
+
+                myLineChart.data.labels = filteredLabels;
+                myLineChart.data.datasets = filteredDatasets;
+                myLineChart.update();
+
+                document.querySelectorAll(".btn-timeframe").forEach((btn) => {
+                  btn.classList.remove("active");
+                  if (btn.dataset.time === timeframe) btn.classList.add("active");
+                });
+              };
+
+              // LISTENER TOMBOL FILTER GRAFIK
+              document.querySelectorAll(".btn-timeframe").forEach((btn) => {
+                btn.addEventListener("click", (e) => {
+                  let waktuYangDipilih = e.target.dataset.time;
+                  window.filterGrafik(waktuYangDipilih);
+                });
+              });
+
+              // RENDER GRAFIK DONAT
               let totalAset = Object.values(currentBalances).reduce((a, b) => a + b, 0);
               new Chart(document.getElementById("grafikDonat").getContext("2d"), {
                 type: "doughnut",
@@ -624,20 +663,15 @@
         })
         .catch((err) => console.error("Gagal load Sheet 4:", err));
 
-      // FITUR UTAMA: Fetch Harga Live API (ANTI-BADAI SERVER TIDUR)
+      // FITUR UTAMA: Fetch Harga Live API
       function fetchLivePrices() {
-        // 1. Fetch Kripto (Langsung)
         let fKripto = fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether&vs_currencies=idr").then((r) => r.json());
-
-        // 2. Fetch Emas (Pakai proxy alternatif yang lebih tangguh)
         let urlEmas = "https://logam-mulia-api.iamutaki.workers.dev/api/prices/pegadaian";
         let proxyUrl = `https://corsproxy.io/?${encodeURIComponent(urlEmas)}`;
         let fEmas = fetch(proxyUrl).then((r) => r.json());
 
-        // Pakai allSettled biar Kripto & Emas mandiri (Satu gagal, yang lain tetep idup)
         Promise.allSettled([fKripto, fEmas])
           .then((results) => {
-            // Cek Status Bitcoin & USDT
             if (results[0].status === "fulfilled") {
               let dK = results[0].value;
               globalLivePrices.btc = dK.bitcoin.idr;
@@ -649,7 +683,6 @@
               document.getElementById("live-btc").innerText = "API Kripto Error";
             }
 
-            // Cek Status API Emas (Yang suka tidur)
             if (results[1].status === "fulfilled") {
               let dE = results[1].value;
               if (dE && dE.success) {
@@ -662,19 +695,14 @@
             } else {
               console.warn("API Emas lagi tidur/down, nilai pakai 0 dulu", results[1].reason);
               document.getElementById("live-emas").innerText = "Server Down";
-              // Harga emas dibiarin 0 atau sesuai harga terakhir supaya tabel nggak hang
             }
-
-            // Render tabel PNL dengan harga yang berhasil ditarik
             renderTablePNL();
           })
           .catch((err) => console.error("Sistem API Error Total:", err));
       }
 
       fetchLivePrices();
-
-      // OPTIMASI: Update diubah jadi 3 menit sekali (180000 ms) biar gak kena blokir CoinGecko
-      setInterval(fetchLivePrices, 180000);
+      setInterval(fetchLivePrices, 180000); // Tiap 3 Menit
 
       // SYSTEM PRIVACY MODE
       const btnPrivacy = document.getElementById("btnPrivacy");

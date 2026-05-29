@@ -1,0 +1,44 @@
+body {
+	max-width: 500px; /* Atur lebar maksimum sesuai kebutuhan */
+	margin: 0 auto;
+	background-image: url('../img/main-bg.jpg');
+	font-family: 'Merienda', cursive;
+}
+
+html {
+	scroll-snap-type: y mandatory;
+}
+
+section {
+	scroll-snap-align: start;
+	transition: transform 0.5s ease-in-out;
+}
+
+/* cover */
+.cover {
+	background-image: url('../img/BG1.png'); /* Ganti dengan URL gambar Anda */
+	background-size: cover;
+	position: relative;
+	height: 100vh;
+	color: white;
+}
+
+.salam {
+	background-image: url('../galeri/gal6.jpg'); /* Ganti dengan URL gambar Anda */
+	background-size: cover;
+	position: relative;
+	height: 100vh;
+	color: white;
+}
+
+.quote {
+	background-color: dimgray; /* Ganti dengan URL gambar Anda */
+	background-size: cover;
+	position: relative;
+	color: white;
+}
+
+.quote-content {
+	margin: auto;
+	width: 90%;
+}

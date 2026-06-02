@@ -264,7 +264,7 @@
               </div>
 
               <div class="card glass-card p-2 text-center sensitive-data" style="min-width: 150px">
-                <span class="text-white-50" style="font-size: 0.7rem; font-weight: bold">🥇 PEGADAIAN/GR</span>
+                <span class="text-white-50" style="font-size: 0.7rem; font-weight: bold">🥇 Harga EMAS</span>
                 <span class="fw-bold" id="live-emas" style="font-size: 0.85rem; color: #ffd700">Loading...</span>
               </div>
 
@@ -320,7 +320,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-
     <script>
       // Variabel Global penampung data
       let globalSheetData = null;
@@ -360,14 +359,12 @@
         spacing: 18.0,
       });
 
-      // Fungsi membersihkan teks rupiah / desimal
       function parseLocalNumber(str) {
         if (!str || str === "-") return 0;
         let cleanStr = str.replace(/[^0-9,-]/g, "").replace(",", ".");
         return parseFloat(cleanStr) || 0;
       }
 
-      // Fungsi membuat animasi angka berjalan
       function animateCounter(elementId, targetValue, duration) {
         const obj = document.getElementById(elementId);
         if (!obj || !targetValue) return;
@@ -402,7 +399,6 @@
         window.requestAnimationFrame(step);
       }
 
-      // Fungsi utama kalkulasi matematis untung rugi PNL
       function renderTablePNL() {
         if (!globalSheetData) return;
 
@@ -420,10 +416,16 @@
           let jumlah = parseLocalNumber(strJumlah);
           let hargaSaatIni = 0;
 
-          if (asset.type === "emas") hargaSaatIni = jumlah * globalLivePrices.emas;
-          else if (asset.type === "btc") hargaSaatIni = jumlah * globalLivePrices.btc;
-          else if (asset.type === "usdt") hargaSaatIni = jumlah * globalLivePrices.usdt;
-          else if (asset.type === "idr") hargaSaatIni = hargaBeli;
+          // LOGIKA FALLBACK: Kalau API nyangkut/nol, harga saat ini disamakan dengan harga beli
+          if (asset.type === "emas") {
+            hargaSaatIni = globalLivePrices.emas > 0 ? jumlah * globalLivePrices.emas : hargaBeli;
+          } else if (asset.type === "btc") {
+            hargaSaatIni = globalLivePrices.btc > 0 ? jumlah * globalLivePrices.btc : hargaBeli;
+          } else if (asset.type === "usdt") {
+            hargaSaatIni = globalLivePrices.usdt > 0 ? jumlah * globalLivePrices.usdt : hargaBeli;
+          } else if (asset.type === "idr") {
+            hargaSaatIni = hargaBeli;
+          }
 
           let pnlPersen = hargaBeli > 0 ? ((hargaSaatIni - hargaBeli) / hargaBeli) * 100 : 0;
           grandTotalBeli += hargaBeli;
@@ -466,7 +468,7 @@
         applyPrivacy();
       }
 
-      // 1. Ambil Data Sheet 1 (Ringkasan Total Kartu)
+      // 1. Ambil Data Sheet 1
       const csvUrl1 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRk8HUQrb0tNGed3S0Cm6XOces6c5CSJyJtc7hRr8PRCQ1zSowUgkLU8DKSY8WaW4zVnwXyapN5Q7Xc/pub?gid=87019778&single=true&output=csv";
 
       fetch(csvUrl1)
@@ -587,7 +589,6 @@
                 Object.keys(datasetPoints).forEach((k) => datasetPoints[k].push(dataPerBulan[key].balances[k]));
               });
 
-              // INI SUMBER WARNA GRAFIK YANG MENJADI PATOKAN KITA SEKARANG
               const colorsCode = {
                 "Emas Pegadaian Dana Darurat": "#ffd700",
                 "Tabungan Hari Tua EMAS": "#ff8c00",
@@ -601,11 +602,9 @@
 
               let formatedDatasets = Object.keys(datasetPoints).map((k) => ({ label: k, data: datasetPoints[k], borderColor: colorsCode[k] || "#ffffff", backgroundColor: "transparent", borderWidth: 2.5, tension: 0.3, pointRadius: 3, pointHoverRadius: 6 }));
 
-              // SIMPAN DATA UTUH UNTUK FILTER GRAFIK
               chartFullLabels = labelTanggal;
               chartFullDatasets = formatedDatasets;
 
-              // RENDER GRAFIK GARIS PERTAMA KALI
               const ctxGrafik = document.getElementById("grafikTabungan").getContext("2d");
               myLineChart = new Chart(ctxGrafik, {
                 type: "line",
@@ -621,7 +620,6 @@
                 },
               });
 
-              // FUNGSI FILTER WAKTU GRAFIK GARIS
               window.filterGrafik = function (timeframe) {
                 if (!myLineChart) return;
                 let filteredLabels = [];
@@ -648,7 +646,6 @@
                 });
               };
 
-              // LISTENER TOMBOL FILTER GRAFIK
               document.querySelectorAll(".btn-timeframe").forEach((btn) => {
                 btn.addEventListener("click", (e) => {
                   let waktuYangDipilih = e.target.dataset.time;
@@ -656,7 +653,6 @@
                 });
               });
 
-              // RENDER GRAFIK PIE (Sebelumnya Donat)
               let totalAset = Object.values(currentBalances).reduce((a, b) => a + b, 0);
 
               new Chart(document.getElementById("grafikDonat").getContext("2d"), {
@@ -678,13 +674,11 @@
                   responsive: true,
                   maintainAspectRatio: false,
                   layout: {
-                    // Kurangin dari 15 ke 5 biar grafiknya melebar mentok ke pinggir
                     padding: 5,
                   },
                   plugins: {
                     legend: {
                       position: "bottom",
-                      // Kurangin padding legend dari 20 ke 15 biar ga makan banyak tempat
                       labels: { color: "white", padding: 15, font: { size: 12 } },
                     },
                     datalabels: {
@@ -703,10 +697,10 @@
         })
         .catch((err) => console.error("Gagal load Sheet 4:", err));
 
-      // FITUR UTAMA: Fetch Harga Live API
+      // FITUR UTAMA: Fetch Harga Live API Kripto & Lakuemas
       function fetchLivePrices() {
         let fKripto = fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether&vs_currencies=idr").then((r) => r.json());
-        let urlEmas = "https://logam-mulia-api.iamutaki.workers.dev/api/prices/pegadaian";
+        let urlEmas = "https://logam-mulia-api.iamutaki.workers.dev/api/prices/lakuemas";
         let proxyUrl = `https://corsproxy.io/?${encodeURIComponent(urlEmas)}`;
         let fEmas = fetch(proxyUrl).then((r) => r.json());
 
@@ -727,8 +721,12 @@
               let dE = results[1].value;
               if (dE && dE.success) {
                 let h1 = 0;
-                if (Array.isArray(dE.data)) h1 = dE.data.find((x) => x.weight === 1)?.buybackPrice || dE.data[0].buybackPrice / dE.data[0].weight;
-                else h1 = dE.data.antam.find((x) => x.weight === 1)?.buybackPrice || dE.data.antam[0].buybackPrice / dE.data.antam[0].weight;
+                if (Array.isArray(dE.data)) h1 = dE.data.find((x) => x.weight === 1)?.sellPrice || dE.data[0].sellPrice / dE.data[0].weight;
+                else h1 = dE.data.antam.find((x) => x.weight === 1)?.sellPrice || dE.data.antam[0].sellPrice / dE.data.antam[0].weight;
+
+                // Fallback khusus kalau lakuemas response strukturnya langsung
+                if (!h1 && dE.data && dE.data.sellPrice) h1 = dE.data.sellPrice;
+
                 globalLivePrices.emas = Math.round(h1);
                 document.getElementById("live-emas").innerText = "Rp " + globalLivePrices.emas.toLocaleString("id-ID");
               }

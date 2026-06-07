@@ -1,763 +1,775 @@
 <!doctype html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard Tabungan</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Tabungan</title>
 
-    <style>
-      /* =========================================================
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <style>
+    /* =========================================================
        1. LAYOUT & BACKGROUND STYLE (FIX BACKGROUND KEPOTONG)
        ========================================================= */
-      body,
-      html {
-        margin: 0;
-        padding: 0;
-        background-color: #080816;
-      }
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      background-color: #080816;
+    }
 
-      #vanta-bg {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 0;
-      }
+    #vanta-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
 
-      .dashboard-content {
-        position: relative;
-        z-index: 1;
-        color: white;
-        padding-bottom: 50px;
-      }
+    .dashboard-content {
+      position: relative;
+      z-index: 1;
+      color: white;
+      padding-bottom: 50px;
+    }
 
-      /* =========================================================
+    /* =========================================================
        2. GLASSMORPHISM EFFECT & PRIVACY BLUR
        ========================================================= */
-      .glass-card {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        color: white;
-        border-radius: 15px;
-      }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white;
+      border-radius: 15px;
+    }
 
-      .privacy-blur {
-        filter: blur(8px) !important;
-        opacity: 0.7;
-        pointer-events: none;
-        user-select: none;
-        transition:
-          filter 0.3s ease,
-          opacity 0.3s ease;
-      }
+    .privacy-blur {
+      filter: blur(8px) !important;
+      opacity: 0.7;
+      pointer-events: none;
+      user-select: none;
+      transition:
+        filter 0.3s ease,
+        opacity 0.3s ease;
+    }
 
-      /* =========================================================
+    /* =========================================================
        3. BUTTONS & PNL TABLE DESIGN
        ========================================================= */
-      .icon-btn {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: white;
-        border-radius: 50%;
-        width: 42px;
-        height: 42px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.2rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        padding: 0;
-        outline: none;
-      }
+    .icon-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 0;
+      outline: none;
+    }
 
-      .icon-btn:hover {
-        background: rgba(63, 188, 255, 0.15);
-        border-color: #3fbcff;
-        box-shadow: 0 0 15px rgba(63, 188, 255, 0.6);
-        transform: translateY(-3px);
-      }
+    .icon-btn:hover {
+      background: rgba(63, 188, 255, 0.15);
+      border-color: #3fbcff;
+      box-shadow: 0 0 15px rgba(63, 188, 255, 0.6);
+      transform: translateY(-3px);
+    }
 
-      .icon-btn:active {
-        transform: translateY(1px);
-        box-shadow: 0 0 5px rgba(63, 188, 255, 0.4);
-      }
+    .icon-btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 0 5px rgba(63, 188, 255, 0.4);
+    }
 
-      #pnlTable {
-        color: white;
-        margin-bottom: 0;
-      }
+    #pnlTable {
+      color: white;
+      margin-bottom: 0;
+    }
 
-      #pnlTable th,
-      #pnlTable td {
-        background: transparent !important;
-        color: white;
-        border-color: rgba(255, 255, 255, 0.1);
-        vertical-align: middle;
-      }
+    #pnlTable th,
+    #pnlTable td {
+      background: transparent !important;
+      color: white;
+      border-color: rgba(255, 255, 255, 0.1);
+      vertical-align: middle;
+    }
 
-      .text-success-neon {
-        color: #00ffcc !important;
-      }
+    .text-success-neon {
+      color: #00ffcc !important;
+    }
 
-      .text-danger-neon {
-        color: #ff3366 !important;
-      }
-    </style>
-  </head>
+    .text-danger-neon {
+      color: #ff3366 !important;
+    }
+  </style>
+</head>
 
-  <body>
-    <div id="vanta-bg"></div>
+<body>
+  <div id="vanta-bg"></div>
 
-    <div class="container dashboard-content pt-5">
-      <div class="row mb-4">
-        <div class="col-12 d-flex justify-content-center align-items-center">
-          <h1 class="fw-bold mb-0 me-3">Tabungan Kita</h1>
-          <button id="btnPrivacy" class="icon-btn" title="Tampilkan/Sembunyikan Saldo">👁️</button>
-        </div>
-      </div>
-
-      <div class="row justify-content-center mb-5">
-        <div class="col-12 col-md-6 col-lg-4 mb-4">
-          <div class="card glass-card h-100 p-3 shadow-lg">
-            <div class="card-body text-center pb-2">
-              <h6 class="card-title text-uppercase text-white-50">Total Emas Dana Darurat</h6>
-              <h4 class="card-text fw-bold mb-0 sensitive-data" id="val-c3" style="color: #ffd700 !important">Loading...</h4>
-              <p class="card-text fw-bold mt-1 sensitive-data" id="val-a3">Loading...</p>
-              <div class="mt-3 pt-2" style="border-top: 1px solid rgba(255, 255, 255, 0.1)">
-                <small class="text-white-50" style="font-size: 0.75rem" id="val-date-1">🕒 Memuat tanggal...</small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-md-6 col-lg-4 mb-4">
-          <div class="card glass-card h-100 p-3 shadow-lg">
-            <div class="card-body text-center pb-2">
-              <h6 class="card-title text-uppercase text-white-50">Tabungan Hari Tua EMAS</h6>
-              <h4 class="card-text fw-bold mb-0 sensitive-data" id="val-c8" style="color: #ff8c00 !important">Loading...</h4>
-              <p class="card-text fw-bold mt-1 sensitive-data" id="val-a8">Loading...</p>
-              <div class="mt-3 pt-2" style="border-top: 1px solid rgba(255, 255, 255, 0.1)">
-                <small class="text-white-50" style="font-size: 0.75rem" id="val-date-2">🕒 Memuat tanggal...</small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-md-6 col-lg-4 mb-4">
-          <div class="card glass-card h-100 p-3 shadow-lg">
-            <div class="card-body text-center pb-2">
-              <h6 class="card-title text-uppercase text-white-50">Tabungan Hari Tua BITCOIN</h6>
-              <h4 class="card-text fw-bold mb-0 sensitive-data" id="val-c13" style="color: #ff4500 !important">Loading...</h4>
-              <p class="card-text fw-bold mt-1 sensitive-data" id="val-a13">Loading...</p>
-              <div class="mt-3 pt-2" style="border-top: 1px solid rgba(255, 255, 255, 0.1)">
-                <small class="text-white-50" style="font-size: 0.75rem" id="val-date-3">🕒 Memuat tanggal...</small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-md-6 col-lg-4 mb-4">
-          <div class="card glass-card h-100 p-3 shadow-lg">
-            <div class="card-body text-center pb-2">
-              <h6 class="card-title text-uppercase text-white-50">Tabungan EMAS</h6>
-              <h4 class="card-text fw-bold mb-0 sensitive-data" id="val-c18" style="color: #b8860b !important">Loading...</h4>
-              <p class="card-text fw-bold mt-1 sensitive-data" id="val-a18">Loading...</p>
-              <div class="mt-3 pt-2" style="border-top: 1px solid rgba(255, 255, 255, 0.1)">
-                <small class="text-white-50" style="font-size: 0.75rem" id="val-date-4">🕒 Memuat tanggal...</small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-md-6 col-lg-4 mb-4">
-          <div class="card glass-card h-100 p-3 shadow-lg">
-            <div class="card-body text-center pb-2">
-              <h6 class="card-title text-uppercase text-white-50">Tabungan BITCOIN</h6>
-              <h4 class="card-text fw-bold mb-0 sensitive-data" id="val-c23" style="color: #00ffcc !important">Loading...</h4>
-              <p class="card-text fw-bold mt-1 sensitive-data" id="val-a23">Loading...</p>
-              <div class="mt-3 pt-2" style="border-top: 1px solid rgba(255, 255, 255, 0.1)">
-                <small class="text-white-50" style="font-size: 0.75rem" id="val-date-5">🕒 Memuat tanggal...</small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-md-6 col-lg-4 mb-4">
-          <div class="card glass-card h-100 p-3 shadow-lg">
-            <div class="card-body text-center pb-2">
-              <h6 class="card-title text-uppercase text-white-50">Emas Fisik</h6>
-              <h4 class="card-text fw-bold mb-0 sensitive-data" id="val-c27" style="color: #ff3366 !important">Loading...</h4>
-              <p class="card-text fw-bold mt-1 sensitive-data" id="val-a27">Loading...</p>
-              <div class="mt-3 pt-2" style="border-top: 1px solid rgba(255, 255, 255, 0.1)">
-                <small class="text-white-50" style="font-size: 0.75rem" id="val-date-6">🕒 Memuat tanggal...</small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-md-6 col-lg-4 mb-4">
-          <div class="card glass-card h-100 p-3 shadow-lg">
-            <div class="card-body text-center pb-2">
-              <h6 class="card-title text-uppercase text-white-50">Deposito</h6>
-              <h4 class="card-text fw-bold mb-0 sensitive-data" id="val-c31" style="color: #a020f0 !important">Loading...</h4>
-              <p class="card-text fw-bold mt-1 sensitive-data" id="val-a31">Loading...</p>
-              <div class="mt-3 pt-2" style="border-top: 1px solid rgba(255, 255, 255, 0.1)">
-                <small class="text-white-50" style="font-size: 0.75rem" id="val-date-7">🕒 Memuat tanggal...</small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-md-6 col-lg-4 mb-4">
-          <div class="card glass-card h-100 p-3 shadow-lg">
-            <div class="card-body text-center pb-2">
-              <h6 class="card-title text-uppercase text-white-50">USDT</h6>
-              <h4 class="card-text fw-bold mb-0 sensitive-data" id="val-c35" style="color: #26a17b !important">Loading...</h4>
-              <p class="card-text fw-bold mt-1 sensitive-data" id="val-a35">Loading...</p>
-              <div class="mt-3 pt-2" style="border-top: 1px solid rgba(255, 255, 255, 0.1)">
-                <small class="text-white-50" style="font-size: 0.75rem" id="val-date-8">🕒 Memuat tanggal...</small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row justify-content-center mb-5 mt-3">
-          <div class="col-12 col-lg-6">
-            <div class="card glass-card p-4 shadow-lg">
-              <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-                <h5 class="fw-bold text-white mb-2 mb-md-0">📈 Grafik Pertumbuhan Tabungan</h5>
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-sm btn-outline-info btn-timeframe" data-time="3">3B</button>
-                  <button type="button" class="btn btn-sm btn-outline-info btn-timeframe" data-time="6">6B</button>
-                  <button type="button" class="btn btn-sm btn-outline-info btn-timeframe" data-time="12">1T</button>
-                  <button type="button" class="btn btn-sm btn-outline-info btn-timeframe active" data-time="all">Semua</button>
-                </div>
-              </div>
-              <div style="position: relative; height: 350px; width: 100%">
-                <canvas id="grafikTabungan" class="sensitive-data"></canvas>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 col-lg-6 mt-4 mt-lg-0">
-            <div class="card glass-card p-4 shadow-lg text-center h-100">
-              <h5 class="fw-bold text-white mb-4">📊 Alokasi Aset Portofolio</h5>
-              <div style="position: relative; height: 400px">
-                <canvas id="grafikDonat" class="sensitive-data"></canvas>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row justify-content-center mb-4">
-          <div class="col-12 col-lg-12">
-            <div class="d-flex justify-content-center flex-wrap gap-3">
-              <div class="card glass-card p-2 text-center sensitive-data" style="min-width: 150px">
-                <span class="text-white-50" style="font-size: 0.7rem; font-weight: bold">🪙 BTC/IDR</span>
-                <span class="fw-bold" id="live-btc" style="font-size: 0.85rem; color: #00ffcc">Loading...</span>
-              </div>
-
-              <div class="card glass-card p-2 text-center sensitive-data" style="min-width: 150px">
-                <span class="text-white-50" style="font-size: 0.7rem; font-weight: bold">🥇 Harga EMAS</span>
-                <span class="fw-bold" id="live-emas" style="font-size: 0.85rem; color: #ffd700">Loading...</span>
-              </div>
-
-              <div class="card glass-card p-2 text-center sensitive-data" style="min-width: 150px">
-                <span class="text-white-50" style="font-size: 0.7rem; font-weight: bold">💵 USDT/IDR</span>
-                <span class="fw-bold" id="live-usdt" style="font-size: 0.85rem; color: #26a17b">Loading...</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row justify-content-center mb-4">
-          <div class="col-12 col-lg-12">
-            <div class="card glass-card p-4 shadow-lg overflow-auto">
-              <h5 class="fw-bold text-white mb-3">💰 Portofolio Profit & Loss (PNL)</h5>
-              <table class="table sensitive-data" id="pnlTable">
-                <thead style="border-bottom: 2px solid rgba(255, 255, 255, 0.2)">
-                  <tr>
-                    <th class="text-center">No</th>
-                    <th>Keterangan</th>
-                    <th class="text-end">Harga Beli</th>
-                    <th class="text-end">Harga Saat Ini</th>
-                    <th class="text-end">PNL</th>
-                  </tr>
-                </thead>
-                <tbody id="pnlBody">
-                  <tr>
-                    <td colspan="5" class="text-center text-white-50 py-4">Menghitung keuntungan secara real-time...</td>
-                  </tr>
-                </tbody>
-                <tfoot style="border-top: 2px solid rgba(255, 255, 255, 0.2)">
-                  <tr>
-                    <th colspan="2" class="text-end fw-bold">TOTAL KESELURUHAN</th>
-                    <th class="text-end fw-bold" id="totalBeli">Rp 0</th>
-                    <th class="text-end fw-bold" id="totalSaatIni">Rp 0</th>
-                    <th class="text-end fw-bold" id="totalPnl">0.00%</th>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <div class="d-flex justify-content-center w-100">
-          <a href="tambah.html" class="btn btn-outline-light mb-4 px-4 py-2" style="border-radius: 30px">➕ Tambah Data Baru</a>
-        </div>
+  <div class="container dashboard-content pt-5">
+    <div class="row mb-4">
+      <div class="col-12 d-flex justify-content-center align-items-center">
+        <h1 class="fw-bold mb-0 me-3">Tabungan Kita</h1>
+        <button id="btnPrivacy" class="icon-btn" title="Tampilkan/Sembunyikan Saldo">👁️</button>
       </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-    <script>
-      // Variabel Global penampung data
-      let globalSheetData = null;
-      let globalLivePrices = { btc: 0, emas: 0, usdt: 0 };
+    <div class="row justify-content-center mb-5">
+      <div class="col-12 col-md-6 col-lg-4 mb-4">
+        <div class="card glass-card h-100 p-3 shadow-lg">
+          <div class="card-body text-center pb-2">
+            <h6 class="card-title text-uppercase text-white-50">Total Emas Dana Darurat</h6>
+            <h4 class="card-text fw-bold mb-0 sensitive-data" id="val-c3" style="color: #ffd700 !important">Loading...
+            </h4>
+            <p class="card-text fw-bold mt-1 sensitive-data" id="val-a3">Loading...</p>
+            <div class="mt-3 pt-2" style="border-top: 1px solid rgba(255, 255, 255, 0.1)">
+              <small class="text-white-50" style="font-size: 0.75rem" id="val-date-1">🕒 Memuat tanggal...</small>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      // Variabel Global untuk Filter Grafik
-      let myLineChart = null;
-      let chartFullLabels = [];
-      let chartFullDatasets = [];
+      <div class="col-12 col-md-6 col-lg-4 mb-4">
+        <div class="card glass-card h-100 p-3 shadow-lg">
+          <div class="card-body text-center pb-2">
+            <h6 class="card-title text-uppercase text-white-50">Tabungan Hari Tua EMAS</h6>
+            <h4 class="card-text fw-bold mb-0 sensitive-data" id="val-c8" style="color: #ff8c00 !important">Loading...
+            </h4>
+            <p class="card-text fw-bold mt-1 sensitive-data" id="val-a8">Loading...</p>
+            <div class="mt-3 pt-2" style="border-top: 1px solid rgba(255, 255, 255, 0.1)">
+              <small class="text-white-50" style="font-size: 0.75rem" id="val-date-2">🕒 Memuat tanggal...</small>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      // Konfigurasi Urutan dan Pemetaan Aset di Tabel PNL
-      const assetMap = [
-        { name: "Emas Fisik", rowIdx: 26, type: "emas" },
-        { name: "Tabungan Hari Tua EMAS", rowIdx: 7, type: "emas" },
-        { name: "Tabungan Hari Tua BITCOIN", rowIdx: 12, type: "btc" },
-        { name: "Emas Pegadaian Dana Darurat", rowIdx: 2, type: "emas" },
-        { name: "USDT", rowIdx: 34, type: "usdt" },
-        { name: "Tabungan EMAS", rowIdx: 17, type: "emas" },
-        { name: "Tabungan BITCOIN", rowIdx: 22, type: "btc" },
-        { name: "Deposito", rowIdx: 30, type: "idr" },
-      ];
+      <div class="col-12 col-md-6 col-lg-4 mb-4">
+        <div class="card glass-card h-100 p-3 shadow-lg">
+          <div class="card-body text-center pb-2">
+            <h6 class="card-title text-uppercase text-white-50">Tabungan Hari Tua BITCOIN</h6>
+            <h4 class="card-text fw-bold mb-0 sensitive-data" id="val-c13" style="color: #ff4500 !important">Loading...
+            </h4>
+            <p class="card-text fw-bold mt-1 sensitive-data" id="val-a13">Loading...</p>
+            <div class="mt-3 pt-2" style="border-top: 1px solid rgba(255, 255, 255, 0.1)">
+              <small class="text-white-50" style="font-size: 0.75rem" id="val-date-3">🕒 Memuat tanggal...</small>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      // OPTIMASI: Jalankan Efek Animasi Latar Vanta Net
-      VANTA.NET({
-        el: "#vanta-bg",
-        mouseControls: true,
-        touchControls: true,
-        gyroControls: false,
-        minHeight: 200.0,
-        minWidth: 200.0,
-        scale: 1.0,
-        scaleMobile: 1.0,
-        color: 0x3fbcff,
-        backgroundColor: 0x080816,
-        points: 10.0,
-        maxDistance: 20.0,
-        spacing: 18.0,
+      <div class="col-12 col-md-6 col-lg-4 mb-4">
+        <div class="card glass-card h-100 p-3 shadow-lg">
+          <div class="card-body text-center pb-2">
+            <h6 class="card-title text-uppercase text-white-50">Tabungan EMAS</h6>
+            <h4 class="card-text fw-bold mb-0 sensitive-data" id="val-c18" style="color: #b8860b !important">Loading...
+            </h4>
+            <p class="card-text fw-bold mt-1 sensitive-data" id="val-a18">Loading...</p>
+            <div class="mt-3 pt-2" style="border-top: 1px solid rgba(255, 255, 255, 0.1)">
+              <small class="text-white-50" style="font-size: 0.75rem" id="val-date-4">🕒 Memuat tanggal...</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4 mb-4">
+        <div class="card glass-card h-100 p-3 shadow-lg">
+          <div class="card-body text-center pb-2">
+            <h6 class="card-title text-uppercase text-white-50">Tabungan BITCOIN</h6>
+            <h4 class="card-text fw-bold mb-0 sensitive-data" id="val-c23" style="color: #00ffcc !important">Loading...
+            </h4>
+            <p class="card-text fw-bold mt-1 sensitive-data" id="val-a23">Loading...</p>
+            <div class="mt-3 pt-2" style="border-top: 1px solid rgba(255, 255, 255, 0.1)">
+              <small class="text-white-50" style="font-size: 0.75rem" id="val-date-5">🕒 Memuat tanggal...</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4 mb-4">
+        <div class="card glass-card h-100 p-3 shadow-lg">
+          <div class="card-body text-center pb-2">
+            <h6 class="card-title text-uppercase text-white-50">Emas Fisik</h6>
+            <h4 class="card-text fw-bold mb-0 sensitive-data" id="val-c27" style="color: #ff3366 !important">Loading...
+            </h4>
+            <p class="card-text fw-bold mt-1 sensitive-data" id="val-a27">Loading...</p>
+            <div class="mt-3 pt-2" style="border-top: 1px solid rgba(255, 255, 255, 0.1)">
+              <small class="text-white-50" style="font-size: 0.75rem" id="val-date-6">🕒 Memuat tanggal...</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4 mb-4">
+        <div class="card glass-card h-100 p-3 shadow-lg">
+          <div class="card-body text-center pb-2">
+            <h6 class="card-title text-uppercase text-white-50">Deposito</h6>
+            <h4 class="card-text fw-bold mb-0 sensitive-data" id="val-c31" style="color: #a020f0 !important">Loading...
+            </h4>
+            <p class="card-text fw-bold mt-1 sensitive-data" id="val-a31">Loading...</p>
+            <div class="mt-3 pt-2" style="border-top: 1px solid rgba(255, 255, 255, 0.1)">
+              <small class="text-white-50" style="font-size: 0.75rem" id="val-date-7">🕒 Memuat tanggal...</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4 mb-4">
+        <div class="card glass-card h-100 p-3 shadow-lg">
+          <div class="card-body text-center pb-2">
+            <h6 class="card-title text-uppercase text-white-50">USDT</h6>
+            <h4 class="card-text fw-bold mb-0 sensitive-data" id="val-c35" style="color: #26a17b !important">Loading...
+            </h4>
+            <p class="card-text fw-bold mt-1 sensitive-data" id="val-a35">Loading...</p>
+            <div class="mt-3 pt-2" style="border-top: 1px solid rgba(255, 255, 255, 0.1)">
+              <small class="text-white-50" style="font-size: 0.75rem" id="val-date-8">🕒 Memuat tanggal...</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row justify-content-center mb-5 mt-3">
+        <div class="col-12 col-lg-6">
+          <div class="card glass-card p-4 shadow-lg">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+              <h5 class="fw-bold text-white mb-2 mb-md-0">📈 Grafik Pertumbuhan Tabungan</h5>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-sm btn-outline-info btn-timeframe" data-time="3">3B</button>
+                <button type="button" class="btn btn-sm btn-outline-info btn-timeframe" data-time="6">6B</button>
+                <button type="button" class="btn btn-sm btn-outline-info btn-timeframe" data-time="12">1T</button>
+                <button type="button" class="btn btn-sm btn-outline-info btn-timeframe active"
+                  data-time="all">Semua</button>
+              </div>
+            </div>
+            <div style="position: relative; height: 350px; width: 100%">
+              <canvas id="grafikTabungan" class="sensitive-data"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6 mt-4 mt-lg-0">
+          <div class="card glass-card p-4 shadow-lg text-center h-100">
+            <h5 class="fw-bold text-white mb-4">📊 Alokasi Aset Portofolio</h5>
+            <div style="position: relative; height: 400px">
+              <canvas id="grafikDonat" class="sensitive-data"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row justify-content-center mb-4">
+        <div class="col-12 col-lg-12">
+          <div class="d-flex justify-content-center flex-wrap gap-3">
+            <div class="card glass-card p-2 text-center sensitive-data" style="min-width: 150px">
+              <span class="text-white-50" style="font-size: 0.7rem; font-weight: bold">🪙 BTC/IDR</span>
+              <span class="fw-bold" id="live-btc" style="font-size: 0.85rem; color: #00ffcc">Loading...</span>
+            </div>
+
+            <div class="card glass-card p-2 text-center sensitive-data" style="min-width: 150px">
+              <span class="text-white-50" style="font-size: 0.7rem; font-weight: bold">🥇 HARGA PEGADAIAN</span>
+              <span class="fw-bold" id="live-emas" style="font-size: 0.85rem; color: #ffd700">Loading...</span>
+            </div>
+
+            <div class="card glass-card p-2 text-center sensitive-data" style="min-width: 150px">
+              <span class="text-white-50" style="font-size: 0.7rem; font-weight: bold">💵 USDT/IDR</span>
+              <span class="fw-bold" id="live-usdt" style="font-size: 0.85rem; color: #26a17b">Loading...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row justify-content-center mb-4">
+        <div class="col-12 col-lg-12">
+          <div class="card glass-card p-4 shadow-lg overflow-auto">
+            <h5 class="fw-bold text-white mb-3">💰 Portofolio Profit & Loss (PNL)</h5>
+            <table class="table sensitive-data" id="pnlTable">
+              <thead style="border-bottom: 2px solid rgba(255, 255, 255, 0.2)">
+                <tr>
+                  <th class="text-center">No</th>
+                  <th>Keterangan</th>
+                  <th class="text-end">Harga Beli</th>
+                  <th class="text-end">Harga Saat Ini</th>
+                  <th class="text-end">PNL</th>
+                </tr>
+              </thead>
+              <tbody id="pnlBody">
+                <tr>
+                  <td colspan="5" class="text-center text-white-50 py-4">Menghitung keuntungan secara real-time...</td>
+                </tr>
+              </tbody>
+              <tfoot style="border-top: 2px solid rgba(255, 255, 255, 0.2)">
+                <tr>
+                  <th colspan="2" class="text-end fw-bold">TOTAL KESELURUHAN</th>
+                  <th class="text-end fw-bold" id="totalBeli">Rp 0</th>
+                  <th class="text-end fw-bold" id="totalSaatIni">Rp 0</th>
+                  <th class="text-end fw-bold" id="totalPnl">0.00%</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center w-100">
+        <a href="tambah.html" class="btn btn-outline-light mb-4 px-4 py-2" style="border-radius: 30px">➕ Tambah Data
+          Baru</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+  <script>
+    // Variabel Global penampung data
+    let globalSheetData = null;
+    let globalLivePrices = { btc: 0, emas: 0, usdt: 0 };
+
+    // Variabel Global untuk Filter Grafik
+    let myLineChart = null;
+    let chartFullLabels = [];
+    let chartFullDatasets = [];
+
+    // Konfigurasi Urutan dan Pemetaan Aset di Tabel PNL
+    const assetMap = [
+      { name: "Emas Fisik", rowIdx: 26, type: "emas" },
+      { name: "Tabungan Hari Tua EMAS", rowIdx: 7, type: "emas" },
+      { name: "Tabungan Hari Tua BITCOIN", rowIdx: 12, type: "btc" },
+      { name: "Emas Pegadaian Dana Darurat", rowIdx: 2, type: "emas" },
+      { name: "USDT", rowIdx: 34, type: "usdt" },
+      { name: "Tabungan EMAS", rowIdx: 17, type: "emas" },
+      { name: "Tabungan BITCOIN", rowIdx: 22, type: "btc" },
+      { name: "Deposito", rowIdx: 30, type: "idr" },
+    ];
+
+    // OPTIMASI: Jalankan Efek Animasi Latar Vanta Net
+    VANTA.NET({
+      el: "#vanta-bg",
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.0,
+      minWidth: 200.0,
+      scale: 1.0,
+      scaleMobile: 1.0,
+      color: 0x3fbcff,
+      backgroundColor: 0x080816,
+      points: 10.0,
+      maxDistance: 20.0,
+      spacing: 18.0,
+    });
+
+    function parseLocalNumber(str) {
+      if (!str || str === "-") return 0;
+      let cleanStr = str.replace(/[^0-9,-]/g, "").replace(",", ".");
+      return parseFloat(cleanStr) || 0;
+    }
+
+    function animateCounter(elementId, targetValue, duration) {
+      const obj = document.getElementById(elementId);
+      if (!obj || !targetValue) return;
+      const onlyNumbers = targetValue.replace(/[^0-9,.]/g, "");
+      if (!onlyNumbers) {
+        obj.innerText = targetValue;
+        return;
+      }
+      const prefix = targetValue.split(onlyNumbers)[0] || "";
+      const suffix = targetValue.split(onlyNumbers)[1] || "";
+      const cleanNumber = parseLocalNumber(targetValue);
+      if (isNaN(cleanNumber)) {
+        obj.innerText = targetValue;
+        return;
+      }
+      let startTimestamp = null;
+      const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        const currentNum = progress * cleanNumber;
+        let formattedNum;
+        if (onlyNumbers.includes(",")) {
+          const decimals = onlyNumbers.split(",")[1].length;
+          formattedNum = currentNum.toFixed(decimals).replace(".", ",");
+        } else {
+          formattedNum = Math.floor(currentNum).toLocaleString("id-ID");
+        }
+        obj.innerText = prefix + formattedNum + suffix;
+        if (progress < 1) window.requestAnimationFrame(step);
+        else obj.innerText = targetValue;
+      };
+      window.requestAnimationFrame(step);
+    }
+
+    function renderTablePNL() {
+      if (!globalSheetData) return;
+
+      let tbody = document.getElementById("pnlBody");
+      tbody.innerHTML = "";
+      let grandTotalBeli = 0;
+      let grandTotalSaatIni = 0;
+
+      assetMap.forEach((asset, index) => {
+        if (!globalSheetData[asset.rowIdx]) return;
+
+        let strHargaBeli = globalSheetData[asset.rowIdx][0];
+        let strJumlah = globalSheetData[asset.rowIdx][2];
+        let hargaBeli = parseLocalNumber(strHargaBeli);
+        let jumlah = parseLocalNumber(strJumlah);
+        let hargaSaatIni = 0;
+
+        // LOGIKA FALLBACK: Kalau API nyangkut/nol, harga saat ini disamakan dengan harga beli
+        if (asset.type === "emas") {
+          hargaSaatIni = globalLivePrices.emas > 0 ? jumlah * globalLivePrices.emas : hargaBeli;
+        } else if (asset.type === "btc") {
+          hargaSaatIni = globalLivePrices.btc > 0 ? jumlah * globalLivePrices.btc : hargaBeli;
+        } else if (asset.type === "usdt") {
+          hargaSaatIni = globalLivePrices.usdt > 0 ? jumlah * globalLivePrices.usdt : hargaBeli;
+        } else if (asset.type === "idr") {
+          hargaSaatIni = hargaBeli;
+        }
+
+        let pnlPersen = hargaBeli > 0 ? ((hargaSaatIni - hargaBeli) / hargaBeli) * 100 : 0;
+        grandTotalBeli += hargaBeli;
+        grandTotalSaatIni += hargaSaatIni;
+
+        let pnlText = "0.00%";
+        let pnlClass = "text-white-50";
+        if (pnlPersen > 0) {
+          pnlText = `▲ +${pnlPersen.toFixed(2)}%`;
+          pnlClass = "text-success-neon fw-bold";
+        } else if (pnlPersen < 0) {
+          pnlText = `▼ ${pnlPersen.toFixed(2)}%`;
+          pnlClass = "text-danger-neon fw-bold";
+        }
+
+        let fmtBeli = "Rp " + Math.round(hargaBeli).toLocaleString("id-ID");
+        let fmtSaatIni = "Rp " + Math.round(hargaSaatIni).toLocaleString("id-ID");
+
+        let tr = document.createElement("tr");
+        tr.innerHTML = `<td class="text-center text-white-50">${index + 1}</td><td class="fw-semibold">${asset.name}</td><td class="text-end text-white-50">${fmtBeli}</td><td class="text-end fw-bold">${fmtSaatIni}</td><td class="text-end ${pnlClass}">${pnlText}</td>`;
+        tbody.appendChild(tr);
       });
 
-      function parseLocalNumber(str) {
-        if (!str || str === "-") return 0;
-        let cleanStr = str.replace(/[^0-9,-]/g, "").replace(",", ".");
-        return parseFloat(cleanStr) || 0;
-      }
+      let grandPnlPersen = grandTotalBeli > 0 ? ((grandTotalSaatIni - grandTotalBeli) / grandTotalBeli) * 100 : 0;
+      document.getElementById("totalBeli").innerText = "Rp " + Math.round(grandTotalBeli).toLocaleString("id-ID");
+      document.getElementById("totalSaatIni").innerText = "Rp " + Math.round(grandTotalSaatIni).toLocaleString("id-ID");
 
-      function animateCounter(elementId, targetValue, duration) {
-        const obj = document.getElementById(elementId);
-        if (!obj || !targetValue) return;
-        const onlyNumbers = targetValue.replace(/[^0-9,.]/g, "");
-        if (!onlyNumbers) {
-          obj.innerText = targetValue;
-          return;
-        }
-        const prefix = targetValue.split(onlyNumbers)[0] || "";
-        const suffix = targetValue.split(onlyNumbers)[1] || "";
-        const cleanNumber = parseLocalNumber(targetValue);
-        if (isNaN(cleanNumber)) {
-          obj.innerText = targetValue;
-          return;
-        }
-        let startTimestamp = null;
-        const step = (timestamp) => {
-          if (!startTimestamp) startTimestamp = timestamp;
-          const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-          const currentNum = progress * cleanNumber;
-          let formattedNum;
-          if (onlyNumbers.includes(",")) {
-            const decimals = onlyNumbers.split(",")[1].length;
-            formattedNum = currentNum.toFixed(decimals).replace(".", ",");
-          } else {
-            formattedNum = Math.floor(currentNum).toLocaleString("id-ID");
-          }
-          obj.innerText = prefix + formattedNum + suffix;
-          if (progress < 1) window.requestAnimationFrame(step);
-          else obj.innerText = targetValue;
-        };
-        window.requestAnimationFrame(step);
-      }
-
-      function renderTablePNL() {
-        if (!globalSheetData) return;
-
-        let tbody = document.getElementById("pnlBody");
-        tbody.innerHTML = "";
-        let grandTotalBeli = 0;
-        let grandTotalSaatIni = 0;
-
-        assetMap.forEach((asset, index) => {
-          if (!globalSheetData[asset.rowIdx]) return;
-
-          let strHargaBeli = globalSheetData[asset.rowIdx][0];
-          let strJumlah = globalSheetData[asset.rowIdx][2];
-          let hargaBeli = parseLocalNumber(strHargaBeli);
-          let jumlah = parseLocalNumber(strJumlah);
-          let hargaSaatIni = 0;
-
-          // LOGIKA FALLBACK: Kalau API nyangkut/nol, harga saat ini disamakan dengan harga beli
-          if (asset.type === "emas") {
-            hargaSaatIni = globalLivePrices.emas > 0 ? jumlah * globalLivePrices.emas : hargaBeli;
-          } else if (asset.type === "btc") {
-            hargaSaatIni = globalLivePrices.btc > 0 ? jumlah * globalLivePrices.btc : hargaBeli;
-          } else if (asset.type === "usdt") {
-            hargaSaatIni = globalLivePrices.usdt > 0 ? jumlah * globalLivePrices.usdt : hargaBeli;
-          } else if (asset.type === "idr") {
-            hargaSaatIni = hargaBeli;
-          }
-
-          let pnlPersen = hargaBeli > 0 ? ((hargaSaatIni - hargaBeli) / hargaBeli) * 100 : 0;
-          grandTotalBeli += hargaBeli;
-          grandTotalSaatIni += hargaSaatIni;
-
-          let pnlText = "0.00%";
-          let pnlClass = "text-white-50";
-          if (pnlPersen > 0) {
-            pnlText = `▲ +${pnlPersen.toFixed(2)}%`;
-            pnlClass = "text-success-neon fw-bold";
-          } else if (pnlPersen < 0) {
-            pnlText = `▼ ${pnlPersen.toFixed(2)}%`;
-            pnlClass = "text-danger-neon fw-bold";
-          }
-
-          let fmtBeli = "Rp " + Math.round(hargaBeli).toLocaleString("id-ID");
-          let fmtSaatIni = "Rp " + Math.round(hargaSaatIni).toLocaleString("id-ID");
-
-          let tr = document.createElement("tr");
-          tr.innerHTML = `<td class="text-center text-white-50">${index + 1}</td><td class="fw-semibold">${asset.name}</td><td class="text-end text-white-50">${fmtBeli}</td><td class="text-end fw-bold">${fmtSaatIni}</td><td class="text-end ${pnlClass}">${pnlText}</td>`;
-          tbody.appendChild(tr);
-        });
-
-        let grandPnlPersen = grandTotalBeli > 0 ? ((grandTotalSaatIni - grandTotalBeli) / grandTotalBeli) * 100 : 0;
-        document.getElementById("totalBeli").innerText = "Rp " + Math.round(grandTotalBeli).toLocaleString("id-ID");
-        document.getElementById("totalSaatIni").innerText = "Rp " + Math.round(grandTotalSaatIni).toLocaleString("id-ID");
-
-        let elTotalPnl = document.getElementById("totalPnl");
-        if (grandPnlPersen > 0) {
-          elTotalPnl.innerText = `▲ +${grandPnlPersen.toFixed(2)}%`;
-          elTotalPnl.className = "text-end fw-bold text-success-neon fs-5";
-        } else if (grandPnlPersen < 0) {
-          elTotalPnl.innerText = `▼ ${grandPnlPersen.toFixed(2)}%`;
-          elTotalPnl.className = "text-end fw-bold text-danger-neon fs-5";
-        } else {
-          elTotalPnl.innerText = "0.00%";
-          elTotalPnl.className = "text-end fw-bold text-white fs-5";
-        }
-
-        applyPrivacy();
-      }
-
-      // 1. Ambil Data Sheet 1
-      const csvUrl1 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRk8HUQrb0tNGed3S0Cm6XOces6c5CSJyJtc7hRr8PRCQ1zSowUgkLU8DKSY8WaW4zVnwXyapN5Q7Xc/pub?gid=87019778&single=true&output=csv";
-
-      fetch(csvUrl1)
-        .then((response) => response.text())
-        .then((csvText) => {
-          Papa.parse(csvText, {
-            header: false,
-            complete: function (results) {
-              const data = results.data;
-              if (data.length >= 35) {
-                globalSheetData = data;
-                const durasi = 2000;
-                animateCounter("val-c3", data[2][2] || "-", durasi);
-                animateCounter("val-a3", data[2][0] || "-", durasi);
-                animateCounter("val-c8", data[7][2] || "-", durasi);
-                animateCounter("val-a8", data[7][0] || "-", durasi);
-                animateCounter("val-c13", data[12][2] || "-", durasi);
-                animateCounter("val-a13", data[12][0] || "-", durasi);
-                animateCounter("val-c18", data[17][2] || "-", durasi);
-                animateCounter("val-a18", data[17][0] || "-", durasi);
-                animateCounter("val-c23", data[22][2] || "-", durasi);
-                animateCounter("val-a23", data[22][0] || "-", durasi);
-                animateCounter("val-c27", data[26][2] || "-", durasi);
-                animateCounter("val-a27", data[26][0] || "-", durasi);
-                animateCounter("val-c31", data[30][2] || "-", durasi);
-                animateCounter("val-a31", data[30][0] || "-", durasi);
-                animateCounter("val-c35", data[34][2] || "-", durasi);
-                animateCounter("val-a35", data[34][0] || "-", durasi);
-                renderTablePNL();
-              }
-            },
-          });
-        })
-        .catch((err) => console.error("Gagal load Sheet 1:", err));
-
-      // 2. Ambil Data Sheet 4 (Riwayat Transaksi Lengkap & Grafik)
-      const csvUrl4 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRk8HUQrb0tNGed3S0Cm6XOces6c5CSJyJtc7hRr8PRCQ1zSowUgkLU8DKSY8WaW4zVnwXyapN5Q7Xc/pub?gid=268369224&single=true&output=csv";
-
-      fetch(csvUrl4)
-        .then((response) => response.text())
-        .then((csvText) => {
-          Papa.parse(csvText, {
-            header: false,
-            skipEmptyLines: true,
-            complete: function (results) {
-              let rawData = results.data;
-              if (isNaN(rawData[0][0])) rawData.shift();
-              let parsedRows = [];
-              rawData.forEach((row) => {
-                if (row.length > 3 && row[1]) {
-                  let dateStr = row[1].trim();
-                  let jenis = row[2] ? row[2].trim() : "";
-                  let rawNominal = row[3] || "0";
-                  let cleanNominal = rawNominal.split(",")[0].replace(/[^0-9-]/g, "");
-                  let nominalMasuk = parseInt(cleanNominal) || 0;
-                  let tglObj;
-                  let parts = dateStr.split(/[-/]/);
-                  if (parts.length === 3) {
-                    let day, month, year;
-                    if (parts[0].length === 4) {
-                      year = parseInt(parts[0]);
-                      month = parseInt(parts[1]);
-                      day = parseInt(parts[2]);
-                    } else {
-                      day = parseInt(parts[0]);
-                      month = parseInt(parts[1]);
-                      year = parseInt(parts[2]);
-                      if (year < 100) year += 2000;
-                    }
-                    tglObj = new Date(year, month - 1, day);
-                  } else {
-                    tglObj = new Date(dateStr);
-                  }
-                  if (!isNaN(tglObj.getTime())) parsedRows.push({ dateObj: tglObj, jenis: jenis, nominal: nominalMasuk });
-                }
-              });
-              parsedRows.sort((a, b) => a.dateObj - b.dateObj);
-
-              let currentBalances = { "Emas Pegadaian Dana Darurat": 0, "Tabungan Hari Tua EMAS": 0, "Tabungan Hari Tua BITCOIN": 0, "Tabungan EMAS": 0, "Tabungan BITCOIN": 0, "Emas Fisik": 0, Deposito: 0, USDT: 0 };
-              let dataPerBulan = {};
-              const namaBulan = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"];
-              let latestDates = {};
-
-              parsedRows.forEach((row) => {
-                if (currentBalances.hasOwnProperty(row.jenis)) currentBalances[row.jenis] += row.nominal;
-                let yyyy = row.dateObj.getFullYear();
-                let mm = row.dateObj.getMonth();
-                let keyBulan = `${yyyy}-${String(mm + 1).padStart(2, "0")}`;
-                dataPerBulan[keyBulan] = { labelX: `${namaBulan[mm]} ${yyyy}`, balances: { ...currentBalances } };
-                if (!latestDates[row.jenis] || row.dateObj > latestDates[row.jenis]) latestDates[row.jenis] = row.dateObj;
-              });
-
-              const dateMapping = [
-                { id: "val-date-1", name: "Emas Pegadaian Dana Darurat" },
-                { id: "val-date-2", name: "Tabungan Hari Tua EMAS" },
-                { id: "val-date-3", name: "Tabungan Hari Tua BITCOIN" },
-                { id: "val-date-4", name: "Tabungan EMAS" },
-                { id: "val-date-5", name: "Tabungan BITCOIN" },
-                { id: "val-date-6", name: "Emas Fisik" },
-                { id: "val-date-7", name: "Deposito" },
-                { id: "val-date-8", name: "USDT" },
-              ];
-              dateMapping.forEach((item) => {
-                let el = document.getElementById(item.id);
-                if (el) {
-                  if (latestDates[item.name]) {
-                    let d = latestDates[item.name];
-                    el.innerText = `🕒 Terakhir: ${String(d.getDate()).padStart(2, "0")} ${namaBulan[d.getMonth()]} ${d.getFullYear()}`;
-                  } else el.innerText = `🕒 Belum ada data`;
-                }
-              });
-
-              let labelTanggal = [];
-              let datasetPoints = { "Emas Pegadaian Dana Darurat": [], "Tabungan Hari Tua EMAS": [], "Tabungan Hari Tua BITCOIN": [], "Tabungan EMAS": [], "Tabungan BITCOIN": [], "Emas Fisik": [], Deposito: [], USDT: [] };
-              let sortedKeys = Object.keys(dataPerBulan).sort();
-              sortedKeys.forEach((key) => {
-                labelTanggal.push(dataPerBulan[key].labelX);
-                Object.keys(datasetPoints).forEach((k) => datasetPoints[k].push(dataPerBulan[key].balances[k]));
-              });
-
-              const colorsCode = {
-                "Emas Pegadaian Dana Darurat": "#ffd700",
-                "Tabungan Hari Tua EMAS": "#ff8c00",
-                "Tabungan Hari Tua BITCOIN": "#ff4500",
-                "Tabungan EMAS": "#b8860b",
-                "Tabungan BITCOIN": "#00ffcc",
-                "Emas Fisik": "#ff3366",
-                Deposito: "#a020f0",
-                USDT: "#26a17b",
-              };
-
-              let formatedDatasets = Object.keys(datasetPoints).map((k) => ({ label: k, data: datasetPoints[k], borderColor: colorsCode[k] || "#ffffff", backgroundColor: "transparent", borderWidth: 2.5, tension: 0.3, pointRadius: 3, pointHoverRadius: 6 }));
-
-              chartFullLabels = labelTanggal;
-              chartFullDatasets = formatedDatasets;
-
-              const ctxGrafik = document.getElementById("grafikTabungan").getContext("2d");
-              myLineChart = new Chart(ctxGrafik, {
-                type: "line",
-                data: { labels: chartFullLabels, datasets: chartFullDatasets },
-                options: {
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  plugins: { legend: { labels: { color: "white", font: { size: 11 } } } },
-                  scales: {
-                    x: { ticks: { color: "rgba(255,255,255,0.7)", maxTicksLimit: 12 }, grid: { color: "rgba(255,255,255,0.05)" } },
-                    y: { beginAtZero: true, ticks: { color: "rgba(255,255,255,0.7)", callback: (v) => (v >= 1000000 ? (v / 1000000).toFixed(0) + " Jt" : v) }, grid: { color: "rgba(255,255,255,0.05)" } },
-                  },
-                },
-              });
-
-              window.filterGrafik = function (timeframe) {
-                if (!myLineChart) return;
-                let filteredLabels = [];
-                let filteredDatasets = [];
-
-                if (timeframe === "all") {
-                  filteredLabels = chartFullLabels;
-                  filteredDatasets = chartFullDatasets;
-                } else {
-                  let batasBulan = parseInt(timeframe);
-                  filteredLabels = chartFullLabels.slice(-batasBulan);
-                  filteredDatasets = chartFullDatasets.map((dataset) => {
-                    return { ...dataset, data: dataset.data.slice(-batasBulan) };
-                  });
-                }
-
-                myLineChart.data.labels = filteredLabels;
-                myLineChart.data.datasets = filteredDatasets;
-                myLineChart.update();
-
-                document.querySelectorAll(".btn-timeframe").forEach((btn) => {
-                  btn.classList.remove("active");
-                  if (btn.dataset.time === timeframe) btn.classList.add("active");
-                });
-              };
-
-              document.querySelectorAll(".btn-timeframe").forEach((btn) => {
-                btn.addEventListener("click", (e) => {
-                  let waktuYangDipilih = e.target.dataset.time;
-                  window.filterGrafik(waktuYangDipilih);
-                });
-              });
-
-              let totalAset = Object.values(currentBalances).reduce((a, b) => a + b, 0);
-
-              new Chart(document.getElementById("grafikDonat").getContext("2d"), {
-                type: "pie",
-                data: {
-                  labels: Object.keys(currentBalances),
-                  datasets: [
-                    {
-                      data: Object.values(currentBalances),
-                      backgroundColor: Object.values(colorsCode),
-                      borderColor: "#080816",
-                      borderWidth: 4,
-                      hoverOffset: 12,
-                    },
-                  ],
-                },
-                plugins: [ChartDataLabels],
-                options: {
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  layout: {
-                    padding: 5,
-                  },
-                  plugins: {
-                    legend: {
-                      position: "bottom",
-                      labels: { color: "white", padding: 15, font: { size: 12 } },
-                    },
-                    datalabels: {
-                      color: "#ffffff",
-                      backgroundColor: "rgba(0, 0, 0, 0.6)",
-                      borderRadius: 4,
-                      padding: 5,
-                      font: { weight: "bold", size: 11 },
-                      formatter: (v) => (v === 0 ? null : ((v / totalAset) * 100).toFixed(1) + "%"),
-                    },
-                  },
-                },
-              });
-            },
-          });
-        })
-        .catch((err) => console.error("Gagal load Sheet 4:", err));
-
-      // FITUR UTAMA: Fetch Harga Live API Kripto & Lakuemas
-      function fetchLivePrices() {
-        let fKripto = fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether&vs_currencies=idr").then((r) => r.json());
-        let urlEmas = "https://logam-mulia-api.iamutaki.workers.dev/api/prices/lakuemas";
-        let proxyUrl = `https://corsproxy.io/?${encodeURIComponent(urlEmas)}`;
-        let fEmas = fetch(proxyUrl).then((r) => r.json());
-
-        Promise.allSettled([fKripto, fEmas])
-          .then((results) => {
-            if (results[0].status === "fulfilled") {
-              let dK = results[0].value;
-              globalLivePrices.btc = dK.bitcoin.idr;
-              globalLivePrices.usdt = dK.tether.idr;
-              document.getElementById("live-btc").innerText = "Rp " + globalLivePrices.btc.toLocaleString("id-ID");
-              document.getElementById("live-usdt").innerText = "Rp " + globalLivePrices.usdt.toLocaleString("id-ID");
-            } else {
-              console.error("Gagal load kripto", results[0].reason);
-              document.getElementById("live-btc").innerText = "API Kripto Error";
-            }
-
-            if (results[1].status === "fulfilled") {
-              let dE = results[1].value;
-              if (dE && dE.success) {
-                let h1 = 0;
-                if (Array.isArray(dE.data)) h1 = dE.data.find((x) => x.weight === 1)?.sellPrice || dE.data[0].sellPrice / dE.data[0].weight;
-                else h1 = dE.data.antam.find((x) => x.weight === 1)?.sellPrice || dE.data.antam[0].sellPrice / dE.data.antam[0].weight;
-
-                // Fallback khusus kalau lakuemas response strukturnya langsung
-                if (!h1 && dE.data && dE.data.sellPrice) h1 = dE.data.sellPrice;
-
-                globalLivePrices.emas = Math.round(h1);
-                document.getElementById("live-emas").innerText = "Rp " + globalLivePrices.emas.toLocaleString("id-ID");
-              }
-            } else {
-              console.warn("API Emas lagi tidur/down, nilai pakai 0 dulu", results[1].reason);
-              document.getElementById("live-emas").innerText = "Server Down";
-            }
-            renderTablePNL();
-          })
-          .catch((err) => console.error("Sistem API Error Total:", err));
-      }
-
-      fetchLivePrices();
-      setInterval(fetchLivePrices, 180000); // Tiap 3 Menit
-
-      // SYSTEM PRIVACY MODE
-      const btnPrivacy = document.getElementById("btnPrivacy");
-      let isHidden = localStorage.getItem("privacyMode") === "true";
-
-      function applyPrivacy() {
-        document.querySelectorAll(".sensitive-data").forEach((el) => (isHidden ? el.classList.add("privacy-blur") : el.classList.remove("privacy-blur")));
-        btnPrivacy.innerHTML = isHidden ? "🙈" : "👁️";
+      let elTotalPnl = document.getElementById("totalPnl");
+      if (grandPnlPersen > 0) {
+        elTotalPnl.innerText = `▲ +${grandPnlPersen.toFixed(2)}%`;
+        elTotalPnl.className = "text-end fw-bold text-success-neon fs-5";
+      } else if (grandPnlPersen < 0) {
+        elTotalPnl.innerText = `▼ ${grandPnlPersen.toFixed(2)}%`;
+        elTotalPnl.className = "text-end fw-bold text-danger-neon fs-5";
+      } else {
+        elTotalPnl.innerText = "0.00%";
+        elTotalPnl.className = "text-end fw-bold text-white fs-5";
       }
 
       applyPrivacy();
+    }
 
-      btnPrivacy.addEventListener("click", () => {
-        isHidden = !isHidden;
-        localStorage.setItem("privacyMode", isHidden);
-        applyPrivacy();
-      });
-    </script>
-  </body>
+    // 1. Ambil Data Sheet 1
+    const csvUrl1 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRk8HUQrb0tNGed3S0Cm6XOces6c5CSJyJtc7hRr8PRCQ1zSowUgkLU8DKSY8WaW4zVnwXyapN5Q7Xc/pub?gid=87019778&single=true&output=csv";
+
+    fetch(csvUrl1)
+      .then((response) => response.text())
+      .then((csvText) => {
+        Papa.parse(csvText, {
+          header: false,
+          complete: function (results) {
+            const data = results.data;
+            if (data.length >= 35) {
+              globalSheetData = data;
+              const durasi = 2000;
+              animateCounter("val-c3", data[2][2] || "-", durasi);
+              animateCounter("val-a3", data[2][0] || "-", durasi);
+              animateCounter("val-c8", data[7][2] || "-", durasi);
+              animateCounter("val-a8", data[7][0] || "-", durasi);
+              animateCounter("val-c13", data[12][2] || "-", durasi);
+              animateCounter("val-a13", data[12][0] || "-", durasi);
+              animateCounter("val-c18", data[17][2] || "-", durasi);
+              animateCounter("val-a18", data[17][0] || "-", durasi);
+              animateCounter("val-c23", data[22][2] || "-", durasi);
+              animateCounter("val-a23", data[22][0] || "-", durasi);
+              animateCounter("val-c27", data[26][2] || "-", durasi);
+              animateCounter("val-a27", data[26][0] || "-", durasi);
+              animateCounter("val-c31", data[30][2] || "-", durasi);
+              animateCounter("val-a31", data[30][0] || "-", durasi);
+              animateCounter("val-c35", data[34][2] || "-", durasi);
+              animateCounter("val-a35", data[34][0] || "-", durasi);
+              renderTablePNL();
+            }
+          },
+        });
+      })
+      .catch((err) => console.error("Gagal load Sheet 1:", err));
+
+    // 2. Ambil Data Sheet 4 (Riwayat Transaksi Lengkap & Grafik)
+    const csvUrl4 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRk8HUQrb0tNGed3S0Cm6XOces6c5CSJyJtc7hRr8PRCQ1zSowUgkLU8DKSY8WaW4zVnwXyapN5Q7Xc/pub?gid=268369224&single=true&output=csv";
+
+    fetch(csvUrl4)
+      .then((response) => response.text())
+      .then((csvText) => {
+        Papa.parse(csvText, {
+          header: false,
+          skipEmptyLines: true,
+          complete: function (results) {
+            let rawData = results.data;
+            if (isNaN(rawData[0][0])) rawData.shift();
+            let parsedRows = [];
+            rawData.forEach((row) => {
+              if (row.length > 3 && row[1]) {
+                let dateStr = row[1].trim();
+                let jenis = row[2] ? row[2].trim() : "";
+                let rawNominal = row[3] || "0";
+                let cleanNominal = rawNominal.split(",")[0].replace(/[^0-9-]/g, "");
+                let nominalMasuk = parseInt(cleanNominal) || 0;
+                let tglObj;
+                let parts = dateStr.split(/[-/]/);
+                if (parts.length === 3) {
+                  let day, month, year;
+                  if (parts[0].length === 4) {
+                    year = parseInt(parts[0]);
+                    month = parseInt(parts[1]);
+                    day = parseInt(parts[2]);
+                  } else {
+                    day = parseInt(parts[0]);
+                    month = parseInt(parts[1]);
+                    year = parseInt(parts[2]);
+                    if (year < 100) year += 2000;
+                  }
+                  tglObj = new Date(year, month - 1, day);
+                } else {
+                  tglObj = new Date(dateStr);
+                }
+                if (!isNaN(tglObj.getTime())) parsedRows.push({ dateObj: tglObj, jenis: jenis, nominal: nominalMasuk });
+              }
+            });
+            parsedRows.sort((a, b) => a.dateObj - b.dateObj);
+
+            let currentBalances = { "Emas Pegadaian Dana Darurat": 0, "Tabungan Hari Tua EMAS": 0, "Tabungan Hari Tua BITCOIN": 0, "Tabungan EMAS": 0, "Tabungan BITCOIN": 0, "Emas Fisik": 0, Deposito: 0, USDT: 0 };
+            let dataPerBulan = {};
+            const namaBulan = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"];
+            let latestDates = {};
+
+            parsedRows.forEach((row) => {
+              if (currentBalances.hasOwnProperty(row.jenis)) currentBalances[row.jenis] += row.nominal;
+              let yyyy = row.dateObj.getFullYear();
+              let mm = row.dateObj.getMonth();
+              let keyBulan = `${yyyy}-${String(mm + 1).padStart(2, "0")}`;
+              dataPerBulan[keyBulan] = { labelX: `${namaBulan[mm]} ${yyyy}`, balances: { ...currentBalances } };
+              if (!latestDates[row.jenis] || row.dateObj > latestDates[row.jenis]) latestDates[row.jenis] = row.dateObj;
+            });
+
+            const dateMapping = [
+              { id: "val-date-1", name: "Emas Pegadaian Dana Darurat" },
+              { id: "val-date-2", name: "Tabungan Hari Tua EMAS" },
+              { id: "val-date-3", name: "Tabungan Hari Tua BITCOIN" },
+              { id: "val-date-4", name: "Tabungan EMAS" },
+              { id: "val-date-5", name: "Tabungan BITCOIN" },
+              { id: "val-date-6", name: "Emas Fisik" },
+              { id: "val-date-7", name: "Deposito" },
+              { id: "val-date-8", name: "USDT" },
+            ];
+            dateMapping.forEach((item) => {
+              let el = document.getElementById(item.id);
+              if (el) {
+                if (latestDates[item.name]) {
+                  let d = latestDates[item.name];
+                  el.innerText = `🕒 Terakhir: ${String(d.getDate()).padStart(2, "0")} ${namaBulan[d.getMonth()]} ${d.getFullYear()}`;
+                } else el.innerText = `🕒 Belum ada data`;
+              }
+            });
+
+            let labelTanggal = [];
+            let datasetPoints = { "Emas Pegadaian Dana Darurat": [], "Tabungan Hari Tua EMAS": [], "Tabungan Hari Tua BITCOIN": [], "Tabungan EMAS": [], "Tabungan BITCOIN": [], "Emas Fisik": [], Deposito: [], USDT: [] };
+            let sortedKeys = Object.keys(dataPerBulan).sort();
+            sortedKeys.forEach((key) => {
+              labelTanggal.push(dataPerBulan[key].labelX);
+              Object.keys(datasetPoints).forEach((k) => datasetPoints[k].push(dataPerBulan[key].balances[k]));
+            });
+
+            const colorsCode = {
+              "Emas Pegadaian Dana Darurat": "#ffd700",
+              "Tabungan Hari Tua EMAS": "#ff8c00",
+              "Tabungan Hari Tua BITCOIN": "#ff4500",
+              "Tabungan EMAS": "#b8860b",
+              "Tabungan BITCOIN": "#00ffcc",
+              "Emas Fisik": "#ff3366",
+              Deposito: "#a020f0",
+              USDT: "#26a17b",
+            };
+
+            let formatedDatasets = Object.keys(datasetPoints).map((k) => ({ label: k, data: datasetPoints[k], borderColor: colorsCode[k] || "#ffffff", backgroundColor: "transparent", borderWidth: 2.5, tension: 0.3, pointRadius: 3, pointHoverRadius: 6 }));
+
+            chartFullLabels = labelTanggal;
+            chartFullDatasets = formatedDatasets;
+
+            const ctxGrafik = document.getElementById("grafikTabungan").getContext("2d");
+            myLineChart = new Chart(ctxGrafik, {
+              type: "line",
+              data: { labels: chartFullLabels, datasets: chartFullDatasets },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { labels: { color: "white", font: { size: 11 } } } },
+                scales: {
+                  x: { ticks: { color: "rgba(255,255,255,0.7)", maxTicksLimit: 12 }, grid: { color: "rgba(255,255,255,0.05)" } },
+                  y: { beginAtZero: true, ticks: { color: "rgba(255,255,255,0.7)", callback: (v) => (v >= 1000000 ? (v / 1000000).toFixed(0) + " Jt" : v) }, grid: { color: "rgba(255,255,255,0.05)" } },
+                },
+              },
+            });
+
+            window.filterGrafik = function (timeframe) {
+              if (!myLineChart) return;
+              let filteredLabels = [];
+              let filteredDatasets = [];
+
+              if (timeframe === "all") {
+                filteredLabels = chartFullLabels;
+                filteredDatasets = chartFullDatasets;
+              } else {
+                let batasBulan = parseInt(timeframe);
+                filteredLabels = chartFullLabels.slice(-batasBulan);
+                filteredDatasets = chartFullDatasets.map((dataset) => {
+                  return { ...dataset, data: dataset.data.slice(-batasBulan) };
+                });
+              }
+
+              myLineChart.data.labels = filteredLabels;
+              myLineChart.data.datasets = filteredDatasets;
+              myLineChart.update();
+
+              document.querySelectorAll(".btn-timeframe").forEach((btn) => {
+                btn.classList.remove("active");
+                if (btn.dataset.time === timeframe) btn.classList.add("active");
+              });
+            };
+
+            document.querySelectorAll(".btn-timeframe").forEach((btn) => {
+              btn.addEventListener("click", (e) => {
+                let waktuYangDipilih = e.target.dataset.time;
+                window.filterGrafik(waktuYangDipilih);
+              });
+            });
+
+            let totalAset = Object.values(currentBalances).reduce((a, b) => a + b, 0);
+
+            new Chart(document.getElementById("grafikDonat").getContext("2d"), {
+              type: "pie",
+              data: {
+                labels: Object.keys(currentBalances),
+                datasets: [
+                  {
+                    data: Object.values(currentBalances),
+                    backgroundColor: Object.values(colorsCode),
+                    borderColor: "#080816",
+                    borderWidth: 4,
+                    hoverOffset: 12,
+                  },
+                ],
+              },
+              plugins: [ChartDataLabels],
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                  padding: 5,
+                },
+                plugins: {
+                  legend: {
+                    position: "bottom",
+                    labels: { color: "white", padding: 15, font: { size: 12 } },
+                  },
+                  datalabels: {
+                    color: "#ffffff",
+                    backgroundColor: "rgba(0, 0, 0, 0.6)",
+                    borderRadius: 4,
+                    padding: 5,
+                    font: { weight: "bold", size: 11 },
+                    formatter: (v) => (v === 0 ? null : ((v / totalAset) * 100).toFixed(1) + "%"),
+                  },
+                },
+              },
+            });
+          },
+        });
+      })
+      .catch((err) => console.error("Gagal load Sheet 4:", err));
+
+    // FITUR UTAMA: Fetch Harga Live API Pegadaian & Kripto
+    function fetchLivePrices() {
+      let fKripto = fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether&vs_currencies=idr").then((r) => r.json());
+
+      let urlEmas = "https://logam-mulia-api.iamutaki.workers.dev/api/prices/pegadaian";
+      let proxyUrl = `https://corsproxy.io/?${encodeURIComponent(urlEmas)}`;
+      let fEmas = fetch(proxyUrl).then((r) => r.json());
+
+      Promise.allSettled([fKripto, fEmas])
+        .then((results) => {
+          if (results[0].status === "fulfilled") {
+            let dK = results[0].value;
+            globalLivePrices.btc = dK.bitcoin.idr;
+            globalLivePrices.usdt = dK.tether.idr;
+            document.getElementById("live-btc").innerText = "Rp " + globalLivePrices.btc.toLocaleString("id-ID");
+            document.getElementById("live-usdt").innerText = "Rp " + globalLivePrices.usdt.toLocaleString("id-ID");
+          } else {
+            console.error("Gagal load kripto", results[0].reason);
+            document.getElementById("live-btc").innerText = "API Kripto Error";
+          }
+
+          if (results[1].status === "fulfilled") {
+            let dE = results[1].value;
+            if (dE && dE.success) {
+              let h1 = 0;
+              if (Array.isArray(dE.data)) h1 = dE.data.find((x) => x.weight === 1)?.buybackPrice || dE.data[0].buybackPrice / dE.data[0].weight;
+              else if (dE.data && dE.data.antam) h1 = dE.data.antam.find((x) => x.weight === 1)?.buybackPrice || dE.data.antam[0].buybackPrice / dE.data.antam[0].weight;
+
+              if (h1 > 0) {
+                globalLivePrices.emas = Math.round(h1);
+                document.getElementById("live-emas").innerText = "Rp " + globalLivePrices.emas.toLocaleString("id-ID");
+              }
+            }
+          } else {
+            console.warn("API Emas lagi tidur/down, nilai pakai 0 dulu", results[1].reason);
+            document.getElementById("live-emas").innerText = "Server Down";
+          }
+          renderTablePNL();
+        })
+        .catch((err) => console.error("Sistem API Error Total:", err));
+    }
+
+    fetchLivePrices();
+    setInterval(fetchLivePrices, 180000); // Tiap 3 Menit
+
+    // SYSTEM PRIVACY MODE
+    const btnPrivacy = document.getElementById("btnPrivacy");
+    let isHidden = localStorage.getItem("privacyMode") === "true";
+
+    function applyPrivacy() {
+      document.querySelectorAll(".sensitive-data").forEach((el) => (isHidden ? el.classList.add("privacy-blur") : el.classList.remove("privacy-blur")));
+      btnPrivacy.innerHTML = isHidden ? "🙈" : "👁️";
+    }
+
+    applyPrivacy();
+
+    btnPrivacy.addEventListener("click", () => {
+      isHidden = !isHidden;
+      localStorage.setItem("privacyMode", isHidden);
+      applyPrivacy();
+    });
+  </script>
+</body>
+
 </html>

@@ -854,8 +854,8 @@
               let dE = results[1].value;
               if (dE && dE.success) {
                 let h1 = 0;
-                if (Array.isArray(dE.data)) h1 = dE.data.find((x) => x.weight === 1)?.sellPrice || dE.data[0].sellPrice / dE.data[0].weight;
-                else if (dE.data && dE.data.antam) h1 = dE.data.antam.find((x) => x.weight === 1)?.sellPrice || dE.data.antam[0].sellPrice / dE.data.antam[0].weight;
+                if (Array.isArray(dE.data)) h1 = dE.data.find((x) => x.weight === 1)?.buybackPrice || dE.data[0].buybackPrice / dE.data[0].weight;
+                else if (dE.data && dE.data.antam) h1 = dE.data.antam.find((x) => x.weight === 1)?.buybackPrice || dE.data.antam[0].buybackPrice / dE.data.antam[0].weight;
 
                 if (h1 > 0) {
                   globalLivePrices.emas = Math.round(h1);

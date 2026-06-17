@@ -201,6 +201,8 @@
               dataSet.push(rowData);
             });
 
+            dataSet.reverse();
+
             if ($.fn.DataTable.isDataTable("#ticketTable")) {
               $("#ticketTable").DataTable().destroy();
             }
@@ -222,6 +224,8 @@
               ],
               scrollX: true,
               ordering: true,
+
+              // order: [[0, "desc"]],
 
               columnDefs: [
                 {

@@ -27,7 +27,6 @@
   <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
 
   <style>
-    /* === OBAT ANTI-FREEZE / Z-INDEX FIX === */
     #hero {
       padding-top: 120px !important;
     }
@@ -46,8 +45,6 @@
     .modal-backdrop {
       z-index: 99998 !important;
     }
-
-    /* ======================================= */
 
     .dataTables_wrapper .dataTables_length select,
     .dataTables_wrapper .dataTables_filter input {
@@ -162,79 +159,212 @@
     </section>
   </main>
 
-  <div class="modal fade" id="modalTambahTiket" tabindex="-1" aria-labelledby="modalTambahTiketLabel"
-    aria-hidden="true">
+  <div class="modal fade" id="modalTambahTiket" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header bg-primary text-white">
-          <h5 class="modal-title fw-bold" id="modalTambahTiketLabel"><i class="bi bi-file-earmark-plus me-2"></i>Form
-            Tambah Tiket Baru</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title fw-bold"><i class="bi bi-file-earmark-plus me-2"></i>Form Tambah Tiket Baru</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body bg-light">
           <form id="formTambahTiket">
             <div class="row mb-3">
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Nama Pelapor / User</label>
-                <input type="text" class="form-control" id="inputNamaPelapor" placeholder="Contoh: Pak Budi" required>
+                <input type="text" class="form-control" id="inputNamaPelapor" required>
               </div>
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Nama Aplikasi</label>
-                <input type="text" class="form-control" id="inputAplikasi" placeholder="Contoh: SIMPPM" required>
+                <input type="text" class="form-control" id="inputAplikasi" required>
               </div>
             </div>
-
             <div class="row mb-3">
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Nama Modul</label>
-                <input type="text" class="form-control" id="inputModul" placeholder="Contoh: Monev Penelitian" required>
+                <input type="text" class="form-control" id="inputModul" required>
               </div>
               <div class="col-md-6">
                 <label class="form-label fw-semibold">ID Referensi (Opsional)</label>
-                <input type="text" class="form-control" id="inputIDRef" placeholder="Contoh: 1111">
+                <input type="text" class="form-control" id="inputIDRef">
               </div>
             </div>
-
             <div class="row mb-3">
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Info Referensi</label>
-                <input type="text" class="form-control" id="inputInfoRef" placeholder="Contoh: Penelitian AI" required>
+                <input type="text" class="form-control" id="inputInfoRef" required>
               </div>
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Kategori</label>
                 <select class="form-select" id="inputKategori" required>
-                  <option value="" selected disabled>Pilih kategori kendala...</option>
+                  <option value="" selected disabled>Pilih kategori...</option>
                   <option value="Bug">Bug / Error</option>
                   <option value="Fitur Baru">Fitur Baru</option>
                   <option value="Revisi">Revisi</option>
                 </select>
               </div>
             </div>
-
             <div class="row mb-3">
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Prioritas</label>
                 <select class="form-select" id="inputPrioritas" required>
-                  <option value="" selected disabled>Pilih tingkat prioritas...</option>
+                  <option value="" selected disabled>Pilih prioritas...</option>
                   <option value="Tinggi">Tinggi (Urgent)</option>
                   <option value="Sedang">Sedang</option>
                   <option value="Rendah">Rendah</option>
                 </select>
               </div>
             </div>
-
             <div class="mb-3">
-              <label class="form-label fw-semibold">Keterangan / Detail Kendala</label>
-              <textarea class="form-control" id="inputKeterangan" rows="4"
-                placeholder="Jelaskan detail kendala secara lengkap di sini..." required></textarea>
+              <label class="form-label fw-semibold">Keterangan / Detail</label>
+              <textarea class="form-control" id="inputKeterangan" rows="3" required></textarea>
             </div>
           </form>
         </div>
         <div class="modal-footer border-top-0 bg-light">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-          <button type="button" class="btn btn-primary px-4" id="btnSubmitTiket">
-            <i class="bi bi-send me-1"></i> Submit Tiket
+          <button type="button" class="btn btn-primary px-4" id="btnSubmitTiket"><i class="bi bi-send me-1"></i>
+            Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalEditTiket" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-warning text-dark">
+          <h5 class="modal-title fw-bold"><i class="bi bi-pencil-square me-2"></i>Edit Data Tiket</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body bg-light">
+          <form id="formEditTiket">
+            <input type="hidden" id="editIdTiket">
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Nama Pelapor / User</label>
+                <input type="text" class="form-control text-primary fw-bold" id="editNamaPelapor" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Nama Aplikasi</label>
+                <input type="text" class="form-control" id="editAplikasi" required>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Nama Modul</label>
+                <input type="text" class="form-control" id="editModul" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">ID Referensi (Opsional)</label>
+                <input type="text" class="form-control" id="editIDRef">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-12">
+                <label class="form-label fw-semibold">Info Referensi</label>
+                <input type="text" class="form-control" id="editInfoRef" required>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Kategori</label>
+                <select class="form-select" id="editKategori" required>
+                  <option value="Bug">Bug / Error</option>
+                  <option value="Fitur Baru">Fitur Baru</option>
+                  <option value="Revisi">Revisi</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Prioritas</label>
+                <select class="form-select" id="editPrioritas" required>
+                  <option value="Tinggi">Tinggi (Urgent)</option>
+                  <option value="Sedang">Sedang</option>
+                  <option value="Rendah">Rendah</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Status Tiket</label>
+                <select class="form-select border-primary fw-bold text-primary" id="editStatus" required>
+                  <option value="Open">Open</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Done">Done</option>
+                </select>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Keterangan / Detail Kendala</label>
+              <textarea class="form-control" id="editKeterangan" rows="4" required></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer border-top-0 bg-light">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-warning px-4 fw-bold" id="btnSubmitEdit">
+            <i class="bi bi-save me-1"></i> Simpan Perubahan
           </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalViewTiket" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-info text-white">
+          <h5 class="modal-title fw-bold"><i class="bi bi-ticket-detailed me-2"></i>Detail Tiket: <span
+              id="viewIdTiket"></span></h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body bg-light">
+          <div class="row mb-3">
+            <div class="col-md-6 mb-3">
+              <small class="text-muted fw-bold d-block text-uppercase">Nama Pelapor / User</small>
+              <span id="viewNamaPelapor" class="fs-6 fw-bold text-primary">-</span>
+            </div>
+            <div class="col-md-6 mb-3">
+              <small class="text-muted fw-bold d-block text-uppercase">Nama Aplikasi</small>
+              <span id="viewAplikasi" class="fs-6">-</span>
+            </div>
+            <div class="col-md-6 mb-3">
+              <small class="text-muted fw-bold d-block text-uppercase">Nama Modul</small>
+              <span id="viewModul" class="fs-6">-</span>
+            </div>
+            <div class="col-md-6 mb-3">
+              <small class="text-muted fw-bold d-block text-uppercase">ID Referensi</small>
+              <span id="viewIdRef" class="fs-6">-</span>
+            </div>
+            <div class="col-md-12 mb-3">
+              <small class="text-muted fw-bold d-block text-uppercase">Info Referensi</small>
+              <span id="viewInfoRef" class="fs-6">-</span>
+            </div>
+          </div>
+
+          <div class="row mb-3 p-3 bg-white rounded border mx-0">
+            <div class="col-md-4 text-center border-end">
+              <small class="text-muted fw-bold d-block mb-1 text-uppercase">Kategori</small>
+              <div id="viewKategori">-</div>
+            </div>
+            <div class="col-md-4 text-center border-end">
+              <small class="text-muted fw-bold d-block mb-1 text-uppercase">Prioritas</small>
+              <div id="viewPrioritas">-</div>
+            </div>
+            <div class="col-md-4 text-center">
+              <small class="text-muted fw-bold d-block mb-1 text-uppercase">Status</small>
+              <div id="viewStatus">-</div>
+            </div>
+          </div>
+          <div class="mb-2">
+            <small class="text-muted fw-bold d-block text-uppercase mb-2">Keterangan / Detail Kendala</small>
+            <div id="viewKeterangan" class="p-3 bg-white border rounded shadow-sm"
+              style="min-height: 100px; white-space: pre-wrap;">-</div>
+          </div>
+        </div>
+        <div class="modal-footer border-top-0 bg-light">
+          <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Tutup</button>
         </div>
       </div>
     </div>
@@ -245,14 +375,6 @@
       <div class="copyright text-center">
         <p>© <span>Copyright</span> <strong class="px-1 sitename">Style</strong> <span>All Rights Reserved</span></p>
       </div>
-      <div class="social-links d-flex justify-content-center">
-        <a href=""><i class="bi bi-twitter-x"></i></a>
-        <a href=""><i class="bi bi-facebook"></i></a>
-        <a href=""><i class="bi bi-instagram"></i></a>
-        <a href=""><i class="bi bi-linkedin"></i></a>
-      </div>
-      <div class="credits">Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> | <a
-          href="https://bootstrapmade.com/tools/">DevTools</a></div>
     </div>
   </footer>
 
@@ -269,29 +391,49 @@
   <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
-
   <script src="assets/js/main.js"></script>
 
   <script>
+    function renderBadge(text, type) {
+      let textLower = text ? text.toLowerCase() : "";
+      let badgeClass = "bg-secondary";
+
+      if (type === 'kategori') {
+        if (textLower.includes("bug") || textLower.includes("error")) badgeClass = "bg-danger";
+        else if (textLower.includes("fitur") || textLower.includes("baru")) badgeClass = "bg-success";
+        else if (textLower.includes("revisi")) badgeClass = "bg-info text-dark";
+      } else if (type === 'prioritas') {
+        if (textLower === "tinggi" || textLower === "urgent") badgeClass = "bg-danger";
+        else if (textLower === "sedang" || textLower === "normal") badgeClass = "bg-warning text-dark";
+        else badgeClass = "bg-info text-dark";
+      } else if (type === 'status') {
+        if (textLower === "open") badgeClass = "bg-primary";
+        else if (textLower === "in progress" || textLower === "pending") badgeClass = "bg-warning text-dark";
+        else badgeClass = "bg-success";
+      }
+      return `<span class="badge ${badgeClass} fs-6">${text}</span>`;
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
       const sheetId = "1W7xTZyNoGdkgrtYkL--B4pZd6Qj6JVT5xv4v1ZHjzWE";
       const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
+
+      // --- GANTI URL WEB APP LU DI SINI YA BRO! ---
+      const webAppUrl = 'https://script.google.com/macros/s/AKfycbxyB74RXe3VIFDeUQamA0wpG8DtuI9RuTP9phjiVejjZ1v_OPP_pwSKAzMrjW__jz-hXA/exec';
 
       fetch(url)
         .then((response) => response.text())
         .then((data) => {
           const jsonString = data.substring(data.indexOf("{"), data.lastIndexOf("}") + 1);
           const jsonData = JSON.parse(jsonString);
-
           const cols = jsonData.table.cols;
           const rows = jsonData.table.rows;
 
-          const targetColumns = ["ID_Tiket", "Nama_Aplikasi", "Nama_Modul", "ID_Ref", "Info_Referensi", "Keterangan", "Kategori", "Prioritas", "Status"];
-
+          // KITA TAMBAHIN NAMA_PELAPOR KE TARGET COLUMNS
+          const targetColumns = ["ID_Tiket", "Nama_Aplikasi", "Nama_Modul", "ID_Ref", "Info_Referensi", "Keterangan", "Nama_Pelapor", "Kategori", "Prioritas", "Status"];
           const columnIndices = [];
           const finalHeaders = [{ title: "No", className: "text-center", width: "5%" }];
 
@@ -306,44 +448,20 @@
           finalHeaders.push({ title: "Aksi", className: "text-center text-nowrap" });
 
           const dataSet = [];
-
-          let countData = {
-            bug: 0, fitur: 0, revisi: 0,
-            tinggi: 0, sedang: 0, rendah: 0,
-            open: 0, progress: 0, done: 0
-          };
+          let countData = { bug: 0, fitur: 0, revisi: 0, tinggi: 0, sedang: 0, rendah: 0, open: 0, progress: 0, done: 0 };
 
           rows.forEach((row) => {
             const rowData = [""];
-            let idTiket = "";
-            let valKategori = "";
-            let valPrioritas = "";
-            let valStatus = "";
+            let idTiket = ""; let valKategori = ""; let valPrioritas = ""; let valStatus = "";
 
             columnIndices.forEach((index, idx) => {
               const cell = row.c[index];
-              let cellValue = "";
-
-              if (cell && cell.v !== null) {
-                if (typeof cell.v === "string" && cell.v.startsWith("Date(")) {
-                  const dateMatch = cell.v.match(/Date\((\d+),\s*(\d+),\s*(\d+)/);
-                  if (dateMatch) {
-                    const year = dateMatch[1];
-                    const month = String(parseInt(dateMatch[2]) + 1).padStart(2, "0");
-                    const day = String(dateMatch[3]).padStart(2, "0");
-                    cellValue = `${day}/${month}/${year}`;
-                  } else {
-                    cellValue = cell.v;
-                  }
-                } else {
-                  cellValue = cell.f !== undefined ? cell.f : cell.v;
-                }
-              }
+              let cellValue = cell && cell.v !== null ? (cell.f !== undefined ? cell.f : cell.v) : "";
 
               if (targetColumns[idx] === "ID_Tiket") idTiket = cellValue;
-              if (targetColumns[idx] === "Kategori") valKategori = cellValue.toLowerCase();
-              if (targetColumns[idx] === "Prioritas") valPrioritas = cellValue.toLowerCase();
-              if (targetColumns[idx] === "Status") valStatus = cellValue.toLowerCase();
+              if (targetColumns[idx] === "Kategori") valKategori = String(cellValue).toLowerCase();
+              if (targetColumns[idx] === "Prioritas") valPrioritas = String(cellValue).toLowerCase();
+              if (targetColumns[idx] === "Status") valStatus = String(cellValue).toLowerCase();
 
               rowData.push(cellValue);
             });
@@ -378,126 +496,113 @@
 
           document.getElementById("dashboardStats").style.display = "flex";
 
-          if ($.fn.DataTable.isDataTable("#ticketTable")) {
-            $("#ticketTable").DataTable().destroy();
-          }
+          if ($.fn.DataTable.isDataTable("#ticketTable")) $("#ticketTable").DataTable().destroy();
 
-          document.getElementById("data-container").innerHTML = `
-              <table id="ticketTable" class="table table-bordered table-hover align-middle w-100">
-                <thead class="table-dark"></thead>
-              </table>
-            `;
+          document.getElementById("data-container").innerHTML = `<table id="ticketTable" class="table table-bordered table-hover align-middle w-100"><thead class="table-dark"></thead></table>`;
 
-          $("#ticketTable").DataTable({
+          const table = $("#ticketTable").DataTable({
             data: dataSet,
             columns: finalHeaders,
             pageLength: 5,
-            lengthMenu: [
-              [5, 15, 20, -1],
-              [5, 15, 20, "Semua"],
-            ],
+            lengthMenu: [[5, 15, 20, -1], [5, 15, 20, "Semua"]],
             scrollX: true,
             ordering: true,
-
             columnDefs: [
+              { targets: 0, searchable: false, orderable: false, render: (data, type, row, meta) => meta.row + 1 },
+              // KITA SEMBUNYIKAN KOLOM NAMA PELAPOR (Index ke-7) DI TABEL BIAR GAK LEBAR
+              { targets: 7, visible: false },
+              { targets: 8, render: (data) => renderBadge(data, 'kategori') },
+              { targets: 9, render: (data) => renderBadge(data, 'prioritas') },
+              { targets: 10, render: (data) => renderBadge(data, 'status') },
               {
-                targets: 0,
-                searchable: false,
-                orderable: false,
-                render: function (data, type, row, meta) {
-                  return meta.row + 1;
-                },
-              },
-              {
-                targets: 7,
-                render: function (data, type, row) {
-                  let badgeClass = "bg-secondary";
-                  let text = data ? data.toLowerCase() : "";
-                  if (text.includes("bug") || text.includes("error")) badgeClass = "bg-danger";
-                  else if (text.includes("fitur") || text.includes("baru")) badgeClass = "bg-success";
-                  else if (text.includes("revisi")) badgeClass = "bg-info text-dark";
-                  return `<span class="badge ${badgeClass}">${data}</span>`;
-                },
-              },
-              {
-                targets: 8,
-                render: function (data, type, row) {
-                  let badgeClass = "bg-secondary";
-                  let text = data ? data.toLowerCase() : "";
-                  if (text === "tinggi" || text === "high" || text === "urgent") badgeClass = "bg-danger";
-                  else if (text === "sedang" || text === "normal") badgeClass = "bg-warning text-dark";
-                  else if (text === "rendah" || text === "low") badgeClass = "bg-info text-dark";
-                  return `<span class="badge ${badgeClass}">${data}</span>`;
-                },
-              },
-              {
-                targets: 9,
-                render: function (data, type, row) {
-                  let badgeClass = "bg-secondary";
-                  let text = data ? data.toLowerCase() : "";
-                  if (text === "open") badgeClass = "bg-primary";
-                  else if (text === "in progress" || text === "pending") badgeClass = "bg-warning text-dark";
-                  else if (text === "done" || text === "closed" || text === "resolved") badgeClass = "bg-success";
-                  return `<span class="badge ${badgeClass}">${data}</span>`;
-                },
-              },
-              {
-                targets: 10,
-                searchable: false,
-                orderable: false,
-                render: function (data, type, row) {
-                  return `
-                      <div class="d-flex justify-content-center gap-1">
-                        <button class="btn btn-sm btn-info text-white" title="Lihat Detail" onclick="alert('Membuka detail tiket: ${data}')">
-                          <i class="bi bi-eye"></i>
-                        </button>
-                        <button class="btn btn-sm btn-warning text-dark" title="Edit Tiket" onclick="alert('Mengedit tiket: ${data}')">
-                          <i class="bi bi-pencil"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger" title="Hapus Tiket" onclick="alert('Menghapus tiket: ${data}')">
-                          <i class="bi bi-trash"></i>
-                        </button>
-                      </div>
-                    `;
-                },
-              },
+                targets: 11, searchable: false, orderable: false, render: (data) => `
+                    <div class="d-flex justify-content-center gap-1">
+                      <button class="btn btn-sm btn-info text-white btn-view" title="Lihat Detail"><i class="bi bi-eye"></i></button>
+                      <button class="btn btn-sm btn-warning text-dark btn-edit" title="Edit Tiket"><i class="bi bi-pencil"></i></button>
+                      <button class="btn btn-sm btn-danger btn-delete" title="Hapus Tiket"><i class="bi bi-trash"></i></button>
+                    </div>`
+              }
             ],
-
-            language: {
-              search: "Cari Tiket:",
-              lengthMenu: "Tampilkan _MENU_ baris",
-              info: "Menampilkan _START_ s/d _END_ dari total _TOTAL_ tiket",
-              infoEmpty: "Data kosong",
-              infoFiltered: "(disaring dari _MAX_ total tiket)",
-              zeroRecords: "Tiket yang dicari tidak ditemukan",
-              paginate: {
-                first: "Awal",
-                last: "Akhir",
-                next: "Selanjutnya",
-                previous: "Sebelumnya",
-              },
-            },
+            language: { search: "Cari Tiket:", lengthMenu: "Tampilkan _MENU_ baris", info: "Menampilkan _START_ s/d _END_ dari _TOTAL_", infoEmpty: "Data kosong", zeroRecords: "Tidak ditemukan", paginate: { first: "Awal", last: "Akhir", next: "Selanjutnya", previous: "Sebelumnya" } }
           });
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-          document.getElementById("data-container").innerHTML = '<div class="alert alert-danger shadow-sm">Gagal memuat data.</div>';
-        });
 
-      const form = document.getElementById('formTambahTiket');
-      const btnSubmit = document.getElementById('btnSubmitTiket');
+          // KLIK VIEW
+          $('#ticketTable tbody').on('click', '.btn-view', function () {
+            var data = table.row($(this).parents('tr')).data();
+            document.getElementById('viewIdTiket').innerText = data[1] || '-';
+            document.getElementById('viewAplikasi').innerText = data[2] || '-';
+            document.getElementById('viewModul').innerText = data[3] || '-';
+            document.getElementById('viewIdRef').innerText = data[4] || '-';
+            document.getElementById('viewInfoRef').innerText = data[5] || '-';
+            document.getElementById('viewKeterangan').innerText = data[6] || '-';
 
-      btnSubmit.addEventListener('click', () => {
-        if (!form.checkValidity()) {
-          form.reportValidity();
-          return;
-        }
+            // NAMA PELAPOR MASUK KE VIEW
+            document.getElementById('viewNamaPelapor').innerText = data[7] || '-';
 
-        btnSubmit.disabled = true;
-        btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Mengirim...';
+            document.getElementById('viewKategori').innerHTML = renderBadge(data[8], 'kategori');
+            document.getElementById('viewPrioritas').innerHTML = renderBadge(data[9], 'prioritas');
+            document.getElementById('viewStatus').innerHTML = renderBadge(data[10], 'status');
+
+            new bootstrap.Modal(document.getElementById('modalViewTiket')).show();
+          });
+
+          // KLIK EDIT
+          $('#ticketTable tbody').on('click', '.btn-edit', function () {
+            var data = table.row($(this).parents('tr')).data();
+            document.getElementById('editIdTiket').value = data[1];
+            document.getElementById('editAplikasi').value = data[2];
+            document.getElementById('editModul').value = data[3];
+            document.getElementById('editIDRef').value = data[4];
+            document.getElementById('editInfoRef').value = data[5];
+            document.getElementById('editKeterangan').value = data[6];
+
+            // NAMA PELAPOR MASUK KE FORM EDIT
+            document.getElementById('editNamaPelapor').value = data[7] || '';
+
+            document.getElementById('editKategori').value = data[8];
+            document.getElementById('editPrioritas').value = data[9];
+            document.getElementById('editStatus').value = data[10];
+            new bootstrap.Modal(document.getElementById('modalEditTiket')).show();
+          });
+
+          // KLIK DELETE
+          $('#ticketTable tbody').on('click', '.btn-delete', function () {
+            var data = table.row($(this).parents('tr')).data();
+            var idTiket = data[1];
+            if (confirm('Yakin nih bro mau ngehapus tiket ' + idTiket + '? Data yang dihapus nggak bisa balik lagi lho!')) {
+              var btn = $(this);
+              var originalHtml = btn.html();
+              btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>').prop('disabled', true);
+
+              fetch(webAppUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'delete', idTiket: idTiket })
+              })
+                .then(() => {
+                  alert('Sip! Tiket ' + idTiket + ' berhasil dihapus permanen.');
+                  location.reload();
+                })
+                .catch(error => {
+                  alert('Waduh gagal hapus tiket bro!');
+                  btn.html(originalHtml).prop('disabled', false);
+                });
+            }
+          });
+
+        }).catch((error) => console.error("Error fetching data:", error));
+
+      // SUBMIT ADD
+      const formAdd = document.getElementById('formTambahTiket');
+      const btnAdd = document.getElementById('btnSubmitTiket');
+      btnAdd.addEventListener('click', () => {
+        if (!formAdd.checkValidity()) { formAdd.reportValidity(); return; }
+        btnAdd.disabled = true; btnAdd.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Mengirim...';
 
         const formData = {
-          namaPelapor: document.getElementById('inputNamaPelapor').value, // DIKIRIM KE GAS
+          action: 'add',
+          namaPelapor: document.getElementById('inputNamaPelapor').value,
           aplikasi: document.getElementById('inputAplikasi').value,
           modul: document.getElementById('inputModul').value,
           idRef: document.getElementById('inputIDRef').value,
@@ -507,34 +612,47 @@
           keterangan: document.getElementById('inputKeterangan').value
         };
 
-        // --- GANTI STRING DI BAWAH INI PAKAI URL WEB APP LU ---
-        const webAppUrl = 'https://script.google.com/macros/s/AKfycbxyB74RXe3VIFDeUQamA0wpG8DtuI9RuTP9phjiVejjZ1v_OPP_pwSKAzMrjW__jz-hXA/exec';
+        fetch(webAppUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        })
+          .then(() => { location.reload(); })
+          .catch(() => { alert('Gagal!'); btnAdd.disabled = false; btnAdd.innerHTML = '<i class="bi bi-send me-1"></i> Submit'; });
+      });
+
+      // SUBMIT EDIT
+      const formEdit = document.getElementById('formEditTiket');
+      const btnEdit = document.getElementById('btnSubmitEdit');
+      btnEdit.addEventListener('click', () => {
+        if (!formEdit.checkValidity()) { formEdit.reportValidity(); return; }
+        btnEdit.disabled = true; btnEdit.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Menyimpan...';
+
+        const editData = {
+          action: 'edit',
+          idTiket: document.getElementById('editIdTiket').value,
+          namaPelapor: document.getElementById('editNamaPelapor').value, // DIKIRIM KE GAS
+          aplikasi: document.getElementById('editAplikasi').value,
+          modul: document.getElementById('editModul').value,
+          idRef: document.getElementById('editIDRef').value,
+          infoRef: document.getElementById('editInfoRef').value,
+          kategori: document.getElementById('editKategori').value,
+          prioritas: document.getElementById('editPrioritas').value,
+          status: document.getElementById('editStatus').value,
+          keterangan: document.getElementById('editKeterangan').value
+        };
 
         fetch(webAppUrl, {
           method: 'POST',
           mode: 'no-cors',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formData)
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(editData)
         })
-          .then(() => {
-            alert('Sukses! Tiket baru berhasil disimpan ke Google Sheets.');
-            form.reset();
-
-            const modalEl = document.getElementById('modalTambahTiket');
-            const modal = bootstrap.Modal.getInstance(modalEl);
-            modal.hide();
-
-            location.reload();
-          })
-          .catch(error => {
-            console.error('Error:', error);
-            alert('Gagal simpan data, coba cek kodingan URL lu.');
-            btnSubmit.disabled = false;
-            btnSubmit.innerHTML = '<i class="bi bi-send me-1"></i> Submit Tiket';
-          });
+          .then(() => { location.reload(); })
+          .catch(() => { alert('Gagal!'); btnEdit.disabled = false; btnEdit.innerHTML = '<i class="bi bi-save me-1"></i> Simpan Perubahan'; });
       });
+
     });
   </script>
 </body>

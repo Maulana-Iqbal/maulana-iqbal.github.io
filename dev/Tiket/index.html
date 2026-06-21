@@ -1,291 +1,452 @@
 <!doctype html>
 <html lang="id">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Ticket Management System</title>
-    <meta name="description" content="" />
-    <meta name="keywords" content="" />
 
-    <link href="assets/img/logo.jpg" rel="icon" />
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Ticket Management System</title>
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
 
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Quicksand:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+  <link href="assets/img/logo.jpg" rel="icon" />
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
 
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
-    <link href="assets/vendor/aos/aos.css" rel="stylesheet" />
-    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
-    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Quicksand:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
 
-    <link href="assets/css/main.css" rel="stylesheet" />
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet" />
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
 
-    <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+  <link href="assets/css/main.css" rel="stylesheet" />
+  <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
 
-    <style>
-      /* === OBAT ANTI-FREEZE / Z-INDEX FIX === */
-      #hero {
-        padding-top: 120px !important;
-      }
+  <style>
+    /* === OBAT ANTI-FREEZE / Z-INDEX FIX === */
+    #hero {
+      padding-top: 120px !important;
+    }
 
-      #data-container,
-      .container-fluid {
-        position: relative !important;
-        z-index: 9999 !important;
-        pointer-events: auto !important;
-      }
-      /* ======================================= */
+    #data-container,
+    .container-fluid {
+      position: relative !important;
+      z-index: 10 !important;
+      pointer-events: auto !important;
+    }
 
-      .dataTables_wrapper .dataTables_length select,
-      .dataTables_wrapper .dataTables_filter input {
-        border-radius: 6px;
-        border: 1px solid #dee2e6;
-        padding: 4px 8px;
-      }
-      .dataTables_wrapper .dataTables_length select:focus,
-      .dataTables_wrapper .dataTables_filter input:focus {
-        border-color: #86b7fe;
-        outline: 0;
-        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-      }
-      .table-dark th {
-        background-color: #212529 !important;
-        color: #fff !important;
-      }
+    .modal {
+      z-index: 99999 !important;
+    }
 
-      .badge {
-        font-size: 0.85em;
-        padding: 0.4em 0.6em;
-      }
-    </style>
-  </head>
+    .modal-backdrop {
+      z-index: 99998 !important;
+    }
 
-  <body class="starter-page-page">
-    <header id="header" class="header d-flex align-items-center fixed-top">
-      <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
-        <a href="index.html" class="logo d-flex align-items-center"> </a>
-      </div>
-    </header>
+    /* ======================================= */
 
-    <main class="main">
-      <section id="hero" class="hero section">
-        <div class="container-fluid px-4">
-          <h2 class="text-center fw-bold mb-4">
-            Ticket Management System
-            <a href="#" class="btn btn-primary btn-sm shadow-sm ms-2" title="Tambah Tiket Baru" onclick="alert('Arahkan ke form tambah data!')">
-              <i class="bi bi-plus-lg font-weight-bold"></i>
-            </a>
-          </h2>
+    .dataTables_wrapper .dataTables_length select,
+    .dataTables_wrapper .dataTables_filter input {
+      border-radius: 6px;
+      border: 1px solid #dee2e6;
+      padding: 4px 8px;
+    }
 
-          <div class="row align-items-center">
-            <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
-              <div class="table-responsive bg-white p-4 rounded shadow-sm" id="data-container">
-                <p class="text-center text-muted"><span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Memuat data tiket...</p>
+    .dataTables_wrapper .dataTables_length select:focus,
+    .dataTables_wrapper .dataTables_filter input:focus {
+      border-color: #86b7fe;
+      outline: 0;
+      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+
+    .table-dark th {
+      background-color: #212529 !important;
+      color: #fff !important;
+    }
+
+    .badge {
+      font-size: 0.85em;
+      padding: 0.4em 0.6em;
+    }
+
+    .card-dashboard {
+      transition: transform 0.2s ease;
+    }
+
+    .card-dashboard:hover {
+      transform: translateY(-3px);
+    }
+  </style>
+</head>
+
+<body class="starter-page-page">
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center"> </a>
+    </div>
+  </header>
+
+  <main class="main">
+    <section id="hero" class="hero section">
+      <div class="container-fluid px-4">
+        <h2 class="text-center fw-bold mb-4">
+          Ticket Management System
+          <button type="button" class="btn btn-primary btn-sm shadow-sm ms-2 rounded-circle" title="Tambah Tiket Baru"
+            data-bs-toggle="modal" data-bs-target="#modalTambahTiket"
+            style="width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; vertical-align: middle;">
+            <i class="bi bi-plus-lg font-weight-bold"></i>
+          </button>
+        </h2>
+
+        <div class="row mb-4" id="dashboardStats" style="display: none;" data-aos="fade-up" data-aos-delay="100">
+          <div class="col-md-4 mb-3 mb-md-0">
+            <div class="card card-dashboard shadow-sm border-0 border-start border-primary border-4 h-100">
+              <div class="card-body">
+                <h6 class="fw-bold text-muted mb-3"><i class="bi bi-tags me-2"></i>KATEGORI</h6>
+                <div class="d-flex justify-content-between mb-2 pb-1 border-bottom"><span
+                    class="text-secondary fw-semibold">Bug / Error</span> <span class="badge bg-danger rounded-pill"
+                    id="count-bug">0</span></div>
+                <div class="d-flex justify-content-between mb-2 pb-1 border-bottom"><span
+                    class="text-secondary fw-semibold">Fitur Baru</span> <span class="badge bg-success rounded-pill"
+                    id="count-fitur">0</span></div>
+                <div class="d-flex justify-content-between"><span class="text-secondary fw-semibold">Revisi</span> <span
+                    class="badge bg-info text-dark rounded-pill" id="count-revisi">0</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3 mb-md-0">
+            <div class="card card-dashboard shadow-sm border-0 border-start border-warning border-4 h-100">
+              <div class="card-body">
+                <h6 class="fw-bold text-muted mb-3"><i class="bi bi-exclamation-triangle me-2"></i>PRIORITAS</h6>
+                <div class="d-flex justify-content-between mb-2 pb-1 border-bottom"><span
+                    class="text-secondary fw-semibold">Tinggi</span> <span class="badge bg-danger rounded-pill"
+                    id="count-tinggi">0</span></div>
+                <div class="d-flex justify-content-between mb-2 pb-1 border-bottom"><span
+                    class="text-secondary fw-semibold">Sedang</span> <span
+                    class="badge bg-warning text-dark rounded-pill" id="count-sedang">0</span></div>
+                <div class="d-flex justify-content-between"><span class="text-secondary fw-semibold">Rendah</span> <span
+                    class="badge bg-info text-dark rounded-pill" id="count-rendah">0</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card card-dashboard shadow-sm border-0 border-start border-success border-4 h-100">
+              <div class="card-body">
+                <h6 class="fw-bold text-muted mb-3"><i class="bi bi-bar-chart-steps me-2"></i>STATUS TIKET</h6>
+                <div class="d-flex justify-content-between mb-2 pb-1 border-bottom"><span
+                    class="text-secondary fw-semibold">Open</span> <span class="badge bg-primary rounded-pill"
+                    id="count-open">0</span></div>
+                <div class="d-flex justify-content-between mb-2 pb-1 border-bottom"><span
+                    class="text-secondary fw-semibold">In Progress</span> <span
+                    class="badge bg-warning text-dark rounded-pill" id="count-progress">0</span></div>
+                <div class="d-flex justify-content-between"><span class="text-secondary fw-semibold">Done</span> <span
+                    class="badge bg-success rounded-pill" id="count-done">0</span></div>
               </div>
             </div>
           </div>
         </div>
-      </section>
-    </main>
 
-    <footer id="footer" class="footer dark-background">
-      <div class="container">
-        <div class="copyright text-center">
-          <p>© <span>Copyright</span> <strong class="px-1 sitename">Style</strong> <span>All Rights Reserved</span></p>
+        <div class="row align-items-center">
+          <div class="col-lg-12" data-aos="fade-up" data-aos-delay="200">
+            <div class="table-responsive bg-white p-4 rounded shadow-sm" id="data-container">
+              <p class="text-center text-muted"><span class="spinner-border spinner-border-sm me-2" role="status"
+                  aria-hidden="true"></span>Memuat data tiket...</p>
+            </div>
+          </div>
         </div>
-        <div class="social-links d-flex justify-content-center">
-          <a href=""><i class="bi bi-twitter-x"></i></a>
-          <a href=""><i class="bi bi-facebook"></i></a>
-          <a href=""><i class="bi bi-instagram"></i></a>
-          <a href=""><i class="bi bi-linkedin"></i></a>
-        </div>
-        <div class="credits">Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> | <a href="https://bootstrapmade.com/tools/">DevTools</a></div>
       </div>
-    </footer>
+    </section>
+  </main>
 
-    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <div class="modal fade" id="modalTambahTiket" tabindex="-1" aria-labelledby="modalTambahTiketLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title fw-bold" id="modalTambahTiketLabel"><i class="bi bi-file-earmark-plus me-2"></i>Form
+            Tambah Tiket Baru</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body bg-light">
+          <form id="formTambahTiket">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Nama Pelapor / User</label>
+                <input type="text" class="form-control" id="inputNamaPelapor" placeholder="Contoh: Pak Budi" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Nama Aplikasi</label>
+                <input type="text" class="form-control" id="inputAplikasi" placeholder="Contoh: SIMPPM" required>
+              </div>
+            </div>
 
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/vendor/php-email-form/validate.js"></script>
-    <script src="assets/vendor/aos/aos.js"></script>
-    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-    <script src="assets/vendor/typed.js/typed.umd.js"></script>
-    <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
-    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-    <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
-    <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Nama Modul</label>
+                <input type="text" class="form-control" id="inputModul" placeholder="Contoh: Monev Penelitian" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">ID Referensi (Opsional)</label>
+                <input type="text" class="form-control" id="inputIDRef" placeholder="Contoh: 1111">
+              </div>
+            </div>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Info Referensi</label>
+                <input type="text" class="form-control" id="inputInfoRef" placeholder="Contoh: Penelitian AI" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Kategori</label>
+                <select class="form-select" id="inputKategori" required>
+                  <option value="" selected disabled>Pilih kategori kendala...</option>
+                  <option value="Bug">Bug / Error</option>
+                  <option value="Fitur Baru">Fitur Baru</option>
+                  <option value="Revisi">Revisi</option>
+                </select>
+              </div>
+            </div>
 
-    <script src="assets/js/main.js"></script>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Prioritas</label>
+                <select class="form-select" id="inputPrioritas" required>
+                  <option value="" selected disabled>Pilih tingkat prioritas...</option>
+                  <option value="Tinggi">Tinggi (Urgent)</option>
+                  <option value="Sedang">Sedang</option>
+                  <option value="Rendah">Rendah</option>
+                </select>
+              </div>
+            </div>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const sheetId = "1W7xTZyNoGdkgrtYkL--B4pZd6Qj6JVT5xv4v1ZHjzWE";
-        const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Keterangan / Detail Kendala</label>
+              <textarea class="form-control" id="inputKeterangan" rows="4"
+                placeholder="Jelaskan detail kendala secara lengkap di sini..." required></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer border-top-0 bg-light">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-primary px-4" id="btnSubmitTiket">
+            <i class="bi bi-send me-1"></i> Submit Tiket
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        fetch(url)
-          .then((response) => response.text())
-          .then((data) => {
-            const jsonString = data.substring(data.indexOf("{"), data.lastIndexOf("}") + 1);
-            const jsonData = JSON.parse(jsonString);
+  <footer id="footer" class="footer dark-background">
+    <div class="container">
+      <div class="copyright text-center">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">Style</strong> <span>All Rights Reserved</span></p>
+      </div>
+      <div class="social-links d-flex justify-content-center">
+        <a href=""><i class="bi bi-twitter-x"></i></a>
+        <a href=""><i class="bi bi-facebook"></i></a>
+        <a href=""><i class="bi bi-instagram"></i></a>
+        <a href=""><i class="bi bi-linkedin"></i></a>
+      </div>
+      <div class="credits">Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> | <a
+          href="https://bootstrapmade.com/tools/">DevTools</a></div>
+    </div>
+  </footer>
 
-            const cols = jsonData.table.cols;
-            const rows = jsonData.table.rows;
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
-            // Target kolom dari spreadsheet (Nama_Pelapor dihapus)
-            const targetColumns = ["ID_Tiket", "Nama_Aplikasi", "Nama_Modul", "ID_Ref", "Info_Referensi", "Keterangan", "Kategori", "Prioritas", "Status"];
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="assets/vendor/typed.js/typed.umd.js"></script>
+  <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
 
-            const columnIndices = [];
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
 
-            // 1. TAMBAHIN HEADER 'NO' DI AWAL
-            const finalHeaders = [{ title: "No", className: "text-center", width: "5%" }];
+  <script src="assets/js/main.js"></script>
 
-            targetColumns.forEach((target) => {
-              const index = cols.findIndex((col) => col && col.label === target);
-              if (index !== -1) {
-                columnIndices.push(index);
-                finalHeaders.push({ title: target });
-              } else {
-                console.warn(`Kolom "${target}" tidak ditemukan di Spreadsheet.`);
-              }
-            });
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const sheetId = "1W7xTZyNoGdkgrtYkL--B4pZd6Qj6JVT5xv4v1ZHjzWE";
+      const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
 
-            // 2. TAMBAHIN HEADER 'AKSI' DI AKHIR
-            finalHeaders.push({ title: "Aksi", className: "text-center text-nowrap" });
+      fetch(url)
+        .then((response) => response.text())
+        .then((data) => {
+          const jsonString = data.substring(data.indexOf("{"), data.lastIndexOf("}") + 1);
+          const jsonData = JSON.parse(jsonString);
 
-            const dataSet = [];
+          const cols = jsonData.table.cols;
+          const rows = jsonData.table.rows;
 
-            rows.forEach((row) => {
-              // 3. TAMBAHIN KOTAK KOSONG UNTUK NOMOR URUT DI AWAL ARRAY
-              const rowData = [""];
-              let idTiket = "";
+          const targetColumns = ["ID_Tiket", "Nama_Aplikasi", "Nama_Modul", "ID_Ref", "Info_Referensi", "Keterangan", "Kategori", "Prioritas", "Status"];
 
-              columnIndices.forEach((index, idx) => {
-                const cell = row.c[index];
-                let cellValue = "";
+          const columnIndices = [];
+          const finalHeaders = [{ title: "No", className: "text-center", width: "5%" }];
 
-                if (cell && cell.v !== null) {
-                  if (typeof cell.v === "string" && cell.v.startsWith("Date(")) {
-                    const dateMatch = cell.v.match(/Date\((\d+),\s*(\d+),\s*(\d+)/);
-                    if (dateMatch) {
-                      const year = dateMatch[1];
-                      const month = String(parseInt(dateMatch[2]) + 1).padStart(2, "0");
-                      const day = String(dateMatch[3]).padStart(2, "0");
-                      cellValue = `${day}/${month}/${year}`;
-                    } else {
-                      cellValue = cell.v;
-                    }
-                  } else {
-                    cellValue = cell.f !== undefined ? cell.f : cell.v;
-                  }
-                }
-
-                if (targetColumns[idx] === "ID_Tiket") {
-                  idTiket = cellValue;
-                }
-
-                rowData.push(cellValue);
-              });
-
-              // 4. MASUKIN ID_TIKET KE KOLOM PALING AKHIR BUAT TOMBOL AKSI
-              rowData.push(idTiket);
-              dataSet.push(rowData);
-            });
-
-            dataSet.reverse();
-
-            if ($.fn.DataTable.isDataTable("#ticketTable")) {
-              $("#ticketTable").DataTable().destroy();
+          targetColumns.forEach((target) => {
+            const index = cols.findIndex((col) => col && col.label === target);
+            if (index !== -1) {
+              columnIndices.push(index);
+              finalHeaders.push({ title: target });
             }
+          });
 
-            document.getElementById("data-container").innerHTML = `
+          finalHeaders.push({ title: "Aksi", className: "text-center text-nowrap" });
+
+          const dataSet = [];
+
+          let countData = {
+            bug: 0, fitur: 0, revisi: 0,
+            tinggi: 0, sedang: 0, rendah: 0,
+            open: 0, progress: 0, done: 0
+          };
+
+          rows.forEach((row) => {
+            const rowData = [""];
+            let idTiket = "";
+            let valKategori = "";
+            let valPrioritas = "";
+            let valStatus = "";
+
+            columnIndices.forEach((index, idx) => {
+              const cell = row.c[index];
+              let cellValue = "";
+
+              if (cell && cell.v !== null) {
+                if (typeof cell.v === "string" && cell.v.startsWith("Date(")) {
+                  const dateMatch = cell.v.match(/Date\((\d+),\s*(\d+),\s*(\d+)/);
+                  if (dateMatch) {
+                    const year = dateMatch[1];
+                    const month = String(parseInt(dateMatch[2]) + 1).padStart(2, "0");
+                    const day = String(dateMatch[3]).padStart(2, "0");
+                    cellValue = `${day}/${month}/${year}`;
+                  } else {
+                    cellValue = cell.v;
+                  }
+                } else {
+                  cellValue = cell.f !== undefined ? cell.f : cell.v;
+                }
+              }
+
+              if (targetColumns[idx] === "ID_Tiket") idTiket = cellValue;
+              if (targetColumns[idx] === "Kategori") valKategori = cellValue.toLowerCase();
+              if (targetColumns[idx] === "Prioritas") valPrioritas = cellValue.toLowerCase();
+              if (targetColumns[idx] === "Status") valStatus = cellValue.toLowerCase();
+
+              rowData.push(cellValue);
+            });
+
+            if (valKategori.includes("bug") || valKategori.includes("error")) countData.bug++;
+            else if (valKategori.includes("fitur") || valKategori.includes("baru")) countData.fitur++;
+            else if (valKategori.includes("revisi")) countData.revisi++;
+
+            if (valPrioritas === "tinggi" || valPrioritas === "high" || valPrioritas === "urgent") countData.tinggi++;
+            else if (valPrioritas === "sedang" || valPrioritas === "normal") countData.sedang++;
+            else if (valPrioritas === "rendah" || valPrioritas === "low") countData.rendah++;
+
+            if (valStatus === "open") countData.open++;
+            else if (valStatus === "in progress" || valStatus === "pending") countData.progress++;
+            else if (valStatus === "done" || valStatus === "closed" || valStatus === "resolved") countData.done++;
+
+            rowData.push(idTiket);
+            dataSet.push(rowData);
+          });
+
+          dataSet.reverse();
+
+          document.getElementById("count-bug").innerText = countData.bug;
+          document.getElementById("count-fitur").innerText = countData.fitur;
+          document.getElementById("count-revisi").innerText = countData.revisi;
+          document.getElementById("count-tinggi").innerText = countData.tinggi;
+          document.getElementById("count-sedang").innerText = countData.sedang;
+          document.getElementById("count-rendah").innerText = countData.rendah;
+          document.getElementById("count-open").innerText = countData.open;
+          document.getElementById("count-progress").innerText = countData.progress;
+          document.getElementById("count-done").innerText = countData.done;
+
+          document.getElementById("dashboardStats").style.display = "flex";
+
+          if ($.fn.DataTable.isDataTable("#ticketTable")) {
+            $("#ticketTable").DataTable().destroy();
+          }
+
+          document.getElementById("data-container").innerHTML = `
               <table id="ticketTable" class="table table-bordered table-hover align-middle w-100">
                 <thead class="table-dark"></thead>
               </table>
             `;
 
-            // 5. INISIALISASI DATATABLES
-            $("#ticketTable").DataTable({
-              data: dataSet,
-              columns: finalHeaders,
-              pageLength: 5,
-              lengthMenu: [
-                [5, 15, 20, -1],
-                [5, 15, 20, "Semua"],
-              ],
-              scrollX: true,
-              ordering: true,
+          $("#ticketTable").DataTable({
+            data: dataSet,
+            columns: finalHeaders,
+            pageLength: 5,
+            lengthMenu: [
+              [5, 15, 20, -1],
+              [5, 15, 20, "Semua"],
+            ],
+            scrollX: true,
+            ordering: true,
 
-              // order: [[0, "desc"]],
-
-              columnDefs: [
-                {
-                  // Kolom No (Index 0)
-                  targets: 0,
-                  searchable: false,
-                  orderable: false,
-                  render: function (data, type, row, meta) {
-                    return meta.row + 1;
-                  },
+            columnDefs: [
+              {
+                targets: 0,
+                searchable: false,
+                orderable: false,
+                render: function (data, type, row, meta) {
+                  return meta.row + 1;
                 },
-                {
-                  // Kolom Kategori (Maju jadi Index 7)
-                  targets: 7,
-                  render: function (data, type, row) {
-                    let badgeClass = "bg-secondary";
-                    let text = data ? data.toLowerCase() : "";
-
-                    if (text.includes("bug") || text.includes("error")) badgeClass = "bg-danger";
-                    else if (text.includes("fitur") || text.includes("baru")) badgeClass = "bg-success";
-                    else if (text.includes("revisi")) badgeClass = "bg-info text-dark";
-
-                    return `<span class="badge ${badgeClass}">${data}</span>`;
-                  },
+              },
+              {
+                targets: 7,
+                render: function (data, type, row) {
+                  let badgeClass = "bg-secondary";
+                  let text = data ? data.toLowerCase() : "";
+                  if (text.includes("bug") || text.includes("error")) badgeClass = "bg-danger";
+                  else if (text.includes("fitur") || text.includes("baru")) badgeClass = "bg-success";
+                  else if (text.includes("revisi")) badgeClass = "bg-info text-dark";
+                  return `<span class="badge ${badgeClass}">${data}</span>`;
                 },
-                {
-                  // Kolom Prioritas (Maju jadi Index 8)
-                  targets: 8,
-                  render: function (data, type, row) {
-                    let badgeClass = "bg-secondary";
-                    let text = data ? data.toLowerCase() : "";
-
-                    if (text === "tinggi" || text === "high" || text === "urgent") badgeClass = "bg-danger";
-                    else if (text === "sedang" || text === "normal") badgeClass = "bg-warning text-dark";
-                    else if (text === "rendah" || text === "low") badgeClass = "bg-info text-dark";
-
-                    return `<span class="badge ${badgeClass}">${data}</span>`;
-                  },
+              },
+              {
+                targets: 8,
+                render: function (data, type, row) {
+                  let badgeClass = "bg-secondary";
+                  let text = data ? data.toLowerCase() : "";
+                  if (text === "tinggi" || text === "high" || text === "urgent") badgeClass = "bg-danger";
+                  else if (text === "sedang" || text === "normal") badgeClass = "bg-warning text-dark";
+                  else if (text === "rendah" || text === "low") badgeClass = "bg-info text-dark";
+                  return `<span class="badge ${badgeClass}">${data}</span>`;
                 },
-                {
-                  // Kolom Status (Maju jadi Index 9)
-                  targets: 9,
-                  render: function (data, type, row) {
-                    let badgeClass = "bg-secondary";
-                    let text = data ? data.toLowerCase() : "";
-
-                    if (text === "open") badgeClass = "bg-primary";
-                    else if (text === "in progress" || text === "pending") badgeClass = "bg-warning text-dark";
-                    else if (text === "done" || text === "closed" || text === "resolved") badgeClass = "bg-success";
-
-                    return `<span class="badge ${badgeClass}">${data}</span>`;
-                  },
+              },
+              {
+                targets: 9,
+                render: function (data, type, row) {
+                  let badgeClass = "bg-secondary";
+                  let text = data ? data.toLowerCase() : "";
+                  if (text === "open") badgeClass = "bg-primary";
+                  else if (text === "in progress" || text === "pending") badgeClass = "bg-warning text-dark";
+                  else if (text === "done" || text === "closed" || text === "resolved") badgeClass = "bg-success";
+                  return `<span class="badge ${badgeClass}">${data}</span>`;
                 },
-                {
-                  // Kolom Aksi (SEKARANG MAJU KE INDEX 10)
-                  targets: 10,
-                  searchable: false,
-                  orderable: false,
-                  render: function (data, type, row) {
-                    return `
+              },
+              {
+                targets: 10,
+                searchable: false,
+                orderable: false,
+                render: function (data, type, row) {
+                  return `
                       <div class="d-flex justify-content-center gap-1">
                         <button class="btn btn-sm btn-info text-white" title="Lihat Detail" onclick="alert('Membuka detail tiket: ${data}')">
                           <i class="bi bi-eye"></i>
@@ -298,31 +459,84 @@
                         </button>
                       </div>
                     `;
-                  },
-                },
-              ],
-
-              language: {
-                search: "Cari Tiket:",
-                lengthMenu: "Tampilkan _MENU_ baris",
-                info: "Menampilkan _START_ s/d _END_ dari total _TOTAL_ tiket",
-                infoEmpty: "Data kosong",
-                infoFiltered: "(disaring dari _MAX_ total tiket)",
-                zeroRecords: "Tiket yang dicari tidak ditemukan",
-                paginate: {
-                  first: "Awal",
-                  last: "Akhir",
-                  next: "Selanjutnya",
-                  previous: "Sebelumnya",
                 },
               },
-            });
+            ],
+
+            language: {
+              search: "Cari Tiket:",
+              lengthMenu: "Tampilkan _MENU_ baris",
+              info: "Menampilkan _START_ s/d _END_ dari total _TOTAL_ tiket",
+              infoEmpty: "Data kosong",
+              infoFiltered: "(disaring dari _MAX_ total tiket)",
+              zeroRecords: "Tiket yang dicari tidak ditemukan",
+              paginate: {
+                first: "Awal",
+                last: "Akhir",
+                next: "Selanjutnya",
+                previous: "Sebelumnya",
+              },
+            },
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+          document.getElementById("data-container").innerHTML = '<div class="alert alert-danger shadow-sm">Gagal memuat data.</div>';
+        });
+
+      const form = document.getElementById('formTambahTiket');
+      const btnSubmit = document.getElementById('btnSubmitTiket');
+
+      btnSubmit.addEventListener('click', () => {
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        btnSubmit.disabled = true;
+        btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Mengirim...';
+
+        const formData = {
+          namaPelapor: document.getElementById('inputNamaPelapor').value, // DIKIRIM KE GAS
+          aplikasi: document.getElementById('inputAplikasi').value,
+          modul: document.getElementById('inputModul').value,
+          idRef: document.getElementById('inputIDRef').value,
+          infoRef: document.getElementById('inputInfoRef').value,
+          kategori: document.getElementById('inputKategori').value,
+          prioritas: document.getElementById('inputPrioritas').value,
+          keterangan: document.getElementById('inputKeterangan').value
+        };
+
+        // --- GANTI STRING DI BAWAH INI PAKAI URL WEB APP LU ---
+        const webAppUrl = 'https://script.google.com/macros/s/AKfycbxyB74RXe3VIFDeUQamA0wpG8DtuI9RuTP9phjiVejjZ1v_OPP_pwSKAzMrjW__jz-hXA/exec';
+
+        fetch(webAppUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        })
+          .then(() => {
+            alert('Sukses! Tiket baru berhasil disimpan ke Google Sheets.');
+            form.reset();
+
+            const modalEl = document.getElementById('modalTambahTiket');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
+
+            location.reload();
           })
-          .catch((error) => {
-            console.error("Error fetching data:", error);
-            document.getElementById("data-container").innerHTML = '<div class="alert alert-danger shadow-sm">Gagal memuat data. Pastikan Google Spreadsheet sudah di-Publish to the web.</div>';
+          .catch(error => {
+            console.error('Error:', error);
+            alert('Gagal simpan data, coba cek kodingan URL lu.');
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = '<i class="bi bi-send me-1"></i> Submit Tiket';
           });
       });
-    </script>
-  </body>
+    });
+  </script>
+</body>
+
 </html>

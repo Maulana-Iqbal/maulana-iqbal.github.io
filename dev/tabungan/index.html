@@ -830,15 +830,25 @@
         .catch((err) => console.error("Gagal load Sheet 4:", err));
 
       // FITUR UTAMA: Fetch Harga Live API Pegadaian & Kripto
+      // ==========================================
+      // KODINGAN CLOUDFLARE WORKERS (JEMBATAN PRIBADI)
+      // ==========================================
       function fetchLivePrices() {
         let fKripto = fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether&vs_currencies=idr").then((r) => r.json());
 
-        let urlEmas = "https://logam-mulia-api.iamutaki.workers.dev/api/prices/pegadaian";
-        let proxyUrl = `https://corsproxy.io/?${encodeURIComponent(urlEmas)}`;
-        let fEmas = fetch(proxyUrl).then((r) => r.json());
+        // Langsung tembak ke link jembatan pribadi lu
+        let urlEmas = "https://proxy-emas.maulanai957.workers.dev/";
+
+        let fEmas = fetch(urlEmas)
+          .then((r) => r.json())
+          .catch((err) => {
+            console.warn("Gagal narik dari jembatan pribadi:", err);
+            return null;
+          });
 
         Promise.allSettled([fKripto, fEmas])
           .then((results) => {
+            // URUS KRIPTO
             if (results[0].status === "fulfilled") {
               let dK = results[0].value;
               globalLivePrices.btc = dK.bitcoin.idr;
@@ -850,22 +860,51 @@
               document.getElementById("live-btc").innerText = "API Kripto Error";
             }
 
+            // URUS EMAS (SUPER RADAR ANTI BIAYA ADMIN)
             if (results[1].status === "fulfilled") {
               let dE = results[1].value;
-              if (dE && dE.success) {
+              if (dE) {
                 let h1 = 0;
-                if (Array.isArray(dE.data)) h1 = dE.data.find((x) => x.weight === 1)?.buybackPrice || dE.data[0].buybackPrice / dE.data[0].weight;
-                else if (dE.data && dE.data.antam) h1 = dE.data.antam.find((x) => x.weight === 1)?.buybackPrice || dE.data.antam[0].buybackPrice / dE.data.antam[0].weight;
+                // Cek lokasi array datanya (jaga-jaga kalau ganti nama dari antam ke pegadaian)
+                let listData = Array.isArray(dE) ? dE : dE.data ? (Array.isArray(dE.data) ? dE.data : dE.data.antam || dE.data.pegadaian) : null;
 
-                if (h1 > 0) {
+                if (listData && Array.isArray(listData)) {
+                  // Pake '==' biar tetep tembus walau API ngirim string "1". Cek juga pakai key 'berat'
+                  let targetItem = listData.find((x) => x.weight == 1 || x.berat == 1);
+
+                  // Kalau API bener-bener nyembunyiin 1 gram, cari item pertama yang harganya MASUK AKAL (di atas 500rb)
+                  if (!targetItem) {
+                    let validItems = listData.filter((x) => (x.sellPrice || x.buybackPrice || x.buyPrice || x.price || 0) > 500000);
+                    targetItem = validItems.length > 0 ? validItems[0] : listData[0];
+                  }
+
+                  if (targetItem) {
+                    // Prioritaskan harga Buyback (Pencairan) di urutan pertama!
+                    h1 = targetItem.buybackPrice || targetItem.buyPrice || targetItem.sellPrice || targetItem.price || 0;
+
+                    // Bagi harganya sesuai beratnya (biar dapet harga murni per 1 gram)
+                    let w = targetItem.weight || targetItem.berat || 1;
+                    if (w > 0 && w != 1) {
+                      h1 = h1 / w;
+                    }
+                  }
+                }
+
+                // Validasi final: Harga emas 1 gram ga mungkin di bawah 500rb
+                if (h1 > 500000) {
                   globalLivePrices.emas = Math.round(h1);
                   document.getElementById("live-emas").innerText = "Rp " + globalLivePrices.emas.toLocaleString("id-ID");
+                } else {
+                  document.getElementById("live-emas").innerText = "Struktur Berubah";
+                  console.log("Struktur JSON Emas aneh / cuma dapet admin:", dE);
                 }
+              } else {
+                document.getElementById("live-emas").innerText = "Server Down";
               }
             } else {
-              console.warn("API Emas lagi tidur/down, nilai pakai 0 dulu", results[1].reason);
               document.getElementById("live-emas").innerText = "Server Down";
             }
+
             renderTablePNL();
           })
           .catch((err) => console.error("Sistem API Error Total:", err));
